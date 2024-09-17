@@ -1,0 +1,1 @@
+import{r as l}from"./index-DF1D02Hj.js";function a(...e){return e.reduce((t,i)=>i==null?t:function(...u){t.apply(this,u),i.apply(this,u)},()=>{})}function o(e,t){var i,n;return l.isValidElement(e)&&t.indexOf((i=e.type.muiName)!=null?i:(n=e.type)==null||(n=n._payload)==null||(n=n.value)==null?void 0:n.muiName)!==-1}export{a as c,o as i};

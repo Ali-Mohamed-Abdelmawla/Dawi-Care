@@ -1,0 +1,1053 @@
+{
+  "_AdapterDayjs-C9hUxPF7.js": {
+    "file": "assets/AdapterDayjs-C9hUxPF7.js",
+    "name": "AdapterDayjs",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_useThemeProps-B6NQfqaC.js",
+      "_Button-DJQ79VO-.js",
+      "_IconButton-CVXum2NQ.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_Menu-C7haSOWu.js",
+      "_MenuItem-BDtCcL-v.js",
+      "_ListItem-Y1O789Fh.js",
+      "_Chip-BCCKjiS7.js"
+    ]
+  },
+  "_AddBoxTwoTone-D1J65XFy.js": {
+    "file": "assets/AddBoxTwoTone-D1J65XFy.js",
+    "name": "AddBoxTwoTone",
+    "imports": [
+      "index.html",
+      "_createSvgIcon-QGnDfLuw.js"
+    ]
+  },
+  "_ArrowForward-GdnSVQw-.js": {
+    "file": "assets/ArrowForward-GdnSVQw-.js",
+    "name": "ArrowForward",
+    "imports": [
+      "index.html",
+      "_createSvgIcon-QGnDfLuw.js"
+    ]
+  },
+  "_Avatar-B-QZB_q1.js": {
+    "file": "assets/Avatar-B-QZB_q1.js",
+    "name": "Avatar",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_mergeSlotProps-BtuCJPHe.js"
+    ]
+  },
+  "_Box-D4cKv5_V.js": {
+    "file": "assets/Box-D4cKv5_V.js",
+    "name": "Box",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js"
+    ]
+  },
+  "_Button-DJQ79VO-.js": {
+    "file": "assets/Button-DJQ79VO-.js",
+    "name": "Button",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js"
+    ]
+  },
+  "_CardContent-Be-YTDra.js": {
+    "file": "assets/CardContent-Be-YTDra.js",
+    "name": "CardContent",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_Paper-C9iPag-B.js"
+    ]
+  },
+  "_Chip-BCCKjiS7.js": {
+    "file": "assets/Chip-BCCKjiS7.js",
+    "name": "Chip",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js"
+    ]
+  },
+  "_CircularProgress-C94875X6.js": {
+    "file": "assets/CircularProgress-C94875X6.js",
+    "name": "CircularProgress",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js"
+    ]
+  },
+  "_CustomDataGrid-CNTFpQZZ.js": {
+    "file": "assets/CustomDataGrid-CNTFpQZZ.js",
+    "name": "CustomDataGrid",
+    "imports": [
+      "index.html",
+      "_Paper-C9iPag-B.js",
+      "_useThemeProps-B6NQfqaC.js",
+      "_toPropertyKey-PLuKRk1e.js",
+      "_Typography-D94uCwLm.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_TextField-BCa7AWxh.js",
+      "_IconButton-CVXum2NQ.js",
+      "_Tooltip-BYenHq1v.js",
+      "_Toolbar-D268zmC0.js",
+      "_Chip-BCCKjiS7.js",
+      "_Menu-C7haSOWu.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_MenuItem-BDtCcL-v.js",
+      "_styled-CPBbA9UG.js",
+      "_ListItemText-DboCFKAP.js",
+      "_Button-DJQ79VO-.js",
+      "_InputAdornment-DbWrX7NJ.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_CircularProgress-C94875X6.js",
+      "_KeyboardArrowRight-nCMYu8V0.js",
+      "_TableCell-CbZ5-y0A.js",
+      "_useThemeProps-wCF_0idl.js"
+    ]
+  },
+  "_Drawer-DbwF3xJP.js": {
+    "file": "assets/Drawer-DbwF3xJP.js",
+    "name": "Drawer",
+    "imports": [
+      "index.html",
+      "_getThemeProps-60JEWZhT.js",
+      "_Typography-D94uCwLm.js",
+      "_Paper-C9iPag-B.js",
+      "_Menu-C7haSOWu.js",
+      "_mergeSlotProps-BtuCJPHe.js"
+    ]
+  },
+  "_EmployeeUtils-CTSoHGJR.js": {
+    "file": "assets/EmployeeUtils-CTSoHGJR.js",
+    "name": "EmployeeUtils"
+  },
+  "_IconButton-CVXum2NQ.js": {
+    "file": "assets/IconButton-CVXum2NQ.js",
+    "name": "IconButton",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js"
+    ]
+  },
+  "_InputAdornment-DbWrX7NJ.js": {
+    "file": "assets/InputAdornment-DbWrX7NJ.js",
+    "name": "InputAdornment",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_OutlinedInput-BKrgIPXM.js"
+    ]
+  },
+  "_KeyboardArrowRight-nCMYu8V0.js": {
+    "file": "assets/KeyboardArrowRight-nCMYu8V0.js",
+    "name": "KeyboardArrowRight",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js"
+    ]
+  },
+  "_ListItem-Y1O789Fh.js": {
+    "file": "assets/ListItem-Y1O789Fh.js",
+    "name": "ListItem",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_Menu-C7haSOWu.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js"
+    ]
+  },
+  "_ListItemText-DboCFKAP.js": {
+    "file": "assets/ListItemText-DboCFKAP.js",
+    "name": "ListItemText",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_MenuItem-BDtCcL-v.js",
+      "_Menu-C7haSOWu.js"
+    ]
+  },
+  "_LoadingButton-BPIyvWo9.js": {
+    "file": "assets/LoadingButton-BPIyvWo9.js",
+    "name": "LoadingButton",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_Button-DJQ79VO-.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_CircularProgress-C94875X6.js"
+    ]
+  },
+  "_Menu-C7haSOWu.js": {
+    "file": "assets/Menu-C7haSOWu.js",
+    "name": "Menu",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_Paper-C9iPag-B.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_useSlotProps-C21nwL-b.js"
+    ]
+  },
+  "_MenuItem-BDtCcL-v.js": {
+    "file": "assets/MenuItem-BDtCcL-v.js",
+    "name": "MenuItem",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_Menu-C7haSOWu.js"
+    ]
+  },
+  "_OutlinedInput-BKrgIPXM.js": {
+    "file": "assets/OutlinedInput-BKrgIPXM.js",
+    "name": "OutlinedInput",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js"
+    ]
+  },
+  "_Paper-C9iPag-B.js": {
+    "file": "assets/Paper-C9iPag-B.js",
+    "name": "Paper",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js"
+    ]
+  },
+  "_StaticTimePicker-PD4VRi65.js": {
+    "file": "assets/StaticTimePicker-PD4VRi65.js",
+    "name": "StaticTimePicker",
+    "imports": [
+      "index.html",
+      "_useThemeProps-B6NQfqaC.js",
+      "_AdapterDayjs-C9hUxPF7.js"
+    ]
+  },
+  "_StyledClinicsComponents-B05oX19X.js": {
+    "file": "assets/StyledClinicsComponents-B05oX19X.js",
+    "name": "StyledClinicsComponents",
+    "imports": [
+      "index.html",
+      "_createSvgIcon-QGnDfLuw.js",
+      "_Typography-D94uCwLm.js",
+      "_CardContent-Be-YTDra.js",
+      "_Menu-C7haSOWu.js",
+      "_Paper-C9iPag-B.js",
+      "_TableCell-CbZ5-y0A.js",
+      "_TextField-BCa7AWxh.js"
+    ]
+  },
+  "_TableCell-CbZ5-y0A.js": {
+    "file": "assets/TableCell-CbZ5-y0A.js",
+    "name": "TableCell",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js"
+    ]
+  },
+  "_TableRow-Ce_QXQAA.js": {
+    "file": "assets/TableRow-Ce_QXQAA.js",
+    "name": "TableRow",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_TableCell-CbZ5-y0A.js"
+    ]
+  },
+  "_TextField-BCa7AWxh.js": {
+    "file": "assets/TextField-BCa7AWxh.js",
+    "name": "TextField",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_Paper-C9iPag-B.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_Menu-C7haSOWu.js",
+      "_mergeSlotProps-BtuCJPHe.js"
+    ]
+  },
+  "_Toolbar-D268zmC0.js": {
+    "file": "assets/Toolbar-D268zmC0.js",
+    "name": "Toolbar",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_MenuItem-BDtCcL-v.js",
+      "_Menu-C7haSOWu.js"
+    ]
+  },
+  "_Tooltip-BYenHq1v.js": {
+    "file": "assets/Tooltip-BYenHq1v.js",
+    "name": "Tooltip",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_Paper-C9iPag-B.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_Menu-C7haSOWu.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_OutlinedInput-BKrgIPXM.js"
+    ]
+  },
+  "_Typography-D94uCwLm.js": {
+    "file": "assets/Typography-D94uCwLm.js",
+    "name": "Typography",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_VisibilityOff-DKi6BRV9.js": {
+    "file": "assets/VisibilityOff-DKi6BRV9.js",
+    "name": "VisibilityOff",
+    "imports": [
+      "index.html",
+      "_createSvgIcon-QGnDfLuw.js"
+    ]
+  },
+  "_axios-CyFV80k_.js": {
+    "file": "assets/axios-CyFV80k_.js",
+    "name": "axios"
+  },
+  "_createStyled-93osxTnM.js": {
+    "file": "assets/createStyled-93osxTnM.js",
+    "name": "createStyled",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js"
+    ]
+  },
+  "_createSvgIcon-QGnDfLuw.js": {
+    "file": "assets/createSvgIcon-QGnDfLuw.js",
+    "name": "createSvgIcon",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_OutlinedInput-BKrgIPXM.js"
+    ]
+  },
+  "_doctorUtils-DbQ9xYY5.js": {
+    "file": "assets/doctorUtils-DbQ9xYY5.js",
+    "name": "doctorUtils"
+  },
+  "_getThemeProps-60JEWZhT.js": {
+    "file": "assets/getThemeProps-60JEWZhT.js",
+    "name": "getThemeProps",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_index.esm-Bs_MGDSt.js": {
+    "file": "assets/index.esm-Bs_MGDSt.js",
+    "name": "index.esm",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_isMuiElement-DtCTRzqF.js": {
+    "file": "assets/isMuiElement-DtCTRzqF.js",
+    "name": "isMuiElement",
+    "imports": [
+      "index.html"
+    ]
+  },
+  "_mergeSlotProps-BtuCJPHe.js": {
+    "file": "assets/mergeSlotProps-BtuCJPHe.js",
+    "name": "mergeSlotProps",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js"
+    ]
+  },
+  "_personSelect-vLUXfHrd.js": {
+    "file": "assets/personSelect-vLUXfHrd.js",
+    "name": "personSelect",
+    "imports": [
+      "index.html",
+      "_Typography-D94uCwLm.js",
+      "_Paper-C9iPag-B.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_KeyboardArrowRight-nCMYu8V0.js",
+      "_react-select.esm-DZnH2LNg.js",
+      "_axios-CyFV80k_.js"
+    ]
+  },
+  "_react-select.esm-DZnH2LNg.js": {
+    "file": "assets/react-select.esm-DZnH2LNg.js",
+    "name": "react-select.esm",
+    "imports": [
+      "_toPropertyKey-PLuKRk1e.js",
+      "index.html",
+      "_Typography-D94uCwLm.js"
+    ]
+  },
+  "_styled-CPBbA9UG.js": {
+    "file": "assets/styled-CPBbA9UG.js",
+    "name": "styled",
+    "imports": [
+      "_createStyled-93osxTnM.js"
+    ]
+  },
+  "_toPropertyKey-PLuKRk1e.js": {
+    "file": "assets/toPropertyKey-PLuKRk1e.js",
+    "name": "toPropertyKey"
+  },
+  "_useDoctorApi-BGMsDjy1.js": {
+    "file": "assets/useDoctorApi-BGMsDjy1.js",
+    "name": "useDoctorApi",
+    "imports": [
+      "_axios-CyFV80k_.js"
+    ]
+  },
+  "_useEmployeeApi-BGNvU3FX.js": {
+    "file": "assets/useEmployeeApi-BGNvU3FX.js",
+    "name": "useEmployeeApi",
+    "imports": [
+      "_axios-CyFV80k_.js"
+    ]
+  },
+  "_useSlotProps-C21nwL-b.js": {
+    "file": "assets/useSlotProps-C21nwL-b.js",
+    "name": "useSlotProps",
+    "imports": [
+      "index.html",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_Typography-D94uCwLm.js"
+    ]
+  },
+  "_useThemeProps-B6NQfqaC.js": {
+    "file": "assets/useThemeProps-B6NQfqaC.js",
+    "name": "useThemeProps",
+    "imports": [
+      "index.html",
+      "_useThemeProps-wCF_0idl.js"
+    ]
+  },
+  "_useThemeProps-wCF_0idl.js": {
+    "file": "assets/useThemeProps-wCF_0idl.js",
+    "name": "useThemeProps",
+    "imports": [
+      "_getThemeProps-60JEWZhT.js",
+      "index.html"
+    ]
+  },
+  "index.html": {
+    "file": "assets/index-DF1D02Hj.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/Login-component/LoginContainer.tsx",
+      "src/Admin-component/index.tsx",
+      "src/Admin-component/MainPage/Statistics-Container.tsx",
+      "src/Admin-component/Employees/EmployeesContainer.tsx",
+      "src/Admin-component/Employees/AddEmployeeComponent/AddEmployee.tsx",
+      "src/Admin-component/Employees/Edit-Employee/EditEmployeeContainer.tsx",
+      "src/Admin-component/Doctors/DoctorsContainer.tsx",
+      "src/Admin-component/Doctors/AddDoctorComponent/AddDoctor.tsx",
+      "src/Admin-component/Doctors/Edit-Doctor/EditDoctorContainer.tsx",
+      "src/Admin-component/Schedeule/ScheduleContainer.tsx",
+      "src/Admin-component/Users/UserContainer.tsx",
+      "src/Admin-component/Users/AddUserComponent/AddUser.tsx",
+      "src/Admin-component/Clinics/ClinicsListContainer.tsx",
+      "src/Admin-component/Clinics/clinicDoctors/ClinicDetailsContainer.tsx",
+      "src/Admin-component/AbsenceSubmission/absenceContainer.tsx"
+    ],
+    "css": [
+      "assets/index-JcbvaNVS.css"
+    ],
+    "assets": [
+      "assets/Not-found-M38Ywvef.svg"
+    ]
+  },
+  "src/Admin-component/AbsenceSubmission/absenceContainer.tsx": {
+    "file": "assets/absenceContainer-B3Dj-qif.js",
+    "name": "absenceContainer",
+    "src": "src/Admin-component/AbsenceSubmission/absenceContainer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_axios-CyFV80k_.js",
+      "_react-select.esm-DZnH2LNg.js",
+      "_index.esm-Bs_MGDSt.js",
+      "_AdapterDayjs-C9hUxPF7.js",
+      "_personSelect-vLUXfHrd.js",
+      "_createSvgIcon-QGnDfLuw.js",
+      "_Paper-C9iPag-B.js",
+      "_Typography-D94uCwLm.js",
+      "_ListItemText-DboCFKAP.js",
+      "_Menu-C7haSOWu.js",
+      "_ListItem-Y1O789Fh.js",
+      "_Box-D4cKv5_V.js",
+      "_Tooltip-BYenHq1v.js",
+      "_TextField-BCa7AWxh.js",
+      "_Drawer-DbwF3xJP.js",
+      "_Button-DJQ79VO-.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_useThemeProps-B6NQfqaC.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_IconButton-CVXum2NQ.js",
+      "_createStyled-93osxTnM.js",
+      "_InputAdornment-DbWrX7NJ.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_toPropertyKey-PLuKRk1e.js",
+      "_MenuItem-BDtCcL-v.js",
+      "_Chip-BCCKjiS7.js",
+      "_KeyboardArrowRight-nCMYu8V0.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_getThemeProps-60JEWZhT.js",
+      "_useThemeProps-wCF_0idl.js"
+    ]
+  },
+  "src/Admin-component/Clinics/ClinicsImages/الاسنان.svg": {
+    "file": "assets/الاسنان-CPqHyR7x.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/الاسنان.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/الاطفال.svg": {
+    "file": "assets/الاطفال-CwupBb5a.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/الاطفال.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/الاوعيه-الدمويه.svg": {
+    "file": "assets/الاوعيه-الدمويه-DAdKCWiP.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/الاوعيه-الدمويه.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/التجميل.svg": {
+    "file": "assets/التجميل-B2jiAj5F.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/التجميل.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/الجلديه.svg": {
+    "file": "assets/الجلديه-GTxiRlb7.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/الجلديه.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/الرمد.svg": {
+    "file": "assets/الرمد-Bsk28d2L.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/الرمد.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/الصدر.svg": {
+    "file": "assets/الصدر-DdFXxXze.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/الصدر.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/القلب.svg": {
+    "file": "assets/القلب-C-3G6Q9O.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/القلب.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/المخ-و-الاعصاب.svg": {
+    "file": "assets/المخ-و-الاعصاب-DGL4ELbh.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/المخ-و-الاعصاب.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/المسالك-البوليه.svg": {
+    "file": "assets/المسالك-البوليه-fITqDnTg.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/المسالك-البوليه.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/النساء-و-التوليد.svg": {
+    "file": "assets/النساء-و-التوليد-DBSZnyZN.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/النساء-و-التوليد.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/امراض-العظام-و-المفاصل.svg": {
+    "file": "assets/امراض-العظام-و-المفاصل-CVd5p-hV.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/امراض-العظام-و-المفاصل.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/باطنه-الجهاز-الهضمي-و-الكبد.svg": {
+    "file": "assets/باطنه-الجهاز-الهضمي-و-الكبد-BbH0vhOt.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/باطنه-الجهاز-الهضمي-و-الكبد.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/باطنه-امراض-دم-و-مناعه.svg": {
+    "file": "assets/باطنه-امراض-دم-و-مناعه-aOLtxg6b.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/باطنه-امراض-دم-و-مناعه.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/باطنه-غدد-صماء-و-كلي-و-سكر.svg": {
+    "file": "assets/باطنه-غدد-صماء-و-كلي-و-سكر-DnpzyUyX.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/باطنه-غدد-صماء-و-كلي-و-سكر.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/تغذيه.svg": {
+    "file": "assets/تغذيه-iVfaMuQs.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/تغذيه.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/جراحه-الاطفال.svg": {
+    "file": "assets/جراحه-الاطفال-D_Lk0PzL.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/جراحه-الاطفال.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/جراحه-اليد.svg": {
+    "file": "assets/جراحه-اليد-tyDT6_hu.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/جراحه-اليد.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/جراحه-عامه.svg": {
+    "file": "assets/جراحه-عامه-DCxwpzsF.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/جراحه-عامه.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/روماتيزم.svg": {
+    "file": "assets/روماتيزم-CLY-m4Yu.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/روماتيزم.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/سونار.svg": {
+    "file": "assets/سونار-Cy1X4XV3.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/سونار.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/عظام-و-عمود-فقرى.svg": {
+    "file": "assets/عظام-و-عمود-فقرى-CcervTNo.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/عظام-و-عمود-فقرى.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsImages/عظام-و-كسور-و-اصابات-ملاعب.svg": {
+    "file": "assets/عظام-و-كسور-و-اصابات-ملاعب-DoTRCpmZ.svg",
+    "src": "src/Admin-component/Clinics/ClinicsImages/عظام-و-كسور-و-اصابات-ملاعب.svg"
+  },
+  "src/Admin-component/Clinics/ClinicsListContainer.tsx": {
+    "file": "assets/ClinicsListContainer-B8cMbz4A.js",
+    "name": "ClinicsListContainer",
+    "src": "src/Admin-component/Clinics/ClinicsListContainer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_StyledClinicsComponents-B05oX19X.js",
+      "_Paper-C9iPag-B.js",
+      "_InputAdornment-DbWrX7NJ.js",
+      "_TextField-BCa7AWxh.js",
+      "_Typography-D94uCwLm.js",
+      "_useDoctorApi-BGMsDjy1.js",
+      "_createSvgIcon-QGnDfLuw.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_CardContent-Be-YTDra.js",
+      "_Menu-C7haSOWu.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_TableCell-CbZ5-y0A.js",
+      "_axios-CyFV80k_.js"
+    ],
+    "assets": [
+      "assets/الاسنان-CPqHyR7x.svg",
+      "assets/باطنه-غدد-صماء-و-كلي-و-سكر-DnpzyUyX.svg",
+      "assets/باطنه-الجهاز-الهضمي-و-الكبد-BbH0vhOt.svg",
+      "assets/باطنه-امراض-دم-و-مناعه-aOLtxg6b.svg",
+      "assets/القلب-C-3G6Q9O.svg",
+      "assets/المسالك-البوليه-fITqDnTg.svg",
+      "assets/الصدر-DdFXxXze.svg",
+      "assets/الجلديه-GTxiRlb7.svg",
+      "assets/الاوعيه-الدمويه-DAdKCWiP.svg",
+      "assets/الرمد-Bsk28d2L.svg",
+      "assets/النساء-و-التوليد-DBSZnyZN.svg",
+      "assets/المخ-و-الاعصاب-DGL4ELbh.svg",
+      "assets/الاطفال-CwupBb5a.svg",
+      "assets/التجميل-B2jiAj5F.svg",
+      "assets/روماتيزم-CLY-m4Yu.svg",
+      "assets/عظام-و-كسور-و-اصابات-ملاعب-DoTRCpmZ.svg",
+      "assets/عظام-و-عمود-فقرى-CcervTNo.svg",
+      "assets/امراض-العظام-و-المفاصل-CVd5p-hV.svg",
+      "assets/جراحه-الاطفال-D_Lk0PzL.svg",
+      "assets/جراحه-اليد-tyDT6_hu.svg",
+      "assets/جراحه-عامه-DCxwpzsF.svg",
+      "assets/سونار-Cy1X4XV3.svg",
+      "assets/تغذيه-iVfaMuQs.svg"
+    ]
+  },
+  "src/Admin-component/Clinics/clinicDoctors/ClinicDetailsContainer.tsx": {
+    "file": "assets/ClinicDetailsContainer-DGdZZ1r3.js",
+    "name": "ClinicDetailsContainer",
+    "src": "src/Admin-component/Clinics/clinicDoctors/ClinicDetailsContainer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_StyledClinicsComponents-B05oX19X.js",
+      "_Typography-D94uCwLm.js",
+      "_InputAdornment-DbWrX7NJ.js",
+      "_TableRow-Ce_QXQAA.js",
+      "_TableCell-CbZ5-y0A.js",
+      "_TextField-BCa7AWxh.js",
+      "_Box-D4cKv5_V.js",
+      "_Button-DJQ79VO-.js",
+      "_createSvgIcon-QGnDfLuw.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_CardContent-Be-YTDra.js",
+      "_Paper-C9iPag-B.js",
+      "_Menu-C7haSOWu.js",
+      "_useSlotProps-C21nwL-b.js"
+    ]
+  },
+  "src/Admin-component/Doctors/AddDoctorComponent/AddDoctor.tsx": {
+    "file": "assets/AddDoctor-Dc4hRPSo.js",
+    "name": "AddDoctor",
+    "src": "src/Admin-component/Doctors/AddDoctorComponent/AddDoctor.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index.esm-Bs_MGDSt.js",
+      "_axios-CyFV80k_.js",
+      "_react-select.esm-DZnH2LNg.js",
+      "_AddBoxTwoTone-D1J65XFy.js",
+      "_Paper-C9iPag-B.js",
+      "_Box-D4cKv5_V.js",
+      "_Typography-D94uCwLm.js",
+      "_TextField-BCa7AWxh.js",
+      "_AdapterDayjs-C9hUxPF7.js",
+      "_StaticTimePicker-PD4VRi65.js",
+      "_LoadingButton-BPIyvWo9.js",
+      "_Menu-C7haSOWu.js",
+      "_toPropertyKey-PLuKRk1e.js",
+      "_createSvgIcon-QGnDfLuw.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_useThemeProps-B6NQfqaC.js",
+      "_useThemeProps-wCF_0idl.js",
+      "_getThemeProps-60JEWZhT.js",
+      "_Button-DJQ79VO-.js",
+      "_IconButton-CVXum2NQ.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_MenuItem-BDtCcL-v.js",
+      "_ListItem-Y1O789Fh.js",
+      "_Chip-BCCKjiS7.js",
+      "_CircularProgress-C94875X6.js"
+    ]
+  },
+  "src/Admin-component/Doctors/DoctorsContainer.tsx": {
+    "file": "assets/DoctorsContainer-CI-BIskC.js",
+    "name": "DoctorsContainer",
+    "src": "src/Admin-component/Doctors/DoctorsContainer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_CustomDataGrid-CNTFpQZZ.js",
+      "_styled-CPBbA9UG.js",
+      "_CardContent-Be-YTDra.js",
+      "_Box-D4cKv5_V.js",
+      "_Typography-D94uCwLm.js",
+      "_TextField-BCa7AWxh.js",
+      "_Avatar-B-QZB_q1.js",
+      "_Chip-BCCKjiS7.js",
+      "_Menu-C7haSOWu.js",
+      "_Button-DJQ79VO-.js",
+      "_useDoctorApi-BGMsDjy1.js",
+      "_Paper-C9iPag-B.js",
+      "_useThemeProps-B6NQfqaC.js",
+      "_useThemeProps-wCF_0idl.js",
+      "_getThemeProps-60JEWZhT.js",
+      "_toPropertyKey-PLuKRk1e.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_IconButton-CVXum2NQ.js",
+      "_Tooltip-BYenHq1v.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_Toolbar-D268zmC0.js",
+      "_MenuItem-BDtCcL-v.js",
+      "_ListItemText-DboCFKAP.js",
+      "_InputAdornment-DbWrX7NJ.js",
+      "_CircularProgress-C94875X6.js",
+      "_KeyboardArrowRight-nCMYu8V0.js",
+      "_TableCell-CbZ5-y0A.js",
+      "_createStyled-93osxTnM.js",
+      "_axios-CyFV80k_.js"
+    ]
+  },
+  "src/Admin-component/Doctors/Edit-Doctor/EditDoctorContainer.tsx": {
+    "file": "assets/EditDoctorContainer-D5fOaMCp.js",
+    "name": "EditDoctorContainer",
+    "src": "src/Admin-component/Doctors/Edit-Doctor/EditDoctorContainer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_useDoctorApi-BGMsDjy1.js",
+      "_index.esm-Bs_MGDSt.js",
+      "_react-select.esm-DZnH2LNg.js",
+      "_ArrowForward-GdnSVQw-.js",
+      "_createSvgIcon-QGnDfLuw.js",
+      "_doctorUtils-DbQ9xYY5.js",
+      "_Box-D4cKv5_V.js",
+      "_Button-DJQ79VO-.js",
+      "_Typography-D94uCwLm.js",
+      "_TextField-BCa7AWxh.js",
+      "_AdapterDayjs-C9hUxPF7.js",
+      "_StaticTimePicker-PD4VRi65.js",
+      "_LoadingButton-BPIyvWo9.js",
+      "_Menu-C7haSOWu.js",
+      "_axios-CyFV80k_.js",
+      "_toPropertyKey-PLuKRk1e.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_Paper-C9iPag-B.js",
+      "_useThemeProps-B6NQfqaC.js",
+      "_useThemeProps-wCF_0idl.js",
+      "_getThemeProps-60JEWZhT.js",
+      "_IconButton-CVXum2NQ.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_MenuItem-BDtCcL-v.js",
+      "_ListItem-Y1O789Fh.js",
+      "_Chip-BCCKjiS7.js",
+      "_CircularProgress-C94875X6.js"
+    ]
+  },
+  "src/Admin-component/Employees/AddEmployeeComponent/AddEmployee.tsx": {
+    "file": "assets/AddEmployee-E__gb3SN.js",
+    "name": "AddEmployee",
+    "src": "src/Admin-component/Employees/AddEmployeeComponent/AddEmployee.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index.esm-Bs_MGDSt.js",
+      "_axios-CyFV80k_.js",
+      "_AddBoxTwoTone-D1J65XFy.js",
+      "_react-select.esm-DZnH2LNg.js",
+      "_EmployeeUtils-CTSoHGJR.js",
+      "_Paper-C9iPag-B.js",
+      "_Box-D4cKv5_V.js",
+      "_Typography-D94uCwLm.js",
+      "_TextField-BCa7AWxh.js",
+      "_LoadingButton-BPIyvWo9.js",
+      "_createSvgIcon-QGnDfLuw.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_toPropertyKey-PLuKRk1e.js",
+      "_Menu-C7haSOWu.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_Button-DJQ79VO-.js",
+      "_CircularProgress-C94875X6.js"
+    ]
+  },
+  "src/Admin-component/Employees/Edit-Employee/EditEmployeeContainer.tsx": {
+    "file": "assets/EditEmployeeContainer-YOS3G3Un.js",
+    "name": "EditEmployeeContainer",
+    "src": "src/Admin-component/Employees/Edit-Employee/EditEmployeeContainer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_useEmployeeApi-BGNvU3FX.js",
+      "_index.esm-Bs_MGDSt.js",
+      "_ArrowForward-GdnSVQw-.js",
+      "_react-select.esm-DZnH2LNg.js",
+      "_EmployeeUtils-CTSoHGJR.js",
+      "_Box-D4cKv5_V.js",
+      "_IconButton-CVXum2NQ.js",
+      "_Typography-D94uCwLm.js",
+      "_TextField-BCa7AWxh.js",
+      "_Button-DJQ79VO-.js",
+      "_LoadingButton-BPIyvWo9.js",
+      "_axios-CyFV80k_.js",
+      "_createSvgIcon-QGnDfLuw.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_toPropertyKey-PLuKRk1e.js",
+      "_Paper-C9iPag-B.js",
+      "_Menu-C7haSOWu.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_CircularProgress-C94875X6.js"
+    ]
+  },
+  "src/Admin-component/Employees/EmployeesContainer.tsx": {
+    "file": "assets/EmployeesContainer-CwtxrhIY.js",
+    "name": "EmployeesContainer",
+    "src": "src/Admin-component/Employees/EmployeesContainer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_CustomDataGrid-CNTFpQZZ.js",
+      "_styled-CPBbA9UG.js",
+      "_CardContent-Be-YTDra.js",
+      "_Box-D4cKv5_V.js",
+      "_Typography-D94uCwLm.js",
+      "_TextField-BCa7AWxh.js",
+      "_Chip-BCCKjiS7.js",
+      "_Menu-C7haSOWu.js",
+      "_Button-DJQ79VO-.js",
+      "_useEmployeeApi-BGNvU3FX.js",
+      "_Paper-C9iPag-B.js",
+      "_useThemeProps-B6NQfqaC.js",
+      "_useThemeProps-wCF_0idl.js",
+      "_getThemeProps-60JEWZhT.js",
+      "_toPropertyKey-PLuKRk1e.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_IconButton-CVXum2NQ.js",
+      "_Tooltip-BYenHq1v.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_Toolbar-D268zmC0.js",
+      "_MenuItem-BDtCcL-v.js",
+      "_ListItemText-DboCFKAP.js",
+      "_InputAdornment-DbWrX7NJ.js",
+      "_CircularProgress-C94875X6.js",
+      "_KeyboardArrowRight-nCMYu8V0.js",
+      "_TableCell-CbZ5-y0A.js",
+      "_createStyled-93osxTnM.js",
+      "_axios-CyFV80k_.js"
+    ]
+  },
+  "src/Admin-component/MainPage/Statistics-Container.tsx": {
+    "file": "assets/Statistics-Container-BIg_AblH.js",
+    "name": "Statistics-Container",
+    "src": "src/Admin-component/MainPage/Statistics-Container.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_personSelect-vLUXfHrd.js",
+      "_Typography-D94uCwLm.js",
+      "_TableCell-CbZ5-y0A.js",
+      "_TableRow-Ce_QXQAA.js",
+      "_Paper-C9iPag-B.js",
+      "_Box-D4cKv5_V.js",
+      "_axios-CyFV80k_.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_KeyboardArrowRight-nCMYu8V0.js",
+      "_react-select.esm-DZnH2LNg.js",
+      "_toPropertyKey-PLuKRk1e.js"
+    ]
+  },
+  "src/Admin-component/Schedeule/ScheduleContainer.tsx": {
+    "file": "assets/ScheduleContainer-DmnMlkfk.js",
+    "name": "ScheduleContainer",
+    "src": "src/Admin-component/Schedeule/ScheduleContainer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_styled-CPBbA9UG.js",
+      "_TableCell-CbZ5-y0A.js",
+      "_Chip-BCCKjiS7.js",
+      "_Paper-C9iPag-B.js",
+      "_TableRow-Ce_QXQAA.js",
+      "_Typography-D94uCwLm.js",
+      "_Box-D4cKv5_V.js",
+      "_doctorUtils-DbQ9xYY5.js",
+      "_axios-CyFV80k_.js",
+      "_createStyled-93osxTnM.js"
+    ]
+  },
+  "src/Admin-component/Users/AddUserComponent/AddUser.tsx": {
+    "file": "assets/AddUser-DeJTjdae.js",
+    "name": "AddUser",
+    "src": "src/Admin-component/Users/AddUserComponent/AddUser.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index.esm-Bs_MGDSt.js",
+      "_axios-CyFV80k_.js",
+      "_AddBoxTwoTone-D1J65XFy.js",
+      "_VisibilityOff-DKi6BRV9.js",
+      "_Paper-C9iPag-B.js",
+      "_Box-D4cKv5_V.js",
+      "_Typography-D94uCwLm.js",
+      "_TextField-BCa7AWxh.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_InputAdornment-DbWrX7NJ.js",
+      "_IconButton-CVXum2NQ.js",
+      "_LoadingButton-BPIyvWo9.js",
+      "_createSvgIcon-QGnDfLuw.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_Menu-C7haSOWu.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_Button-DJQ79VO-.js",
+      "_CircularProgress-C94875X6.js"
+    ]
+  },
+  "src/Admin-component/Users/UserContainer.tsx": {
+    "file": "assets/UserContainer-DOpGsUug.js",
+    "name": "UserContainer",
+    "src": "src/Admin-component/Users/UserContainer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_CustomDataGrid-CNTFpQZZ.js",
+      "_styled-CPBbA9UG.js",
+      "_CardContent-Be-YTDra.js",
+      "_Box-D4cKv5_V.js",
+      "_Typography-D94uCwLm.js",
+      "_TextField-BCa7AWxh.js",
+      "_Menu-C7haSOWu.js",
+      "_Button-DJQ79VO-.js",
+      "_axios-CyFV80k_.js",
+      "_Paper-C9iPag-B.js",
+      "_useThemeProps-B6NQfqaC.js",
+      "_useThemeProps-wCF_0idl.js",
+      "_getThemeProps-60JEWZhT.js",
+      "_toPropertyKey-PLuKRk1e.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_IconButton-CVXum2NQ.js",
+      "_Tooltip-BYenHq1v.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_Toolbar-D268zmC0.js",
+      "_MenuItem-BDtCcL-v.js",
+      "_Chip-BCCKjiS7.js",
+      "_ListItemText-DboCFKAP.js",
+      "_InputAdornment-DbWrX7NJ.js",
+      "_CircularProgress-C94875X6.js",
+      "_KeyboardArrowRight-nCMYu8V0.js",
+      "_TableCell-CbZ5-y0A.js",
+      "_createStyled-93osxTnM.js"
+    ]
+  },
+  "src/Admin-component/index.tsx": {
+    "file": "assets/index-BCGRSlc1.js",
+    "name": "index",
+    "src": "src/Admin-component/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_axios-CyFV80k_.js",
+      "_Typography-D94uCwLm.js",
+      "_useSlotProps-C21nwL-b.js",
+      "_Paper-C9iPag-B.js",
+      "_Drawer-DbwF3xJP.js",
+      "_Box-D4cKv5_V.js",
+      "_Toolbar-D268zmC0.js",
+      "_IconButton-CVXum2NQ.js",
+      "_Button-DJQ79VO-.js",
+      "_Menu-C7haSOWu.js",
+      "_MenuItem-BDtCcL-v.js",
+      "_ListItemText-DboCFKAP.js",
+      "_ListItem-Y1O789Fh.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_getThemeProps-60JEWZhT.js",
+      "_isMuiElement-DtCTRzqF.js"
+    ]
+  },
+  "src/Login-component/LoginContainer.tsx": {
+    "file": "assets/LoginContainer-BWF5m_eC.js",
+    "name": "LoginContainer",
+    "src": "src/Login-component/LoginContainer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_index.esm-Bs_MGDSt.js",
+      "_axios-CyFV80k_.js",
+      "_createSvgIcon-QGnDfLuw.js",
+      "_VisibilityOff-DKi6BRV9.js",
+      "_Box-D4cKv5_V.js",
+      "_Avatar-B-QZB_q1.js",
+      "_Typography-D94uCwLm.js",
+      "_OutlinedInput-BKrgIPXM.js",
+      "_InputAdornment-DbWrX7NJ.js",
+      "_IconButton-CVXum2NQ.js",
+      "_LoadingButton-BPIyvWo9.js",
+      "_styled-CPBbA9UG.js",
+      "_useThemeProps-wCF_0idl.js",
+      "_isMuiElement-DtCTRzqF.js",
+      "_mergeSlotProps-BtuCJPHe.js",
+      "_Button-DJQ79VO-.js",
+      "_CircularProgress-C94875X6.js",
+      "_createStyled-93osxTnM.js",
+      "_getThemeProps-60JEWZhT.js"
+    ]
+  },
+  "src/helper/notFound-component/Not-found.svg": {
+    "file": "assets/Not-found-M38Ywvef.svg",
+    "src": "src/helper/notFound-component/Not-found.svg"
+  }
+}
