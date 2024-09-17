@@ -1,0 +1,1 @@
+const l=[{value:"الأحد",label:"الأحد"},{value:"الاثنين",label:"الاثنين"},{value:"الثلاثاء",label:"الثلاثاء"},{value:"الأربعاء",label:"الأربعاء"},{value:"الخميس",label:"الخميس"},{value:"الجمعة",label:"الجمعة"},{value:"السبت",label:"السبت"}];export{l as w};
