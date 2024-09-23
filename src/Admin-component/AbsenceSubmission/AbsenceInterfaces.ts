@@ -72,11 +72,16 @@ export interface WeekDay {
 
 export interface TwoColumnDaysUIProps {
   weekDays: WeekDay[];
+  showSwitchedDays: boolean;
+  setShowSwitchedDays: (show: boolean) => void;
+  personType:'doctor' | 'employee'
 }
 
 export interface DayListProps {
   days: WeekDay[];
   title: string;
+  personType:'doctor' | 'employee'
+
 }
 
 export interface getChosenDayIDProps {

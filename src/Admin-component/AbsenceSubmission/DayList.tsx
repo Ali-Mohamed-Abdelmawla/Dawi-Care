@@ -12,7 +12,7 @@ import {
 import InfoTwoToneIcon from "@mui/icons-material/InfoTwoTone";
 import { SwapHoriz } from "@mui/icons-material";
 
-const DayList: React.FC<DayListProps> = ({ days, title }) => (
+const DayList: React.FC<DayListProps> = ({ days, title, personType }) => (
     <Paper elevation={2} sx={{ p: 2, height: "100%" }}>
         <Typography variant="h6" gutterBottom align="center">
             {title}
@@ -28,7 +28,7 @@ const DayList: React.FC<DayListProps> = ({ days, title }) => (
                     <ListItem key={day.id}>
                         <ListItemText
                             primary={day.day || day.switch_day}
-                            secondary={`الوقت: ${day.date.slice(0, 5)}`}
+                            secondary={personType === 'doctor' ? `الوقت: ${day.date?.slice(0, 5)}` : null}
                         />
                         {day.day === null && (
                             <Box
