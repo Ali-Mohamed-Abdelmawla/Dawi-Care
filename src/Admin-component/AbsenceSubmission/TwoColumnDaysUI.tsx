@@ -1,22 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Drawer, Grid } from "@mui/material";
 import DayList from "./DayList";
 import { TwoColumnDaysUIProps } from "./AbsenceInterfaces";
 
 
-const TwoColumnDaysUI: React.FC<TwoColumnDaysUIProps> = ({ weekDays }) => {
-    const [showSwitchedDays, setShowSwitchedDays] = useState(false);
+const TwoColumnDaysUI: React.FC<TwoColumnDaysUIProps> = ({ weekDays, showSwitchedDays,  setShowSwitchedDays, personType}) => {
+
 
     const regularDays = weekDays.filter((day) => day.day !== null);
     const switchedDays = weekDays.filter((day) => day.day === null);
 
-    const toggleSwitchedDays = () => setShowSwitchedDays((prev) => !prev);
+    const toggleSwitchedDays = () => setShowSwitchedDays(false);
 
     return (
         <Box>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={12}>
-                    <DayList days={regularDays} title="الأيام العادية" />
+                    <DayList days={regularDays} title="الأيام العادية" personType={personType} />
                 </Grid>
             </Grid>
             <Drawer
@@ -43,7 +43,7 @@ const TwoColumnDaysUI: React.FC<TwoColumnDaysUIProps> = ({ weekDays }) => {
                     <DayList
                         days={switchedDays}
                         title="الأيام المبدلة هذا الشهر"
-                    
+                        personType ={personType}
                     />
                 </Box>
             </Drawer>

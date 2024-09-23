@@ -125,14 +125,27 @@ const TheOne: React.FC = () => {
         });
     }
   }, []);
+
+
+    useEffect(() => {
+      if (userData.adminData?.name) {
+        sessionStorage.setItem("userData", JSON.stringify(userData));
+      }
+    }, [userData]);
   
+    useEffect(() => {
+      const storedUserData = sessionStorage.getItem("userData");
+      if (storedUserData) {
+        setUserData(JSON.parse(storedUserData));
+      }
+    }, []);
 
   useEffect(() => {
     console.log(location);
-    // if there is no userData set it
     if (!userData.adminData?.name) {
       setUserData({ adminData: location.state?.adminData || {} });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps 
   }, [location]);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
