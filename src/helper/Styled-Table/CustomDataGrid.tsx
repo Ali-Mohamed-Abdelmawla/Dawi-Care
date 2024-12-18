@@ -1,5 +1,4 @@
 import React from "react";
-import "./Datagrid.css";
 import {
   DataGrid,
   GridColDef,
@@ -54,6 +53,9 @@ function CustomDataGrid<R extends GridRowModel = GridRowModel>({
         height: "100%",
         "& .MuiDataGrid-row:hover": {
           backgroundColor: theme.palette.action.hover,
+        },
+        "& .MuiDataGrid-columnSeparator--resizable:hover":{
+          color: theme.palette.background.default
         },
         border: "none",
         "& .MuiDataGrid-cell": {

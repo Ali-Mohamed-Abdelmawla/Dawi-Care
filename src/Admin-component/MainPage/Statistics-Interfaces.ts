@@ -1,5 +1,9 @@
-// Statistics-interfaces.ts
 import { PersonOption } from "../AbsenceSubmission/AbsenceInterfaces";
+import { Doctor } from "../Doctors/doctorInterfaces";
+import { Employee } from "../Employees/employeeInterfaces";
+
+export type PersonType = Doctor | Employee;
+
 export interface AttendanceData {
   name: string;
   attendance_data: {
@@ -9,21 +13,44 @@ export interface AttendanceData {
   }[];
 }
 
-export interface StatisticsPresentationProps {
-  attendanceData: AttendanceData | null;
-  noDataMessage: string | null;
+export interface SalaryData {
+  id: number;
+  doctor_id: number | null;
+  employee_id: number | null;
+  total_salary: string;
+  num_worked_days: number;
+  month: number;
+  year: number;
+  created_at: string;
+  updated_at: string;
+  is_payed: number;
+  doctor_salary: string;
+  clinic_salary: string;
 }
 
 export interface StatisticsPresentationProps {
   selectedPerson: PersonOption | null;
   personType: "doctor" | "employee";
+  viewType: "statistics" | "salary";
   attendanceData: AttendanceData | null;
+  salaryData: SalaryData[] | null;
   noDataMessage: string | null;
-  handlePersonTypeChange: (event: React.SyntheticEvent, newValue: "doctor" | "employee") => void;
+  handleViewTypeChange: (
+    newValue: "statistics" | "salary"
+  ) => void;
+  handlePersonTypeChange: (
+    event: React.SyntheticEvent,
+    newValue: "doctor" | "employee"
+  ) => void;
+  searchQuery: string;
+  handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handlePersonChange: (selected: PersonOption | null) => void;
+  handleSalaryUpdate: (updatedSalary: SalaryData) => void;
+  people: PersonType[];
+  loading: boolean;
 }
 //===================================================================================
-//==-Interfaces that were made for chart.js-===
+//==-Interfaces that were made for chart.js-==
 
 // export interface PersonAttendance {
 //   name: string;

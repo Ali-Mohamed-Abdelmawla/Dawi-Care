@@ -7,9 +7,5 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ],
-  "compilerOptions": {
-    // ... other options
-    "types": ["@linaria/core"]
-  }
+  ]
 }

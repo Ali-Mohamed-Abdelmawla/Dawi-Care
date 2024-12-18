@@ -21,17 +21,19 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
 import { DoctorFormData, EditDoctorFormProps } from "../doctorInterfaces";
-import { specialtyOptions, workingDaysOptions } from "../doctorUtils";
+import { workingDaysOptions } from "../doctorUtils";
+import { NewClinic } from "../../PayRolls/ClinicsInterfaces";
 import { useFormValidation } from "../useFormValidation";
 
- //first-commit
+//first-commit
 const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
+  clinics,
   doctor,
   onSubmit,
   onBack,
   profileImageUrl,
   unionRegistrationUrl,
-  formLoading
+  formLoading,
 }) => {
   const {
     control,
@@ -58,9 +60,10 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
   useEffect(() => {
     setValue("profile_photo", doctor.profile_photo);
     setValue("union_registration", doctor.union_registration);
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   useEffect(() => {
     console.log(doctor);
     if (selectedDays) {
@@ -78,7 +81,7 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
       selectedDays.forEach((day) => {
         const hoursIndex = day.value;
         if (hoursIndex === null) {
-        return;
+          return;
         }
         if (!updatedWorkingHours[hoursIndex]) {
           updatedWorkingHours[hoursIndex] = { start: null };
@@ -216,10 +219,7 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
                   ]);
                 },
               }}
-              render={({
-                field: { onChange },
-                fieldState: { error },
-              }) => (
+              render={({ field: { onChange }, fieldState: { error } }) => (
                 <TextField
                   type="file"
                   onChange={(e) => {
@@ -259,10 +259,7 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
                   ]);
                 },
               }}
-              render={({
-                field: { onChange },
-                fieldState: { error },
-              }) => (
+              render={({ field: { onChange }, fieldState: { error } }) => (
                 <>
                   <TextField
                     type="file"
@@ -312,32 +309,58 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-        <Controller
-          name="fixed_salary"
-          control={control}
-          rules={{ validate: validateSalary }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="الراتب الثابت"
-              fullWidth
-              type="number"
-              inputProps={{ step: "0.01" }}
-              error={!!errors.fixed_salary}
-              helperText={errors.fixed_salary?.message}
+            <Controller
+              name="fixed_salary"
+              control={control}
+              rules={{ validate: validateSalary }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="الراتب الثابت"
+                  fullWidth
+                  type="number"
+                  inputProps={{ step: "0.01" }}
+                  error={!!errors.fixed_salary}
+                  helperText={errors.fixed_salary?.message}
+                />
+              )}
             />
-          )}
-        />
-      </Grid>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="doctor_share"
+              control={control}
+              rules={{
+                required: "نسبة الطبيب مطلوبة",
+                pattern: {
+                  value: /^\d+$/,
+                  message: "يجب إدخال أرقام فقط",
+                },
+              }}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  label="حصة الطبيب من كشوفات العياده"
+                  type="text"
+                  fullWidth
+                  error={!!error}
+                  helperText={error?.message}
+                />
+              )}
+            />
+          </Grid>
           <Grid item xs={12}>
             <Controller
-              name="specialty"
+              name="clinic_id"
               control={control}
               rules={{ required: "التخصص مطلوب" }}
               render={({ field }) => (
                 <Select
                   {...field}
-                  options={specialtyOptions}
+                  options={clinics.map((clinic: NewClinic) => ({
+                    label: clinic?.name,
+                    value: String(clinic?.id),
+                  }))}
                   placeholder="اختر التخصص"
                   value={field.value}
                   onChange={(selectedOption) => field.onChange(selectedOption)}
@@ -372,7 +395,10 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
                 <Controller
                   name={`working_hours.${day.value}.start`}
                   control={control}
-                  defaultValue={doctor.working_hours[day.value !== null ? day.value : ""]?.start || null}
+                  defaultValue={
+                    doctor.working_hours[day.value !== null ? day.value : ""]
+                      ?.start || null
+                  }
                   rules={{ required: `وقت بدء العمل ليوم ${day.label} مطلوب` }}
                   render={({ field, fieldState: { error } }) => (
                     <LocalizationProvider
@@ -450,7 +476,7 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
               left: "50%",
               transform: "translate(-50%, -50%)",
               bgcolor: "background.paper",
-              boxShadow: 24,
+              boxShadow: 15,
               p: 4,
             }}
           >

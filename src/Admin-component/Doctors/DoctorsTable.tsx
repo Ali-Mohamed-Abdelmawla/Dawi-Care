@@ -1,11 +1,11 @@
 // DoctorsTable.tsx
-import React, { useState } from 'react';
-import { Avatar, Modal, Box,Button } from '@mui/material';
-import DataGrid from '../../helper/Styled-Table/CustomDataGrid';
-import { Doctor } from './doctorInterfaces';
-import DoctorIdCard from './DoctorIdCard';
-import NotFound from '../../helper/notFound-component/Not-Found';
-import { GridRenderCellParams, GridColDef } from '@mui/x-data-grid';
+import React, { useState } from "react";
+import { Avatar, Modal, Box, Button } from "@mui/material";
+import DataGrid from "../../helper/Styled-Table/CustomDataGrid";
+import { Doctor } from "./doctorInterfaces";
+import DoctorIdCard from "./DoctorIdCard";
+import NotFound from "../../helper/notFound-component/Not-Found";
+import { GridRenderCellParams, GridColDef } from "@mui/x-data-grid";
 
 interface DoctorsTableProps {
   doctors: Doctor[];
@@ -30,8 +30,8 @@ const DoctorsTable: React.FC<DoctorsTableProps> = ({
 
   const columns: GridColDef[] = [
     {
-      field: 'profile_photo',
-      headerName: 'الصوره الشخصيه',
+      field: "profile_photo",
+      headerName: "الصوره الشخصيه",
       flex: 0.5,
       renderCell: (params: GridRenderCellParams) => (
         <div
@@ -43,30 +43,37 @@ const DoctorsTable: React.FC<DoctorsTableProps> = ({
             marginRight: "5px",
           }}
         >
-          <ImageCell value={`http://127.0.0.1:8000${params.value}`} />
-        </div>      ),
+          <ImageCell value={`http://127.0.0.1:8000${params.value}`} name={params.row.name} />
+        </div>
+      ),
     },
-    { field: 'name', headerName: 'الاسم', align: 'left', flex: 1 ,      
-    },
-    { field: 'fixed_salary', headerName: 'االراتب', align: 'left', flex: 0.7 ,      
-    },
-    { field: 'phone_number', headerName: 'رقم الهاتف', align: 'left', flex: 1,      
-    },
+    { field: "name", headerName: "الاسم", align: "left", flex: 1 },
+    { field: "fixed_salary", headerName: "االراتب", align: "left", flex: 0.7 },
+    { field: "phone_number", headerName: "رقم الهاتف", align: "left", flex: 1 },
     {
-      field: 'actions',
-      headerName: 'الاعدادات',
-      align: 'left',
+      field: "actions",
+      headerName: "الاعدادات",
+      align: "left",
       flex: 1,
 
       renderCell: (params: GridRenderCellParams) => (
         <>
-          <Button className="tableBtn" onClick={() => handleOpenDetails(params.row)}>
+          <Button
+            className="tableBtn"
+            onClick={() => handleOpenDetails(params.row)}
+          >
             تفاصيل
           </Button>
-          <Button className="tableBtn" onClick={() => handleEditClick(params.row)}>
+          <Button
+            className="tableBtn"
+            onClick={() => handleEditClick(params.row)}
+          >
             تعديل
           </Button>
-          <Button className="tableBtn" onClick={() => handleDeleteClick(params.row.id)}>
+          <Button
+            className="tableBtn"
+            onClick={() => handleDeleteClick(params.row.id)}
+          >
             حذف
           </Button>
         </>
@@ -84,8 +91,8 @@ const DoctorsTable: React.FC<DoctorsTableProps> = ({
   }
 
   return (
-    <div className="table-wrapper" style={{ flex: 1, overflow: 'hidden' }}>
-      <h1 style={{ marginBottom: '20px' }}>الأطباء</h1>
+    <div className="table-wrapper" style={{ flex: 1, overflow: "hidden" }}>
+      <h1 style={{ marginBottom: "20px" }}>الأطباء</h1>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -105,13 +112,13 @@ const DoctorsTable: React.FC<DoctorsTableProps> = ({
       >
         <Box
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            maxWidth: '90%',
-            maxHeight: '90%',
-            overflow: 'auto',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            maxWidth: "90%",
+            maxHeight: "90%",
+            overflow: "auto",
           }}
         >
           {selectedDoctor && <DoctorIdCard doctor={selectedDoctor} />}
@@ -121,7 +128,7 @@ const DoctorsTable: React.FC<DoctorsTableProps> = ({
   );
 };
 
-const ImageCell: React.FC<{ value: string }> = ({ value }) => {
+const ImageCell: React.FC<{ value: string; name:string; }> = ({ value, name }) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -131,8 +138,8 @@ const ImageCell: React.FC<{ value: string }> = ({ value }) => {
     <>
       <Avatar
         src={value}
-        alt="Profile Photo"
-        sx={{ width: 40, height: 40, cursor: 'pointer' }}
+        alt={name}
+        sx={{ width: 40, height: 40, cursor: "pointer" }}
         onClick={handleOpen}
       />
       <Modal
@@ -143,19 +150,19 @@ const ImageCell: React.FC<{ value: string }> = ({ value }) => {
       >
         <Box
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            bgcolor: 'background.paper',
-            boxShadow: 24,
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 15,
             p: 4,
           }}
         >
           <img
             src={value}
-            alt="Profile Photo"
-            style={{ maxWidth: '100%', maxHeight: '80vh' }}
+            alt={name}
+            style={{ maxWidth: "100%", maxHeight: "80vh" }}
           />
         </Box>
       </Modal>

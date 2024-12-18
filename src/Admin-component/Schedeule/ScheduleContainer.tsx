@@ -1,13 +1,12 @@
 // ScheduleContainer.tsx
 import { useEffect } from 'react';
 import SchedulePresentation from './SchedulePresentation';
-import { specialtyOptions } from '../Doctors/doctorUtils';
 import { useScheduleApi } from './useSchedeuleApi';
 
 
 
 const ScheduleContainer = () => {
-  const { appointments, getAllAppointments } = useScheduleApi();
+  const { clinics, appointments, getAllAppointments } = useScheduleApi();
 
   useEffect(() => {
     getAllAppointments();
@@ -17,7 +16,7 @@ const ScheduleContainer = () => {
 
   return (
     <SchedulePresentation
-      specialtyOptions={specialtyOptions}
+      clinics={clinics}
       appointments={appointments}
     />
   );

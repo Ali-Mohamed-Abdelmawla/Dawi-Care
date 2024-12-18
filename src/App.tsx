@@ -6,12 +6,15 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { CssBaseline } from "@mui/material";
 import theme from "./Apptheme";
+import ErrorBoundary from "./ErrorBoundary";
+import "dayjs/locale/ar"; // to make it effective globally
+
 function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
     document.fonts.load('1rem "Zain"').then(() => {
-      console.log('Zain font has loaded.');
+      console.log("Zain font has loaded.");
       setFontLoaded(true);
     });
   }, []);
@@ -19,7 +22,6 @@ function App() {
   if (!fontLoaded) {
     return <div>Loading...</div>;
   }
-
 
   const cacheRtl = createCache({
     key: "muirtl",
@@ -33,7 +35,9 @@ function App() {
     <RTL>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Routing />
+        <ErrorBoundary>
+          <Routing />
+        </ErrorBoundary>
       </ThemeProvider>
     </RTL>
   );

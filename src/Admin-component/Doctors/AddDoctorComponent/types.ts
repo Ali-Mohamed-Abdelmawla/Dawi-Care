@@ -1,5 +1,5 @@
 // types.ts
-import { Dayjs } from "dayjs";
+import dayjs from '../../../dateConfig';
 
 export interface DoctorFormData {
     name: string;
@@ -11,8 +11,9 @@ export interface DoctorFormData {
     fixed_salary: number;
     specialty: { value: string; label: string };
     working_days: { value: string; label: string }[];
-    working_hours: Record<string, { start: Dayjs | null }>;
-
+    working_hours: Record<string, { start: dayjs.Dayjs | null }>;
+    clinic_id: Option;
+    doctor_share: number;
 
   }
   

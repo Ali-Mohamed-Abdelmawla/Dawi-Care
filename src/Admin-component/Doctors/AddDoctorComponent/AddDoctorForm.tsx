@@ -15,23 +15,27 @@ import {
   Modal,
   Fade,
   Backdrop,
-  useTheme
+  useTheme,
 } from "@mui/material";
 import Select from "react-select";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AddBoxTwoToneIcon from "@mui/icons-material/AddBoxTwoTone";
-// import { arSD } from '@mui/x-date-pickers/locales';
 
-// import "dayjs/locale/ar";
 import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import { DoctorFormData } from "./types";
-import { specialtyOptions, workingDaysOptions } from "./constants";
+import {
+  workingDaysOptions,
+} from "./constants";
 import { validateFileSize, validateFileType } from "./utils";
 
+import { NewClinic } from "../../PayRolls/ClinicsInterfaces";
+// import { Option } from "./types";
+
 interface AddDoctorFormProps {
+  clinics: NewClinic[];
   control: Control<DoctorFormData>;
   handleSubmit: UseFormHandleSubmit<DoctorFormData>;
   onSubmit: (data: DoctorFormData) => void;
@@ -44,6 +48,7 @@ interface AddDoctorFormProps {
 }
 
 const AddDoctorForm: React.FC<AddDoctorFormProps> = ({
+  clinics,
   control,
   handleSubmit,
   onSubmit,
@@ -54,7 +59,6 @@ const AddDoctorForm: React.FC<AddDoctorFormProps> = ({
   openModal,
   handleProfileImageChange,
 }) => {
-
   const theme = useTheme();
 
   const selectedDays = useWatch({
@@ -320,16 +324,45 @@ const AddDoctorForm: React.FC<AddDoctorFormProps> = ({
               )}
             />
           </Grid>
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="doctor_share"
+              control={control}
+              rules={{
+                required: "نسبة الطبيب مطلوبة",
+                pattern: {
+                  value: /^\d+$/,
+                  message: "يجب إدخال أرقام فقط",
+                },
+              }}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  label="حصة الطبيب من كشوفات العياده"
+                  type="text"
+                  fullWidth
+                  margin="normal"
+                  error={!!error}
+                  helperText={error?.message}
+                  variant="outlined"
+                />
+              )}
+            />
+          </Grid>
+
           <Grid item xs={12}>
             <Controller
-              name="specialty"
+              name="clinic_id"
               control={control}
               rules={{ required: "التخصص مطلوب" }}
               render={({ field, fieldState: { error } }) => (
                 <Box>
                   <Select
                     {...field}
-                    options={specialtyOptions}
+                    options={clinics.map((clinic: NewClinic) => ({
+                      label: clinic.name,
+                      value: String(clinic.id),
+                    }))}
                     placeholder="اختر التخصص"
                   />
                   {error && (
@@ -373,26 +406,28 @@ const AddDoctorForm: React.FC<AddDoctorFormProps> = ({
                       dateAdapter={AdapterDayjs}
                       adapterLocale="ar"
                     >
-                      <Box>
-                        <Typography variant="subtitle1" gutterBottom>
-                          {`وقت بدء العمل ليوم ${day.label}`}
-                        </Typography>
-                        <StaticTimePicker
-                          value={field.value}
-                          onChange={(newValue) => field.onChange(newValue)}
-                          slotProps={{
-                            actionBar: {
-                              actions: [], // This removes all action buttons
-                            },
-                          }}
-                          ampm={false}
-                        />
-                        {error && (
-                          <Typography color="error" variant="caption">
-                            {error.message}
+                      <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                        <Box sx={{ width: "100%" }}>
+                          <Typography variant="subtitle1" gutterBottom>
+                            {`وقت بدء العمل ليوم ${day.label}`}
                           </Typography>
-                        )}
-                      </Box>
+                          <StaticTimePicker
+                            value={field.value}
+                            onChange={(newValue) => field.onChange(newValue)}
+                            slotProps={{
+                              actionBar: {
+                                actions: [], // This removes all action buttons
+                              },
+                            }}
+                            ampm={false}
+                          />
+                          {error && (
+                            <Typography color="error" variant="caption">
+                              {error.message}
+                            </Typography>
+                          )}
+                        </Box>
+                      </Grid>
                     </LocalizationProvider>
                   )}
                 />
@@ -431,7 +466,7 @@ const AddDoctorForm: React.FC<AddDoctorFormProps> = ({
               left: "50%",
               transform: "translate(-50%, -50%)",
               bgcolor: "background.paper",
-              boxShadow: 24,
+              boxShadow: 15,
               p: 4,
             }}
           >

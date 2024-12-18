@@ -43,13 +43,15 @@ export const usePersonSelect = ({
     };
 
     fetchData();
+
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [personType]);
 
   const groupedOptions = data
     ? data.reduce((acc, item) => {
         const group =
           personType === "doctor"
-            ? (item as Doctor).specialty
+            ? (item as Doctor).clinic?.name
             : (item as Employee).description;
         if (!acc[group]) {
           acc[group] = [];
