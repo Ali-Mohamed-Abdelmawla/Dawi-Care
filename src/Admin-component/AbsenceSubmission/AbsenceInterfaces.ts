@@ -1,5 +1,7 @@
 // AbsenceInterfaces.ts
 
+import { NewClinic } from "../PayRolls/ClinicsInterfaces";
+
 
 export interface Employee {
   id: number;
@@ -13,17 +15,18 @@ export interface Employee {
 export interface Doctor {
   id: number;
   name: string;
-  specialty: string;
+  clinic: NewClinic;
   week_days: WeekDay[];
 }
 
 export interface PersonOption {
   value: number;
   label: string;
-  weekDays: WeekDay[];
+  weekDays: WeekDay[] | null;
 }
 
 export interface AttendanceData {
+  attendanceId: number;
   day: string;
   attendance: number;
   date: string;
@@ -54,9 +57,10 @@ export interface AbsencePresentationProps {
 }
 
 export interface SwapDayFormData {
-  day: string;
+  day: {value: string, label: string};
   date: string;
   time: string;
+  absentDate: {value: string, label: string};
 }
 
 export interface WeekDay {
@@ -68,6 +72,7 @@ export interface WeekDay {
   employee_id?: number;
   switch_day: string | null;
   created_at: string;
+  switched_day_date: string;
 }
 
 export interface TwoColumnDaysUIProps {

@@ -13,17 +13,19 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: theme.palette.schedeuleTableCell.main,
 }));
 
-// export const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  // "&:nth-of-type(odd)": {
-  //   backgroundColor: theme.palette.action.hover,
-  // },
-// }));
-
 export const AppointmentChip = styled(Chip)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   color: theme.palette.common.white,
   borderColor: theme.palette.secondary.dark,
+  height: "auto",
   borderRadius: "5px",
   fontWeight: "bold",
-  margin:"5px 0px"
+  margin: "5px 0px",
+  padding: "5px",
+  "& .MuiChip-label": {
+    display: "block",
+    whiteSpace: "pre-line", // Allows for line breaks
+    fontSize: "14px",
+    lineHeight: "1.5",
+  },
 }));

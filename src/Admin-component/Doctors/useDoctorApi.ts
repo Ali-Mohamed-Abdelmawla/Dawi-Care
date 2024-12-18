@@ -1,6 +1,6 @@
 // useDoctorApi.ts
 import axiosInstance from "../../helper/auth/axios";
-import { Doctor } from "./doctorInterfaces";
+import { Doctor,DoctorFormData } from "./doctorInterfaces";
 
 export const useDoctorApi = () => {
   const accessToken = sessionStorage.getItem("accessToken");
@@ -16,7 +16,7 @@ export const useDoctorApi = () => {
   };
 
   const updateDoctor = async (
-    doctor: Doctor,
+    doctor: DoctorFormData,
     WeekDays: string
   ): Promise<Doctor> => {
     const response = await axiosInstance.post(

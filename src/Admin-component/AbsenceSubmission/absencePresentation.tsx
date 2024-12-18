@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -12,28 +12,16 @@ import {
   Popover,
   Grid,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from "@mui/material";
-
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import Select, { SingleValue } from "react-select";
 import { PickersDay, PickersDayProps } from "@mui/x-date-pickers/PickersDay";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useForm, Controller } from "react-hook-form";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
-import dayjs from "dayjs";
-import { SwapDayFormData, AbsencePresentationProps } from "./AbsenceInterfaces";
+import dayjs from '../../dateConfig';
+import { AbsencePresentationProps, SwapDayFormData } from "./AbsenceInterfaces";
 import PersonSelect from "../../helper/personSelect/personSelect";
-import theme from "../../Apptheme";
 import TwoColumnDaysUI from "./TwoColumnDaysUI";
-
-type DayOption = { value: string; label: string };
+import SwapDayModal from "./SwapDayModal";
 
 const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
   handleMarkAsAbsent,
@@ -49,8 +37,6 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [isSwapDayModalOpen, setIsSwapDayModalOpen] = useState(false);
-  const { control, handleSubmit, watch } = useForm<SwapDayFormData>();
-  const selectedDay = watch("day");
 
   const isDateDisabled = (date: dayjs.Dayjs) => {
     if (!selectedPerson || !selectedPerson.weekDays) {
@@ -58,25 +44,22 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
     }
 
     const dayOfWeek = date.day();
-    const allowedDays = selectedPerson.weekDays.map((day) => {
-      const daysMap: { [key: string]: number } = {
-        الأحد: 0,
-        الاثنين: 1,
-        الثلاثاء: 2,
-        الأربعاء: 3,
-        الخميس: 4,
-        الجمعة: 5,
-        السبت: 6,
-      };
+    const allowedDays = selectedPerson.weekDays
+      .filter((day) => day.day !== null)
+      .map((day) => {
+        const daysMap: { [key: string]: number } = {
+          الأحد: 0,
+          الاثنين: 1,
+          الثلاثاء: 2,
+          الأربعاء: 3,
+          الخميس: 4,
+          الجمعة: 5,
+          السبت: 6,
+        };
 
-      const dayName = day.day || day.switch_day;
-      if (dayName === null) {
-        throw new Error(`Unexpected null value for day with id ${day.id}`);
-      }
-      const mappedDay = daysMap[dayName];
-
-      return mappedDay;
-    });
+        const dayName = day.day as string;
+        return daysMap[dayName];
+      });
 
     return !allowedDays.includes(dayOfWeek);
   };
@@ -110,11 +93,11 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
     );
   };
 
-  const handleAttendanceListClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleAttendanceListClick = (
+  //   event: React.MouseEvent<HTMLButtonElement>
+  // ) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
   const handleAttendanceListClose = () => {
     setAnchorEl(null);
@@ -147,11 +130,8 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
   };
 
   const onSubmit = (data: SwapDayFormData) => {
-    const formattedData = {
-      ...data,
-      date: dayjs(data.date).format("YYYY-MM-DD"),
-    };
-    handleSwapDaySubmit(formattedData);
+    console.log(data);
+    handleSwapDaySubmit(data);
     handleCloseSwapDayModal();
   };
 
@@ -159,33 +139,8 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
     setShowSwitchedDays(!showSwitchedDays);
   };
 
-  const dayOptions: DayOption[] = [
-    { value: "الأحد", label: "الأحد" },
-    { value: "الاثنين", label: "الاثنين" },
-    { value: "الثلاثاء", label: "الثلاثاء" },
-    { value: "الأربعاء", label: "الأربعاء" },
-    { value: "الخميس", label: "الخميس" },
-    { value: "الجمعة", label: "الجمعة" },
-    { value: "السبت", label: "السبت" },
-  ];
-
-  const isDateSelectable = useMemo(() => {
-    return (date: dayjs.Dayjs) => {
-      if (!selectedDay) return false;
-      const dayIndex = dayOptions.findIndex(
-        (option) => option.value === selectedDay
-      );
-      return date.day() === dayIndex && date.month() === dayjs().month();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDay]);
-
   return (
-    <Box
-      sx={{
-        p: 3,
-      }}
-    >
+    <Box sx={{ p: 3 }}>
       <Grid container spacing={2}>
         <Grid
           item
@@ -215,13 +170,7 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
       </Grid>
 
       {selectedPerson && (
-        <Paper
-          elevation={3}
-          sx={{
-            p: 2,
-            mt: 2,
-          }}
-        >
+        <Paper elevation={3} sx={{ p: 2, mt: 2 }}>
           <Typography variant="h6" gutterBottom>
             ايام عمل {personType === "doctor" ? "الدكتور" : "الموظف"}{" "}
             {selectedPerson.label}
@@ -243,97 +192,13 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
             </Grid>
           </Grid>
 
-          <Dialog open={isSwapDayModalOpen} onClose={handleCloseSwapDayModal}>
-            <DialogTitle>تبديل يوم العمل</DialogTitle>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <DialogContent>
-                <Box sx={{ mt: 2, mb: 2 }}>
-                  <Typography variant="subtitle1" gutterBottom>
-                    اليوم الجديد
-                  </Typography>
-                  <Controller
-                    name="day"
-                    control={control}
-                    rules={{
-                      required: "اختيار اليوم مطلوب",
-                    }}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        options={dayOptions}
-                        placeholder="اختر اليوم"
-                        onChange={(selectedOption: SingleValue<DayOption>) => {
-                          field.onChange(selectedOption?.value);
-                        }}
-                        menuPosition="fixed"
-                        value={
-                          dayOptions.find(
-                            (option) => option.value === field.value
-                          ) || null
-                        }
-                      />
-                    )}
-                  />
-                </Box>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <Controller
-                    name="date"
-                    control={control}
-                    rules={{ required: "التاريخ مطلوب" }}
-                    render={({ field }) => (
-                      <DatePicker
-                        label="التاريخ"
-                        value={field.value ? dayjs(field.value) : null}
-                        onChange={(newValue) => field.onChange(newValue)}
-                        shouldDisableDate={(date) => !isDateSelectable(date)}
-                        sx={{
-                          mt: 2,
-                          mb: 2,
-                          width: "100%",
-                          ".MuiInputLabel-root": {
-                            zIndex: 0,
-                          },
-                        }}
-                        minDate={dayjs().startOf("month")}
-                        maxDate={dayjs().endOf("month")}
-                        views={["day"]}
-                      />
-                    )}
-                  />
-                  <Controller
-                    name="time"
-                    control={control}
-                    rules={{ required: "الوقت مطلوب" }}
-                    render={({ field }) => (
-                      <TimePicker
-                        label="الوقت"
-                        value={field.value ? dayjs(field.value, "HH:mm") : null}
-                        onChange={(newValue) =>
-                          field.onChange(
-                            newValue ? newValue.format("HH:mm") : ""
-                          )
-                        }
-                        sx={{
-                          mt: 2,
-                          mb: 2,
-                          width: "100%",
-                          ".MuiInputLabel-root": {
-                            zIndex: 0,
-                          },
-                        }}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseSwapDayModal}>إلغاء</Button>
-                <Button type="submit" variant="contained" color="primary">
-                  تأكيد
-                </Button>
-              </DialogActions>
-            </form>
-          </Dialog>
+          <SwapDayModal
+            isOpen={isSwapDayModalOpen}
+            onClose={handleCloseSwapDayModal}
+            onSubmit={onSubmit}
+            personAttendance={selectedPersonAttendance}
+          />
+
           {selectedPerson.weekDays && selectedPerson.weekDays.length > 0 ? (
             <TwoColumnDaysUI
               weekDays={selectedPerson.weekDays}
@@ -354,16 +219,17 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
               </Typography>
             </Grid>
             <Grid item>
-              <Tooltip title="عرض قائمة الغياب">
+              <Tooltip title="عرض الأيام المبدله">
                 <Button
                   variant="outlined"
                   color="primary"
                   onClick={handleTwoDayColumnsClick}
+                  sx={{ mr: 1 }}
                 >
                   عرض الأيام المبدله
                 </Button>
               </Tooltip>
-              <Tooltip title="عرض قائمة الغياب">
+              {/* <Tooltip title="عرض قائمة الغياب">
                 <Button
                   variant="outlined"
                   color="primary"
@@ -371,11 +237,11 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
                 >
                   قائمة الغياب
                 </Button>
-              </Tooltip>
+              </Tooltip> */}
             </Grid>
           </Grid>
 
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ar">
             <StaticDatePicker
               orientation="landscape"
               openTo="day"
@@ -387,14 +253,17 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
               slots={{
                 day: CustomPickersDay,
               }}
-              displayStaticWrapperAs="desktop"
-              minDate={dayjs().startOf("month")}
-              maxDate={dayjs().endOf("month")}
-              views={["day"]}
+              slotProps={{
+                day: (props) => ({
+                  selected: selectedDate?.isSame(props.day, "day") ?? false,
+                }),
+              }}
+              sx={{ width: "100%", mt: 2 }}
             />
           </LocalizationProvider>
+
           {selectedDate && (
-            <>
+            <Box sx={{ mt: 2 }}>
               {isDateAbsent(selectedDate) ? (
                 <Button
                   variant="contained"
@@ -402,7 +271,6 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
                   onClick={() =>
                     updateAbsenceStatus(selectedDate.toDate(), selectedPerson)
                   }
-                  sx={{ mt: 2, mr: 2 }}
                 >
                   تعديل حالة الغياب
                 </Button>
@@ -413,12 +281,11 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
                   onClick={() =>
                     handleMarkAsAbsent(selectedDate.toDate(), selectedPerson)
                   }
-                  sx={{ mt: 2, mr: 2 }}
                 >
                   وضع علامة كغائب
                 </Button>
               )}
-            </>
+            </Box>
           )}
 
           <Popover
@@ -430,70 +297,48 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
               vertical: "bottom",
               horizontal: "left",
             }}
-            disableScrollLock={true}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
           >
             <Paper
-              sx={{
-                p: 2,
-                maxWidth: 350,
-                backgroundColor: "#f6f6f6",
-                border: "1px solid #e0e0e0",
-              }}
+              sx={{ p: 2, maxWidth: 350, maxHeight: 300, overflow: "auto" }}
             >
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  borderBottom: 1,
-                  borderColor: theme.palette.dividerColor.main,
-                  mb: 1,
-                }}
-              >
+              <Typography variant="h6" gutterBottom>
                 قائمة الغياب
               </Typography>
               {selectedPersonAttendance &&
               selectedPersonAttendance.length > 0 ? (
-                <List
-                  sx={{
-                    maxHeight: 300,
-                    width: 350,
-                    overflowY: "auto",
-                  }}
-                >
+                <List>
                   {selectedPersonAttendance.map((attendance, index) => {
                     const attendanceDate = dayjs(attendance.date);
                     const dayName = attendanceDate.locale("ar").format("dddd");
                     return (
                       <React.Fragment key={index}>
-                        <ListItem
-                          sx={{
-                            flexDirection: "column",
-                            alignItems: "flex-start",
-                          }}
-                        >
-                          <Typography variant="subtitle1">
-                            {`${
-                              ArabicDaysMapping[
-                                dayName as keyof typeof ArabicDaysMapping
-                              ]
-                            } ${attendanceDate.format("YYYY/MM/DD")}`}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color={
-                              attendance.attendance === 0 ? "error" : "success"
-                            }
-                          >
-                            {attendance.attendance === 0 ? "غائب" : "حاضر"}
-                          </Typography>
+                        <ListItem>
+                          <Box>
+                            <Typography variant="subtitle1">
+                              {`${
+                                ArabicDaysMapping[
+                                  dayName as keyof typeof ArabicDaysMapping
+                                ]
+                              } ${attendanceDate.format("YYYY/MM/DD")}`}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              color={
+                                attendance.attendance === 0
+                                  ? "error"
+                                  : "success"
+                              }
+                            >
+                              {attendance.attendance === 0 ? "غائب" : "حاضر"}
+                            </Typography>
+                          </Box>
                         </ListItem>
                         {index < selectedPersonAttendance.length - 1 && (
-                          <Divider
-                            sx={{
-                              mr: 6,
-                              ml: 2,
-                            }}
-                          />
+                          <Divider />
                         )}
                       </React.Fragment>
                     );

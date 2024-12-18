@@ -8,7 +8,7 @@ export interface Employee {
   overtime_salary: string;
   fixed_salary: string;
   worked_days: string;
-  weekdays: { day: string }[];
+  weekdays: { day: string; switch_day:string; }[];
 }
 
 export interface EmployeeFormData

@@ -154,31 +154,31 @@ let theme = createTheme({
     },
   },
   shadows: [
-    "none",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
+    "none", // 0
+    "0 1px 2px rgba(0,0,0,0.06)", // 1 - Very subtle shadow
+    "0 2px 4px rgba(0,0,0,0.08)", // 2 - Light shadow
+    "0 4px 6px rgba(0,0,0,0.1)", // 3 - Mild shadow
+    "0 5px 10px rgba(0,0,0,0.12)", // 4 - Moderate shadow
+    "0 6px 12px rgba(0,0,0,0.14)", // 5 - Slightly deeper shadow
+    "0 10px 15px rgba(0,0,0,0.16)", // 6 - Noticeable elevation
+    "0 12px 20px rgba(0,0,0,0.18)", // 7 - Significant elevation
+    "0 14px 25px rgba(0,0,0,0.20)", // 8 - Strong elevation
+    "0 16px 30px rgba(0,0,0,0.22)", // 9 - Very strong elevation
+    "0 18px 35px rgba(0,0,0,0.24)", // 10 - Dramatic elevation
+    "0 20px 40px rgba(0,0,0,0.26)", // 11 - Extreme elevation
+    "0 22px 45px rgba(0,0,0,0.28)", // 12 - Maximal elevation
+    "0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08)", // 13 - Layered subtle shadow
+    "0 10px 20px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.1)", // 14 - Layered moderate shadow
+    "0 15px 25px rgba(0,0,0,0.2), 0 5px 10px rgba(0,0,0,0.12)", // 15 - Layered strong shadow
+    "0 20px 40px rgba(0,0,0,0.25), 0 10px 15px rgba(0,0,0,0.15)", // 16 - Layered dramatic shadow
+    "0 25px 50px rgba(0,0,0,0.3), 0 15px 20px rgba(0,0,0,0.2)", // 17 - Layered extreme shadow
+    "0 30px 60px rgba(0,0,0,0.35), 0 20px 25px rgba(0,0,0,0.25)", // 18 - Maximal layered shadow
+    "0 35px 70px rgba(0,0,0,0.4), 0 25px 30px rgba(0,0,0,0.3)", // 19 - Ultra dramatic shadow
+    "0 40px 80px rgba(0,0,0,0.45), 0 30px 35px rgba(0,0,0,0.35)", // 20 - Extreme elevation
+    "0 45px 90px rgba(0,0,0,0.5), 0 35px 40px rgba(0,0,0,0.4)", // 21 - Maximal elevated shadow
+    "0 50px 100px rgba(0,0,0,0.55), 0 40px 45px rgba(0,0,0,0.45)", // 22 - Ultimate shadow
+    "0 60px 120px rgba(0,0,0,0.6), 0 50px 55px rgba(0,0,0,0.5)", // 23 - Beyond elevation
+    "0 70px 140px rgba(0,0,0,0.65), 0 60px 65px rgba(0,0,0,0.55)" // 24 - Extreme elevation
   ],
 });
 

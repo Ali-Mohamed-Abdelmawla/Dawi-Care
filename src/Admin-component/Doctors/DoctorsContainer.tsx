@@ -5,12 +5,17 @@ import DoctorsTable from './DoctorsTable';
 import Loader from '../../helper/loading-component/loader';
 import { Doctor } from './doctorInterfaces';
 import { useDoctorApi } from './useDoctorApi';
+import { useClinicApi } from '../PayRolls/useClinicsApi';
+import { NewClinic } from '../PayRolls/ClinicsInterfaces';
 import sweetAlertInstance from '../../helper/SweetAlert';
 const DoctorsContainer: React.FC = () => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [clinics, setClinics] = useState<NewClinic[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const { getAllDoctors, deleteDoctor } = useDoctorApi();
+  const { getClinicList } = useClinicApi();
+
 
   useEffect(() => {
     fetchDoctors();
@@ -20,7 +25,12 @@ const DoctorsContainer: React.FC = () => {
   const fetchDoctors = async () => {
     try {
       setLoading(true);
-      const fetchedDoctors = await getAllDoctors();
+
+      const [fetchedDoctors, fetchedClinics] = await Promise.all([
+        getAllDoctors(),
+        getClinicList()
+      ]);
+      setClinics(fetchedClinics);
       setDoctors(fetchedDoctors);
     } catch (error) {
       console.error('Error fetching doctors:', error);
@@ -34,7 +44,7 @@ const DoctorsContainer: React.FC = () => {
   };
 
   const handleEditClick = (doctorData: Doctor) => {
-    navigate('/SystemAdmin/Doctors/EditDoctor', { state: { editData: doctorData } });
+    navigate('/SystemAdmin/Doctors/EditDoctor', { state: { editData: doctorData, clinicList: clinics } });
   };
 
   const handleDeleteClick = async (doctorId: number) => {

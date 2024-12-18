@@ -45,7 +45,6 @@ const EmployeesTable: React.FC<EmployeesTableProps> = ({
       align: "left",
       flex: 1,
     },
-
     {
       field: "fixed_salary",
       headerName: "االراتب",

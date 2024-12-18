@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -18,20 +18,16 @@ import { weekDays, SchedulePresentationProps } from "./SchedeuleInterfaces";
 import { useTheme } from "@mui/material";
 
 const SchedulePresentation: React.FC<SchedulePresentationProps> = ({
-  specialtyOptions,
+  clinics,
   appointments,
 }) => {
   const theme = useTheme();
-
-  useEffect(() => {
-    console.log(theme);
-  }, [theme]);
 
   return (
     <TableContainer
       component={Paper}
       sx={{
-        maxHeight: '88vh',
+        maxHeight: "88vh",
         "&::-webkit-scrollbar": {
           width: "10px",
           height: "10px",
@@ -55,19 +51,17 @@ const SchedulePresentation: React.FC<SchedulePresentationProps> = ({
       <Table stickyHeader sx={{ minWidth: 650 }} aria-label="جدول المواعيد">
         <TableHead>
           <TableRow>
-            <StyledTableHeaderCell align="left" theme={theme}>
-              التخصص
-            </StyledTableHeaderCell>
+            <StyledTableHeaderCell align="left">التخصص</StyledTableHeaderCell>
             {weekDays.map((day) => (
-              <StyledTableHeaderCell key={day} align="left" theme={theme}>
+              <StyledTableHeaderCell key={day} align="left">
                 {day}
               </StyledTableHeaderCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {specialtyOptions.map((specialty) => (
-            <TableRow key={specialty.value}>
+          {clinics.map((clinic) => (
+            <TableRow key={clinic.id}>
               <StyledTableCell
                 component="th"
                 scope="row"
@@ -76,31 +70,29 @@ const SchedulePresentation: React.FC<SchedulePresentationProps> = ({
                   backgroundColor: theme.palette.primary.main,
                   color: theme.palette.common.white,
                   border: "1px solid #00000024",
-                  minwidth:163,
+                  minwidth: 163,
                 }}
-                theme={theme}
               >
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {specialty.label}
+                  {clinic.name}
                 </Typography>
               </StyledTableCell>
               {weekDays.map((day) => (
-                <StyledTableCell key={day} align="left" theme={theme}>
+                <StyledTableCell key={day} align="left">
                   <Box
                     display="flex"
                     flexWrap="wrap"
                     justifyContent="flex-start"
                     flexDirection="column"
                   >
-                    {appointments[specialty.value]?.[day]?.length ? (
-                      appointments[specialty.value][day].map(
+                    {appointments[clinic.name]?.[day]?.length ? (
+                      appointments[clinic.name][day].map(
                         (appointment, index) => (
                           <AppointmentChip
                             key={index}
-                            label={`د/ ${appointment.doctorName} ${appointment.time}`}
+                            label={`د/ ${appointment.doctorName} \n الموعد: ${appointment.time}`}
                             color="primary"
                             variant="outlined"
-                            theme={theme}
                           />
                         )
                       )

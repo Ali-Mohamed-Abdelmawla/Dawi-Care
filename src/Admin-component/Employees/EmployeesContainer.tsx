@@ -20,13 +20,13 @@ const EmployeesContainer: React.FC = () => {
   const fetchEmployees = async () => {
     try {
       setLoading(true);
-      const fetchedDoctors = await getAllEmployees();
-      setEmployees(fetchedDoctors);
+      const fetchedEmployees = await getAllEmployees();
+      setEmployees(fetchedEmployees);
     } catch (error) {
       console.error('Error fetching Employee:', error);
       sweetAlertInstance.fire({
         icon: 'error',
-        title: 'Failed to fetch Employee',
+        title: 'حدث خطأ اثناء جلب بيانات الطبيب',
       });
     } finally {
       setLoading(false);

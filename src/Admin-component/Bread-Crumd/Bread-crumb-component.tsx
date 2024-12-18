@@ -6,7 +6,8 @@ const breadcrumbNameMap = {
   Users: "المستخدمون",
   Doctors: "الأطباء",
   Employees: "الموظفون",
-  Clinics: "العيادات",
+  DoctorsPayroll: "رواتب الأطباء",
+  EmployeesDeduction: "خصومات الموظفين",
   AddUser: "إضافة مستخدم",
   AddDoctor: "إضافة طبيب",
   AddEmployee: "إضافة موظف",
@@ -15,7 +16,10 @@ const breadcrumbNameMap = {
   EditEmployee: "تعديل الموظف",
   EditDoctor: "تعديل الطبيب",
   ClinicDoctors: "عيادات الاطباء",
-
+  AddClinic: "إضافة عيادة",
+  EditClinic: "تعديل العيادة",
+  DoctorSalaryCalculator: "حساب راتب الطبيب",
+  EmployeeSalaryCalculator: "تسجيل خصم للموظف"
 };
 
 const BreadcrumbsComponent = () => {

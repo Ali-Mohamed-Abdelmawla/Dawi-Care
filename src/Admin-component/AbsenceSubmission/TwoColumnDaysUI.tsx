@@ -16,7 +16,7 @@ const TwoColumnDaysUI: React.FC<TwoColumnDaysUIProps> = ({ weekDays, showSwitche
         <Box>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={12}>
-                    <DayList days={regularDays} title="الأيام العادية" personType={personType} />
+                    <DayList days={regularDays} title="الأيام الأساسية" personType={personType} />
                 </Grid>
             </Grid>
             <Drawer

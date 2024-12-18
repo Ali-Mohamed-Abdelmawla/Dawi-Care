@@ -74,7 +74,7 @@ const DoctorIdCard: React.FC<DoctorIdCardProps> = ({ doctor }) => {
             <Typography variant="h6" component="div">
               {doctor.name}
             </Typography>
-            <Typography color="text.secondary">{doctor.specialty}</Typography>
+            <Typography color="text.secondary">{doctor.clinic?.name || "لم يتم العثور على عيادة مسجله للطبيب."}</Typography>
           </Grid>
         </Grid>
         <Box mt={2} px={2} pb={2}>
@@ -123,7 +123,7 @@ const DoctorIdCard: React.FC<DoctorIdCardProps> = ({ doctor }) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             bgcolor: "background.paper",
-            boxShadow: 24,
+            boxShadow: 15,
             p: 4,
           }}
         >

@@ -40,12 +40,18 @@ export function getChosenDayID(
   dayInfo: getChosenDayIDProps["dayInfo"],
   personInfo: getChosenDayIDProps["personInfo"]
 ): number | null {
+  if (!personInfo.weekDays) {
+    console.log("No weekdays available");
+    return null;
+  }
+
   for (const element of personInfo.weekDays) {
     if (dayInfo.arabicDayName === element.day) {
       console.log(element.id);
       return element.id;
     }
   }
+
   // If no match is found
   console.log("No matching day found");
   return null;

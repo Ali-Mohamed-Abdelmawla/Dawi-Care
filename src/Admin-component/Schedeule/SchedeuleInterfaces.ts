@@ -1,4 +1,5 @@
 // types.ts
+import { NewClinic } from "../PayRolls/ClinicsInterfaces";
 export interface Option {
     value: string;
     label: string;
@@ -7,7 +8,7 @@ export interface Option {
   export interface Doctor {
     id: number;
     name: string;
-    specialty: string;
+    clinic: NewClinic;
     week_days: WeekDay[];
   }
   
@@ -30,7 +31,7 @@ export interface Option {
   }
 
   export interface SchedulePresentationProps {
-    specialtyOptions: Option[];
+    clinics: NewClinic[];
     appointments: AppointmentsData;
   }
   
