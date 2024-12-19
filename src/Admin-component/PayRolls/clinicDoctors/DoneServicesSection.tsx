@@ -47,9 +47,20 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [view, setView] = useState<"time" | "service" | "doctor">("time");
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [view, setView] = useState<"service" | "doctor">("service");
+  const currentMonth = new Date();
+  const currentMonthBeginning = new Date(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth(),
+    1
+  );
+  const currentMonthEnding = new Date(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth() + 1,
+    0
+  );
+  const [startDate, setStartDate] = useState<Date | null>(currentMonthBeginning);
+  const [endDate, setEndDate] = useState<Date | null>(currentMonthEnding);
 
   // Memoized maps for efficient lookups
   const serviceNameMap = useMemo(
@@ -102,16 +113,6 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
       return acc;
     }, {} as Record<string, { count: number; revenue: number }>);
 
-    // Time-based stats with proper date handling
-    const timeStats = filteredDoneServices.reduce((acc, service) => {
-      const date = new Date(service.created_at).toLocaleDateString("ar-EG");
-      acc[date] = acc[date] || { count: 0, revenue: 0 };
-      acc[date].count += service.count;
-      acc[date].revenue += parseFloat(service.total_cost);
-      return acc;
-    }, {} as Record<string, { count: number; revenue: number }>);
-
-    // Find most and least performers
     const mostProfitableService = Object.entries(serviceStats).reduce(
       (max, [name, stats]) =>
         stats.revenue > max.revenue ? { name, ...stats } : max,
@@ -140,7 +141,6 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
       totalRevenue,
       serviceStats,
       doctorStats,
-      timeStats,
       mostProfitableService,
       leastProfitableService,
       mostEarningDoctor,
@@ -165,22 +165,13 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
         );
         break;
       case "doctor":
+      default:
         xAxisData = Object.keys(aggregatedStats.doctorStats);
         revenueData = Object.values(aggregatedStats.doctorStats).map(
           (s) => s.revenue
         );
         countData = Object.values(aggregatedStats.doctorStats).map(
           (s) => s.count
-        );
-        break;
-      case "time":
-      default:
-        xAxisData = Object.keys(aggregatedStats.timeStats);
-        revenueData = Object.values(aggregatedStats.timeStats).map(
-          (t) => t.revenue
-        );
-        countData = Object.values(aggregatedStats.timeStats).map(
-          (t) => t.count
         );
     }
 
@@ -197,13 +188,22 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
           color: theme.palette.text.primary,
         },
         formatter: (params: ECElementEvent[]) => {
-          const [arr] = params;
+          const [revenue, servicesNumber] = params;
+
+          const servicesValue =
+            typeof servicesNumber.value === "number" ? servicesNumber.value : 0;
+
           return `
             <div style="padding: 3px; font-family: 'Zain';">
-              <div style="margin-bottom: 4px">${arr.name}</div>
+              <div>${revenue.name}</div>
               <hr/>
               <div style="color: ${theme.palette.primary.main}">
-              ${arr.seriesName}: ${arr.value} جنيه
+              ${revenue.seriesName}: ${revenue.value} جنيه
+              </div>
+              <div>
+              ${servicesNumber.seriesName}: ${servicesNumber.value} ${
+            servicesValue > 10 ? "خدمه" : "خدمات"
+          }
               </div>
             </div>
           `;
@@ -263,8 +263,8 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
 
   // Function to reset the date range
   const resetDateRange = () => {
-    setStartDate(null);
-    setEndDate(null);
+    setStartDate(currentMonthBeginning);
+    setEndDate(currentMonthEnding);
   };
 
   return (
@@ -283,7 +283,7 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
             onChange={(newValue) => setEndDate(newValue)}
           />
           <Button variant="outlined" onClick={resetDateRange}>
-          إعادة تعيين التاريخ
+            إعادة تعيين التاريخ
           </Button>
         </Box>
       </LocalizationProvider>
@@ -298,20 +298,18 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
           gap: 1,
         }}
       >
-        {["time", "service", "doctor"].map((viewType) => (
+        {["service", "doctor"].map((viewType) => (
           <Button
             key={viewType}
             variant={view === viewType ? "contained" : "outlined"}
-            onClick={() => setView(viewType as "time" | "service" | "doctor")}
+            onClick={() => setView(viewType as "service" | "doctor")}
             sx={{
               m: 0.5,
               textTransform: "none",
               width: isMobile ? "100%" : "auto",
             }}
           >
-            {viewType === "time"
-              ? "بناءً على الوقت"
-              : viewType === "service"
+            {viewType === "service"
               ? "بناءً على الخدمات"
               : "بناءً على الأطباء"}
           </Button>
@@ -336,7 +334,7 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              border: `1px solid ${theme.palette.divider}`
+              border: `1px solid ${theme.palette.divider}`,
             }}
           >
             <CardContent>
@@ -358,7 +356,7 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              border: `1px solid ${theme.palette.divider}`
+              border: `1px solid ${theme.palette.divider}`,
             }}
           >
             <CardContent>
@@ -383,7 +381,7 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              border: `1px solid ${theme.palette.divider}`
+              border: `1px solid ${theme.palette.divider}`,
             }}
           >
             <CardContent>
@@ -408,7 +406,7 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              border: `1px solid ${theme.palette.divider}`
+              border: `1px solid ${theme.palette.divider}`,
             }}
           >
             <CardContent>
@@ -427,7 +425,7 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
                 </strong>
               </Typography>
               <Typography variant="h6" color="primary">
-                عدد الخدمات:{" "}
+                عدد الخدمات: {" "}
                 {
                   Object.entries(aggregatedStats.serviceStats).reduce(
                     (max, [name, stats]) =>

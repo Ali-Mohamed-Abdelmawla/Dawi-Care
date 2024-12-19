@@ -176,7 +176,7 @@ const StatisticsPresentation: React.FC<StatisticsPresentationProps> = ({
                       <Typography variant="h6">
                         {searchQuery
                           ? `لا يوجد نتائج للبحث "${searchQuery}"`
-                          : `جاري التحميل`}
+                          : personType === "doctor" ? `لا يوجد أطباء` : `لا يوجد موظفون`}
                       </Typography>
                     </Paper>
                   </Grid>

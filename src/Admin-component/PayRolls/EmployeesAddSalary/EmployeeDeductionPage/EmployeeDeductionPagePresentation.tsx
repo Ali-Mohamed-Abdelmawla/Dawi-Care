@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -6,26 +6,21 @@ import {
   TextField,
   Grid,
   Paper,
-  Switch,
-  FormControlLabel,
-  Tooltip,
-  IconButton,
   Chip,
   Avatar,
 } from "@mui/material";
-import { Check, CircleDollarSign, CalendarDays } from 'lucide-react';
+import { Check, CircleDollarSign, CalendarDays } from "lucide-react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-import dayjs from '../../../../dateConfig';
+import dayjs from "../../../../dateConfig";
 
 import { useForm, Controller } from "react-hook-form";
 import { Employee } from "../../../Employees/employeeInterfaces";
-import InfoIcon from "@mui/icons-material/Info";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { styled } from "@mui/material/styles";
 
-interface DeductionFormData {
+export interface DeductionFormData {
   deduction: number;
   customDeduction: number;
   description: string;
@@ -37,8 +32,6 @@ interface EmployeeDeductionPagePresentationProps {
   setIsCustomDeduction: (value: boolean) => void;
   selectedDate: dayjs.Dayjs | null;
   setSelectedDate: (date: dayjs.Dayjs | null) => void;
-  isPaid: boolean;
-  setIsPaid: (value: boolean) => void;
   onSubmit: (data: DeductionFormData) => Promise<void>;
   isSubmitting: boolean;
 }
@@ -84,17 +77,18 @@ export const EmployeeDeductionPagePresentation: React.FC<
   setIsCustomDeduction,
   selectedDate,
   setSelectedDate,
-  isPaid,
-  setIsPaid,
+
   onSubmit,
   isSubmitting,
 }) => {
+  const [isDeductionFocused, setIsDeductionFocused] = useState<boolean>(false);
   const { control, handleSubmit } = useForm<DeductionFormData>({
     defaultValues: {
       deduction: 0,
       customDeduction: 0,
       description: "",
     },
+    mode: "onBlur",
   });
 
   return (
@@ -162,18 +156,25 @@ export const EmployeeDeductionPagePresentation: React.FC<
               <Controller
                 name="customDeduction"
                 control={control}
-                rules={{
-                  required: "قيمة الخصم مطلوبة",
-                  pattern: {
-                    value: /^\d+$/,
-                    message: "يجب إدخال أرقام فقط",
-                  },
-                  min: { value: 1, message: "يجب أن تكون قيمة الخصم 1 أو أكبر" },
-                  max: {
-                    value: employee.fixed_salary,
-                    message: "لا يمكن أن يتجاوز الخصم قيمة الراتب",
-                  },
-                }}
+                rules={
+                  isCustomDeduction
+                    ? {
+                        required: "قيمة الخصم مطلوبة",
+                        pattern: {
+                          value: /^\d+$/,
+                          message: "يجب إدخال أرقام فقط",
+                        },
+                        min: {
+                          value: 1,
+                          message: "يجب أن تكون قيمة الخصم 1 أو أكبر",
+                        },
+                        max: {
+                          value: employee.fixed_salary,
+                          message: "لا يمكن أن يتجاوز الخصم قيمة الراتب",
+                        },
+                      }
+                    : {}
+                }
                 render={({ field, fieldState: { error } }) => (
                   <TextField
                     {...field}
@@ -182,10 +183,12 @@ export const EmployeeDeductionPagePresentation: React.FC<
                     fullWidth
                     error={!!error}
                     helperText={error?.message}
-                    sx={{ mb: 2 }}
+                    disabled={!isCustomDeduction} // Disable this field when normal deduction is active
+                    sx={{mb:2}}
                   />
                 )}
               />
+
               <Controller
                 name="description"
                 control={control}
@@ -195,10 +198,10 @@ export const EmployeeDeductionPagePresentation: React.FC<
                     {...field}
                     maxRows={6} // Limit the number of rows
                     multiline
-                    placeholder="سبب الخصم"
+                    label="سبب الخصم"
                     helperText={error?.message}
                     error={!!error}
-                    style={{
+                    sx={{
                       width: "100%",
                     }}
                   />
@@ -212,7 +215,7 @@ export const EmployeeDeductionPagePresentation: React.FC<
                   color="primary"
                   loading={isSubmitting}
                   loadingPosition="end"
-                  endIcon= {<Check />}
+                  endIcon={<Check />}
                 >
                   تأكيد
                 </LoadingButton>
@@ -237,18 +240,25 @@ export const EmployeeDeductionPagePresentation: React.FC<
               <Controller
                 name="deduction"
                 control={control}
-                rules={{
-                  required: "قيمة الخصم مطلوبة",
-                  pattern: {
-                    value: /^\d+$/,
-                    message: "يجب إدخال أرقام فقط",
-                  },
-                  min: { value: 1, message: "يجب أن تكون قيمة الخصم 1 أو أكبر" },
-                  max: {
-                    value: employee.fixed_salary,
-                    message: "لا يمكن أن يتجاوز الخصم قيمة الراتب",
-                  },
-                }}
+                rules={
+                  !isCustomDeduction
+                    ? {
+                        required: "قيمة الخصم مطلوبة",
+                        pattern: {
+                          value: /^\d+$/,
+                          message: "يجب إدخال أرقام فقط",
+                        },
+                        min: {
+                          value: 1,
+                          message: "يجب أن تكون قيمة الخصم 1 أو أكبر",
+                        },
+                        max: {
+                          value: employee.fixed_salary,
+                          message: "لا يمكن أن يتجاوز الخصم قيمة الراتب",
+                        },
+                      }
+                    : {}
+                }
                 render={({ field, fieldState: { error } }) => (
                   <TextField
                     {...field}
@@ -256,26 +266,18 @@ export const EmployeeDeductionPagePresentation: React.FC<
                     label="قيمة الخصم"
                     fullWidth
                     error={!!error}
-                    helperText={error?.message}
-                    sx={{ mb: 2 }}
-                    InputProps={{
-                      endAdornment: (
-                        <Tooltip
-                          title="القيمة المسجلة الآن هي التي سيتم خصمها لكل يوم غابه الموظف"
-                          placement="bottom"
-                          arrow
-                        >
-                          <IconButton size="small">
-                            <InfoIcon />
-                          </IconButton>
-                        </Tooltip>
-                      ),
-                    }}
+                    onFocus={() => setIsDeductionFocused(true)}
+                    onBlur={() => setIsDeductionFocused(false)}
+                    helperText={
+                      isDeductionFocused
+                        ? "القيمة المسجلة الآن هي التي سيتم خصمها لكل يوم غابه الموظف"
+                        : error?.message
+                    }
                   />
                 )}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            {/* <Grid item xs={12} md={6}>
               <FormControlLabel
                 control={
                   <Switch
@@ -286,7 +288,7 @@ export const EmployeeDeductionPagePresentation: React.FC<
                 }
                 label="هل سيتم دفع الراتب الآن؟"
               />
-            </Grid>
+            </Grid> */}
           </Grid>
           <Box component={"div"} sx={{ display: "flex", mt: 2 }}>
             <LoadingButton
@@ -295,9 +297,9 @@ export const EmployeeDeductionPagePresentation: React.FC<
               color="primary"
               loading={isSubmitting}
               loadingPosition="end"
-              endIcon= {<Check />}
+              endIcon={<Check />}
             >
-              <span>تأكيد</span>
+              <span>سيتم دفع الراتب</span>
             </LoadingButton>
             <Button
               variant="outlined"

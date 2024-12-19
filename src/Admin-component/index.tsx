@@ -47,10 +47,10 @@ import BreadcrumbsComponent from "./Bread-Crumd/Bread-crumb-component";
 
 // Types
 interface UserDataProps {
-  adminData: {
+  
     name?: string;
     email?: string;
-  };
+  
 }
 
 interface AppBarProps extends MuiAppBarProps {
@@ -215,7 +215,7 @@ const MenuGroupComponent: React.FC<{
                     onClick={() => handleNavigation(child.path)}
                     selected={location.pathname === child.path}
                   >
-                    <ListItemIcon>{child.icon}</ListItemIcon>
+                    <ListItemIcon sx = {{minWidth: 35}}>{child.icon}</ListItemIcon>
                     <ListItemText primary={child.text} />
                   </ListItemButton>
                 </ListItem>
@@ -233,7 +233,7 @@ const TheOne: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
-  const [userData, setUserData] = useState<UserDataProps>({ adminData: {} });
+  const [userData, setUserData] = useState<UserDataProps>({});
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(true);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -266,17 +266,17 @@ const TheOne: React.FC = () => {
           path: "/SystemAdmin/Employees",
         },
         {
-          text: "حساب الرواتب",
+          text: "حساب الرواتب / الخدمات",
           icon: <ClinicIcon />,
           path: "",
           children: [
             {
-              text: "حساب رواتب الاطباء",
+              text: "حساب الاطباء / إضافة خدمه",
               icon: <DoctorIcon />,
               path: "/SystemAdmin/DoctorsPayroll",
             },
             {
-              text: "حساب الخصومات للموظفون",
+              text: "حساب الموظفين",
               icon: <PeopleIcon />,
               path: "/SystemAdmin/EmployeesDeduction",
             },
@@ -380,7 +380,8 @@ const TheOne: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (userData.adminData?.name) {
+    console.log("this is the object: ",userData)
+    if (userData?.name) {
       sessionStorage.setItem("userData", JSON.stringify(userData));
     }
   }, [userData]);
@@ -391,12 +392,6 @@ const TheOne: React.FC = () => {
       setUserData(JSON.parse(storedUserData));
     }
   }, []);
-
-  useEffect(() => {
-    if (!userData.adminData?.name) {
-      setUserData({ adminData: location.state?.adminData || {} });
-    }
-  }, [location, userData.adminData?.name]);
 
   // Handlers
   const handleDrawerOpen = () => {
@@ -490,12 +485,12 @@ const TheOne: React.FC = () => {
             >
               <MenuItem>
                 <Typography>
-                  اسم المستخدم: {userData?.adminData?.name}
+                  اسم المستخدم: {userData?.name}
                 </Typography>
               </MenuItem>
               <MenuItem>
                 <Typography>
-                  البريد الالكتروني: {userData?.adminData?.email}
+                  البريد الالكتروني: {userData?.email}
                 </Typography>
               </MenuItem>
               <Divider />

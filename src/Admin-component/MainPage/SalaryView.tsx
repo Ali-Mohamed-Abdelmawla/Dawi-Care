@@ -9,6 +9,7 @@ import { SalaryInfoCard } from "./SalaryViewComponent/SalaryInfoCard";
 import { MonthYearSelector } from "./SalaryViewComponent/MonthYearSelector";
 import { DeductionsListCard } from "./SalaryViewComponent/DeductionsListCard";
 import { Deduction } from "./SalaryViewComponent/DeductionsListCard";
+import { PeriodStatistics } from "./SalaryViewComponent/AggregatedDataSection";
 
 interface SalaryViewProps {
   data: SalaryData[] | null;
@@ -160,6 +161,10 @@ export const SalaryView: React.FC<SalaryViewProps> = ({
 
         <Grid item xs={12}>
           <SalaryChart chartData={chartData} />
+        </Grid>
+
+        <Grid item xs={12}>
+        <PeriodStatistics data = {data} />
         </Grid>
 
         <Grid item xs={12}>

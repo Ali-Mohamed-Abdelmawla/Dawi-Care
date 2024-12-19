@@ -6,7 +6,7 @@ import { EmployeeDeductionPagePresentation } from './EmployeeDeductionPagePresen
 import Loader from '../../../../helper/loading-component/loader';
 import sweetAlertInstance from '../../../../helper/SweetAlert';
 import dayjs from '../../../../dateConfig';
-
+import { DeductionFormData } from './EmployeeDeductionPagePresentation';
 import { Typography } from '@mui/material';
 
 const EmployeeDeductionPageContainer: React.FC = () => {
@@ -15,7 +15,6 @@ const EmployeeDeductionPageContainer: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isCustomDeduction, setIsCustomDeduction] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
-  const [isPaid, setIsPaid] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { addEmployeeDeduction } = useClinicApi();
 
@@ -27,18 +26,25 @@ const EmployeeDeductionPageContainer: React.FC = () => {
     setLoading(false);
   }, [location.state]);
 
-  const handleSubmit = async (data: { deduction: number; customDeduction: number; description: string }) => {
+  const handleSubmitData = async (formData: DeductionFormData) => {
     setIsSubmitting(true);
+  
+    // Filter the form data based on `isCustomDeduction`
+    const dataToSubmit = isCustomDeduction
+      ? { customDeduction: formData.customDeduction, description: formData.description }
+      : { deduction: formData.deduction };
+  
     try {
-      const formattedDate = selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null; // Format as Cairo-local date
+      const formattedDate = selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : null;
+  
       const result = await addEmployeeDeduction(
         employee!.id,
-        data.deduction,
-        data.customDeduction,
-        data.description,
-        isPaid,
-        formattedDate,
+        dataToSubmit.deduction || 0, // Normal deduction or 0 if not used
+        dataToSubmit.customDeduction || 0, // Custom deduction or 0 if not used
+        dataToSubmit.description || '', // Description
+        formattedDate
       );
+  
       if (result.status === 'success') {
         sweetAlertInstance.fire({
           icon: 'success',
@@ -51,13 +57,13 @@ const EmployeeDeductionPageContainer: React.FC = () => {
       console.error('Error adding deduction:', error);
       sweetAlertInstance.fire({
         icon: 'error',
-        title: 'حدث خطأ اثناء إضافة الخصم',
+        title: 'حدث خطأ أثناء إضافة الخصم',
       });
     } finally {
       setIsSubmitting(false);
     }
   };
-
+  
   if (loading) {
     return <Loader />;
   }
@@ -77,9 +83,8 @@ const EmployeeDeductionPageContainer: React.FC = () => {
       setIsCustomDeduction={setIsCustomDeduction}
       selectedDate={selectedDate}
       setSelectedDate={setSelectedDate}
-      isPaid={isPaid}
-      setIsPaid={setIsPaid}
-      onSubmit={handleSubmit}
+
+      onSubmit={handleSubmitData}
       isSubmitting={isSubmitting}
     />
   );

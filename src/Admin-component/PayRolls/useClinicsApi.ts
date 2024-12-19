@@ -202,7 +202,6 @@ export const useClinicApi = () => {
     deduction: number,
     customDeduction: number,
     description: string,
-    isPaid: boolean,
     date: string | null,
   ) => {
     try {
@@ -218,7 +217,6 @@ export const useClinicApi = () => {
             deduction: deduction,
             customdeduction: customDeduction,
             description: description,
-            is_payed: isPaid ? 1 : 0,
             created_at: date,
           },
         }

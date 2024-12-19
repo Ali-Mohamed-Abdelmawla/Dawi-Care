@@ -31,6 +31,12 @@ export const useSalaryData = ({ data, selectedYear, selectedMonth }: UseSalaryDa
     const selectedMonthSalary = data.find(
       (salary) => salary.year === selectedYear && salary.month === selectedMonth
     );
+    
+    const selectedYearSalaries = sortedData
+    .filter((salary) => salary.year === selectedYear)
+    .reduce((total, salary) => {
+      return total + parseFloat(salary.doctor_salary || salary.total_salary);
+    }, 0);
 
     // Find the previous month's salary
     let previousMonth = selectedMonth - 1;
@@ -46,9 +52,9 @@ export const useSalaryData = ({ data, selectedYear, selectedMonth }: UseSalaryDa
 
     // Calculate salary change percentage
     const salaryChangePercentage = previousMonthSalary && selectedMonthSalary
-      ? ((parseFloat(selectedMonthSalary.doctor_salary || selectedMonthSalary.total_salary) -
-          parseFloat(previousMonthSalary.doctor_salary || previousMonthSalary.total_salary)) /
-          parseFloat(previousMonthSalary.doctor_salary || previousMonthSalary.total_salary)) *
+      ? ((parseFloat(selectedMonthSalary.total_salary) -
+          parseFloat(previousMonthSalary.total_salary)) /
+          parseFloat(previousMonthSalary.total_salary)) *
         100
       : 0;
 
@@ -67,6 +73,7 @@ export const useSalaryData = ({ data, selectedYear, selectedMonth }: UseSalaryDa
       selectedMonthSalary,
       previousMonthSalary,
       salaryChangePercentage,
+      selectedYearSalaries,
     };
   }, [data, selectedYear, selectedMonth]);
 };
