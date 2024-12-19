@@ -7,9 +7,10 @@ interface UseSalaryDataParams {
   data: SalaryData[] | null;
   selectedYear: number;
   selectedMonth: number;
+  personType?: string;
 }
 
-export const useSalaryData = ({ data, selectedYear, selectedMonth }: UseSalaryDataParams) => {
+export const useSalaryData = ({ data, selectedYear, selectedMonth, personType }: UseSalaryDataParams) => {
   return useMemo(() => {
     if (!data || data.length === 0)
       return {
@@ -31,12 +32,6 @@ export const useSalaryData = ({ data, selectedYear, selectedMonth }: UseSalaryDa
     const selectedMonthSalary = data.find(
       (salary) => salary.year === selectedYear && salary.month === selectedMonth
     );
-    
-    const selectedYearSalaries = sortedData
-    .filter((salary) => salary.year === selectedYear)
-    .reduce((total, salary) => {
-      return total + parseFloat(salary.doctor_salary || salary.total_salary);
-    }, 0);
 
     // Find the previous month's salary
     let previousMonth = selectedMonth - 1;
@@ -63,7 +58,7 @@ export const useSalaryData = ({ data, selectedYear, selectedMonth }: UseSalaryDa
       date: format(new Date(salary.year, salary.month - 1), "MMM yyyy", {
         locale: ar,
       }),
-      salary: parseFloat(salary.doctor_salary || salary.total_salary),
+      salary: parseFloat(personType === "employee" ? salary.total_salary : salary.doctor_salary),
       days: salary.num_worked_days,
       timestamp: new Date(salary.year, salary.month - 1).getTime(),
     }));
@@ -73,7 +68,6 @@ export const useSalaryData = ({ data, selectedYear, selectedMonth }: UseSalaryDa
       selectedMonthSalary,
       previousMonthSalary,
       salaryChangePercentage,
-      selectedYearSalaries,
     };
-  }, [data, selectedYear, selectedMonth]);
+  }, [data, selectedYear, selectedMonth, personType]);
 };

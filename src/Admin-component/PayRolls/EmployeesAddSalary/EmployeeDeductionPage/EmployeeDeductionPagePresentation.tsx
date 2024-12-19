@@ -14,7 +14,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import dayjs from "../../../../dateConfig";
-
 import { useForm, Controller } from "react-hook-form";
 import { Employee } from "../../../Employees/employeeInterfaces";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -277,18 +276,6 @@ export const EmployeeDeductionPagePresentation: React.FC<
                 )}
               />
             </Grid>
-            {/* <Grid item xs={12} md={6}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={isPaid}
-                    onChange={(e) => setIsPaid(e.target.checked)}
-                    color="primary"
-                  />
-                }
-                label="هل سيتم دفع الراتب الآن؟"
-              />
-            </Grid> */}
           </Grid>
           <Box component={"div"} sx={{ display: "flex", mt: 2 }}>
             <LoadingButton

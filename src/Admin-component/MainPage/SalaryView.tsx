@@ -61,6 +61,7 @@ export const SalaryView: React.FC<SalaryViewProps> = ({
     data,
     selectedYear,
     selectedMonth,
+    personType,
   });
 
   const fetchDeductions = async (salaryId: number) => {
@@ -164,7 +165,7 @@ export const SalaryView: React.FC<SalaryViewProps> = ({
         </Grid>
 
         <Grid item xs={12}>
-        <PeriodStatistics data = {data} />
+        <PeriodStatistics data = {data} personType= {personType} />
         </Grid>
 
         <Grid item xs={12}>

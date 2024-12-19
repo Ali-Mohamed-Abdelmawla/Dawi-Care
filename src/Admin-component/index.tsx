@@ -328,59 +328,54 @@ const TheOne: React.FC = () => {
   useEffect(() => {
     // Create a function to get the current date in Egypt's time zone
     const getCurrentEgyptDate = () => {
-      return new Date().toLocaleString("en-US", {
+      const cairoDate = new Date().toLocaleString("en-US", {
         timeZone: "Africa/Cairo",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
       });
+      return new Date(cairoDate);
     };
-
-    // Get the current date in Egypt
-    const currentEgyptDate = getCurrentEgyptDate();
-
-    const takeAttendance = () => {
-      axiosInstance
-        .post(
-          "/api/takeattedence",
-          {},
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        )
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
+  
+    const takeAttendance = async () => {
+      try {
+        // Add timestamp to request for debugging
+        const cairoTime = getCurrentEgyptDate().toISOString();
+        const response = await axiosInstance.post("/api/takeattedence", {
+          timestamp: cairoTime  // Send timestamp for verification
         });
-    };
-
-    const lastAttendanceDate = localStorage.getItem("lastAttendanceDate");
-
-    // Check if the last attendance date is different from current Egypt date
-    if (lastAttendanceDate !== currentEgyptDate) {
-      takeAttendance();
-      localStorage.setItem("lastAttendanceDate", currentEgyptDate);
-    }
-
-    const checkDate = () => {
-      const newEgyptDate = getCurrentEgyptDate();
-      if (newEgyptDate !== currentEgyptDate) {
-        takeAttendance();
-        localStorage.setItem("lastAttendanceDate", newEgyptDate);
+        console.log("Attendance taken at (Cairo time):", cairoTime);
+      } catch (error) {
+        console.error("Error taking attendance:", error);
       }
     };
-
-    // Set interval to check every minute
-    const dailyTimer = setInterval(checkDate, 60000);
-
-    // Cleanup interval on component unmount
-    return () => clearInterval(dailyTimer);
+  
+    const checkAndTakeAttendance = () => {
+      const currentDate = getCurrentEgyptDate();
+      const lastAttendanceDate = localStorage.getItem("lastAttendanceDate");
+      
+      if (!lastAttendanceDate || !isSameDay(new Date(lastAttendanceDate), currentDate)) {
+        takeAttendance();
+        localStorage.setItem("lastAttendanceDate", currentDate.toISOString());
+      }
+    };
+  
+    // Check every minute
+    const timer = setInterval(checkAndTakeAttendance, 60000);
+    
+    // Initial check
+    checkAndTakeAttendance();
+  
+    return () => clearInterval(timer);
   }, []);
+  
+  // Helper function to compare dates
+  function isSameDay(date1: Date, date2: Date): boolean {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  }
 
   useEffect(() => {
-    console.log("this is the object: ",userData)
     if (userData?.name) {
       sessionStorage.setItem("userData", JSON.stringify(userData));
     }

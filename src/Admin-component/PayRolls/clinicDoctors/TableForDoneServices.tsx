@@ -10,6 +10,11 @@ import {
   TablePagination,
   Box,
   IconButton,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
@@ -36,7 +41,7 @@ interface ServiceTableProps {
   doctors: DoctorWage[];
 }
 
-// Styled Components
+// Styled Components (keeping the original styling)
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.common.white,
@@ -61,11 +66,26 @@ const MonthTotalCell = styled(TableCell)(({theme}) => ({
   border: "1px solid lightgray",
 }));
 
+// New styled component for the filters container
+const FiltersContainer = styled(Box)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  display: 'flex',
+  gap: theme.spacing(2),
+  padding: theme.spacing(2),
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: theme.shape.borderRadius,
+}));
+
 const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [expandedYears, setExpandedYears] = useState<{ [key: string]: boolean }>({});
   const [expandedMonths, setExpandedMonths] = useState<{ [key: string]: { [key: string]: boolean } }>({});
+  
+  // Add filter states
+  const [selectedDoctor, setSelectedDoctor] = useState<string>("");
+  const [selectedService, setSelectedService] = useState<string>("");
+  const [dateFilter, setDateFilter] = useState<string>("");
 
   // Create lookup maps for services and doctors
   const serviceMap = useMemo(() => {
@@ -84,8 +104,22 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) 
     return map;
   }, [doctors]);
 
-  // Group and preprocess data
+  // Filter and group data
   const groupedData = useMemo(() => {
+    // Apply filters
+    let filteredData = data;
+    
+    if (selectedDoctor) {
+      filteredData = filteredData.filter(item => item.doctor_id.toString() === selectedDoctor);
+    }
+    if (selectedService) {
+      filteredData = filteredData.filter(item => item.service_id.toString() === selectedService);
+    }
+    if (dateFilter) {
+      filteredData = filteredData.filter(item => item.created_at.includes(dateFilter));
+    }
+
+    // Group the filtered data
     const grouped: {
       [year: string]: {
         [month: string]: {
@@ -94,7 +128,7 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) 
       };
     } = {};
 
-    data.forEach((item) => {
+    filteredData.forEach((item) => {
       const date = new Date(item.created_at);
       const year = date.getFullYear().toString();
       const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -108,7 +142,7 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) 
     });
 
     return grouped;
-  }, [data]);
+  }, [data, selectedDoctor, selectedService, dateFilter]);
 
   const toggleYearExpansion = (year: string) => {
     setExpandedYears((prev) => ({ ...prev, [year]: !prev[year] }));
@@ -181,6 +215,52 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) 
 
   return (
     <Box>
+      {/* Filters */}
+      <FiltersContainer>
+        <FormControl fullWidth size="small">
+          <InputLabel>الطبيب</InputLabel>
+          <Select
+            value={selectedDoctor}
+            onChange={(e) => setSelectedDoctor(e.target.value)}
+            label="الطبيب"
+          >
+            <MenuItem value="">الكل</MenuItem>
+            {doctors.map((doctor) => (
+              <MenuItem key={doctor.id} value={doctor.id.toString()}>
+                {doctor.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl fullWidth size="small">
+          <InputLabel>الخدمة</InputLabel>
+          <Select
+            value={selectedService}
+            onChange={(e) => setSelectedService(e.target.value)}
+            label="الخدمة"
+          >
+            <MenuItem value="">الكل</MenuItem>
+            {services.map((service) => (
+              <MenuItem key={service.id} value={service.id.toString()}>
+                {service.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <TextField
+          fullWidth
+          size="small"
+          type="date"
+          label="التاريخ"
+          value={dateFilter}
+          onChange={(e) => setDateFilter(e.target.value)}
+          InputLabelProps={{ shrink: true }}
+        />
+      </FiltersContainer>
+
+      {/* Original Table */}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -211,6 +291,7 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) 
           </TableBody>
         </Table>
       </TableContainer>
+      
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
