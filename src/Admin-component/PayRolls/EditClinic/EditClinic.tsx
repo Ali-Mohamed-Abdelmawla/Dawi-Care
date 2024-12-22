@@ -1,4 +1,3 @@
-// EditClinicPresentation.tsx
 import React from "react";
 import {
   Box,
@@ -19,14 +18,11 @@ import {
   UseFormRegister,
   Controller,
 } from "react-hook-form";
-import {
-  EditClinicFormData,
-  EditClinicPresentationProps,
-} from "../ClinicsInterfaces";
+import { EditClinicPresentationProps, InternalFormData,InternalServiceData } from "../ClinicsInterfaces";
 
 interface CustomEditClinicPresentationProps extends EditClinicPresentationProps {
-  control: Control<EditClinicFormData>;
-  register: UseFormRegister<EditClinicFormData>;
+  control: Control<InternalFormData>;
+  register: UseFormRegister<InternalFormData>;
 }
 
 const EditClinicPresentation: React.FC<CustomEditClinicPresentationProps> = ({
@@ -39,6 +35,11 @@ const EditClinicPresentation: React.FC<CustomEditClinicPresentationProps> = ({
     control,
     name: "service",
   });
+
+  // Modified append function to mark new services
+  const handleAddService = () => {
+    append({ name: "", price: "", isNew: true });
+  };
 
   return (
     <Box sx={{ maxWidth: 800, margin: "auto", padding: 3 }}>
@@ -71,69 +72,74 @@ const EditClinicPresentation: React.FC<CustomEditClinicPresentationProps> = ({
               )}
             />
           </Grid>
-          {fields.map((field, index) => (
-            <Grid
-              item
-              xs={12}
-              key={field.id}
-              container
-              spacing={2}
-              alignItems="center"
-            >
-              <Grid item xs={5}>
-                <Controller
-                  name={`service.${index}.name` as const}
-                  control={control}
-                  rules={{ required: "اسم الخدمة مطلوب" }}
-                  render={({ field, fieldState: { error } }) => (
-                    <FormControl fullWidth error={!!error}>
-                      <TextField
-                        {...field}
-                        label="اسم الخدمة"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                      />
-                      {error && <FormHelperText>{error.message}</FormHelperText>}
-                    </FormControl>
-                  )}
-                />
+          {fields.map((field, index) => {
+            const serviceField = field as InternalServiceData;
+            return (
+              <Grid
+                item
+                xs={12}
+                key={field.id}
+                container
+                spacing={2}
+                alignItems="center"
+              >
+                <Grid item xs={5}>
+                  <Controller
+                    name={`service.${index}.name` as const}
+                    control={control}
+                    rules={{ required: "اسم الخدمة مطلوب" }}
+                    render={({ field, fieldState: { error } }) => (
+                      <FormControl fullWidth error={!!error}>
+                        <TextField
+                          {...field}
+                          label="اسم الخدمة"
+                          variant="outlined"
+                          fullWidth
+                          disabled={!serviceField.isNew}
+                          margin="normal"
+                        />
+                        {error && <FormHelperText>{error.message}</FormHelperText>}
+                      </FormControl>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={5}>
+                  <Controller
+                    name={`service.${index}.price` as const}
+                    control={control}
+                    rules={{ required: "تكلفة الخدمة مطلوبة" }}
+                    render={({ field, fieldState: { error } }) => (
+                      <FormControl fullWidth error={!!error}>
+                        <TextField
+                          {...field}
+                          label="تكلفة الخدمة"
+                          type="number"
+                          variant="outlined"
+                          fullWidth
+                          disabled={!serviceField.isNew}
+                          margin="normal"
+                        />
+                        {error && <FormHelperText>{error.message}</FormHelperText>}
+                      </FormControl>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <IconButton 
+                    onClick={() => remove(index)} 
+                    color="error"
+                    disabled={!serviceField.isNew}
+                  >
+                    <Remove />
+                  </IconButton>
+                </Grid>
               </Grid>
-              <Grid item xs={5}>
-                <Controller
-                  name={`service.${index}.price` as const}
-                  control={control}
-                  rules={{ required: "تكلفة الخدمة مطلوبة" }}
-                  render={({ field, fieldState: { error } }) => (
-                    <FormControl fullWidth error={!!error}>
-                      <TextField
-                        {...field}
-                        label="تكلفة الخدمة"
-                        type="number"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                      />
-                      {error && <FormHelperText>{error.message}</FormHelperText>}
-                    </FormControl>
-                  )}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <IconButton 
-                  onClick={() => remove(index)} 
-                  color="error"
-                  disabled={fields.length === 1}
-                >
-                  <Remove />
-                </IconButton>
-              </Grid>
-            </Grid>
-          ))}
+            );
+          })}
           <Grid item xs={12}>
             <Button
               startIcon={<Add />}
-              onClick={() => append({ name: "", price: "" })}
+              onClick={handleAddService}
             >
               إضافة خدمة
             </Button>

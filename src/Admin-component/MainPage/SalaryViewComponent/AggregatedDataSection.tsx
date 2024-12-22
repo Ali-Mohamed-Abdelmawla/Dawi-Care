@@ -126,7 +126,8 @@ export const PeriodStatistics: React.FC<PeriodStatisticsProps> = ({
               fontWeight: theme.typography.fontWeightBold,
             }}
           >
-            إحصائيات فترة معينه للطبيب
+            {personType === "employee" ? "إحصائيات فترة معينه للموظف" : "إحصائيات فترة معينه للطبيب"}
+            
           </Typography>
           <Typography
             variant="caption"

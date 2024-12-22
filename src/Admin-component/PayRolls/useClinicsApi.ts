@@ -101,7 +101,35 @@ export const useClinicApi = () => {
           },
           params: {
             name: name,
-            services: servicesString,
+            service: servicesString,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const editService = async (
+    id: number,
+    clinicId: number,
+    data: { name: string; price: number }
+  ) => {
+    await axiosInstance
+      .post(
+        `/api/edit_service/${id}/${clinicId}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            name: data.name,
+            price: data.price,
           },
         }
       )
@@ -202,7 +230,7 @@ export const useClinicApi = () => {
     deduction: number,
     customDeduction: number,
     description: string,
-    date: string | null,
+    date: string | null
   ) => {
     try {
       const response = await axiosInstance.post(
@@ -233,13 +261,13 @@ export const useClinicApi = () => {
       };
     }
   };
-  
 
   return {
     addClinic,
     getClinicList,
     deleteClinic,
     editClinic,
+    editService,
     servicesDoneByClinic,
     addDoctorSalary,
     addEmployeeDeduction,

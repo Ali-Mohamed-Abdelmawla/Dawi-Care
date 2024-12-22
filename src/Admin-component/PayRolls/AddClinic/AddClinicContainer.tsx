@@ -23,7 +23,6 @@ const AddClinicContainer: React.FC = () => {
       .join(",");
 
     addClinic(data.clinicName, servicesString)
-    setLoading(false);
   };
 
   return (

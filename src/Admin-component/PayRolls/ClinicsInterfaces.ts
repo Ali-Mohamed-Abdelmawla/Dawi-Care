@@ -89,3 +89,13 @@ export interface DoneService {
   total_cost: string;
   count: number;
 }
+
+export type InternalServiceData = {
+  name: string;
+  price: string;
+  isNew?: boolean;
+};
+
+export type InternalFormData = Omit<EditClinicFormData, 'service'> & {
+  service: InternalServiceData[];
+};

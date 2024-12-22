@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import EditClinicPresentation from "./EditClinic";
-import { EditClinicFormData, NewClinic } from "../ClinicsInterfaces";
+import { NewClinic, InternalFormData } from "../ClinicsInterfaces";
 import { useClinicApi } from "../useClinicsApi";
 import { useLocation, useNavigate } from "react-router-dom";
 import sweetAlertInstance from "../../../helper/SweetAlert";
+
+
 
 const EditClinicContainer: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -13,10 +15,10 @@ const EditClinicContainer: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  const { control, register, handleSubmit, reset } = useForm<EditClinicFormData>({
+  const { control, register, handleSubmit, reset } = useForm<InternalFormData>({
     defaultValues: {
       clinicName: "",
-      service: [{ name: "", price: "" }]
+      service: [{ name: "", price: "", isNew: true }]
     },
   });
 
@@ -28,39 +30,35 @@ const EditClinicContainer: React.FC = () => {
       // Map the clinic data to the form format
       const formattedServices = clinicData.service.map((service) => ({
         name: service.name,
-        price: service.price // Note: Converting from price to price
+        price: service.price,
+        isNew: false // Existing services are not new
       }));
 
       // Reset form with existing clinic data
       reset({
         clinicName: clinicData.name,
-        service: formattedServices.length > 0 ? formattedServices : [{ name: "", price: "" }]
+        service: formattedServices.length > 0 ? formattedServices : [{ name: "", price: "", isNew: true }]
       });
     }
   }, [location.state, reset]);
 
-  const onSubmit: SubmitHandler<EditClinicFormData> = async (data) => {
+  const onSubmit: SubmitHandler<InternalFormData> = async (data) => {
     try {
-      // console.log("data: ", data);
-      // console.log("clinic: ", clinic);
       setLoading(true);
-      console.log("edited clinic: ",data);
       if (!clinic?.id) {
         throw new Error("Clinic ID not found");
       }
 
-      // Format service data
+      // Format service data - include both existing and new services
       const servicesString = data.service
-        .filter(service => service.name && service.price) // Remove empty service
+        .filter(service => service.name && service.price && service.isNew === true) // Remove empty services
         .map((service) => `${service.name},${service.price}`)
         .join(",");
-      
+
       await editClinic(
-        
         clinic.id,
-          data.clinicName,
-          servicesString,
-        
+        data.clinicName,
+        servicesString,
       );
 
       sweetAlertInstance.fire({

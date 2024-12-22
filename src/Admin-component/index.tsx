@@ -384,7 +384,7 @@ const TheOne: React.FC = () => {
   useEffect(() => {
     const storedUserData = sessionStorage.getItem("userData");
     if (storedUserData) {
-      setUserData(JSON.parse(storedUserData));
+      // setUserData(JSON.parse(storedUserData));
     }
   }, []);
 

@@ -135,7 +135,21 @@ const AbsenceContainer: React.FC = () => {
           text: `تم تبديل يوم العمل بنجاح`,
         });
         await fetchAttendance(selectedPerson.value, personType);
-      } else {
+      } else if(response.status === "error"){
+        const errorMessage = response.data.response.data.error
+        const switchedDate = response.data.response.data.existing_switch.switched_date
+
+        console.log(errorMessage)
+        if(errorMessage === "This day has already been submitted for switching"){
+          await sweetAlertInstance.fire({
+            icon: "error",
+            title: "حدث خطأ اثناء تبديل اليوم",
+            text: `لا يمكن تبديل يوم  "${switchedDate}"    لأنه مسجل مسبقاً`,
+
+          })
+        }
+      }
+      else {
         sweetAlertInstance.fire({
           icon: "error",
           title: "خطأ",
