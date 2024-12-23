@@ -14,6 +14,12 @@ interface ClinicDetailsContainerProps {
   searchTerm: string;
   onDoctorSelect: (doctor: DoctorWage) => void;
   onSearchChange: (term: string) => void;
+  onServiceEdit: (
+    serviceId: number,
+    clinicId: number,
+    newService: { name: string; price: string }
+  ) => void;
+  onServiceDelete: (serviceId: number) => void;
 }
 
 const ClinicDetailsContainer: React.FC<ClinicDetailsContainerProps> = ({
@@ -23,6 +29,8 @@ const ClinicDetailsContainer: React.FC<ClinicDetailsContainerProps> = ({
   searchTerm,
   onDoctorSelect,
   onSearchChange,
+  onServiceEdit,
+  onServiceDelete,
 }) => {
   const [activeSection, setActiveSection] = useState<
     "doctors" | "services" | "servicesBasedDates"
@@ -30,7 +38,11 @@ const ClinicDetailsContainer: React.FC<ClinicDetailsContainerProps> = ({
 
   return (
     <Box>
-      <ClinicHeroSection clinic={clinic} />
+      <ClinicHeroSection
+        clinic={clinic}
+        onServiceEdit={onServiceEdit}
+        onServiceDelete={onServiceDelete}
+      />
 
       <Stack direction="row" spacing={2} justifyContent="center" sx={{ my: 3 }}>
         <Button

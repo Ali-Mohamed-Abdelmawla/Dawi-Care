@@ -1,17 +1,18 @@
-import React from 'react';
-import { 
-  Box, 
-  TextField, 
-  InputAdornment, 
+import React, { useState, useMemo } from "react";
+import {
+  Box,
+  InputAdornment,
   Typography,
   Table,
   TableBody,
   TableContainer,
   TableHead,
-  TableRow
-} from '@mui/material';
-import { DoctorWage } from '../ClinicsInterfaces';
-import { useClinicStyles } from './../useClinicStyles';
+  TableRow,
+  TablePagination,
+} from "@mui/material";
+import { DoctorWage } from "../ClinicsInterfaces";
+import { useClinicStyles } from "./../useClinicStyles";
+
 interface DoctorsSectionProps {
   doctors: DoctorWage[];
   searchTerm: string;
@@ -23,19 +24,58 @@ const DoctorsSection: React.FC<DoctorsSectionProps> = ({
   doctors,
   searchTerm,
   onDoctorSelect,
-  onSearchChange
+  onSearchChange,
 }) => {
-  // Use the styled components from useClinicStyles
-  const { 
-    StyledTablePaper, 
-    StyledTableCell, 
-    StyledSearchIcon 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const {
+    StyledTablePaper,
+    StyledTableCell,
+    StyledSearchIcon,
+    StyledTextField,
   } = useClinicStyles();
 
+  // Filter doctors based on search term
+  const filteredDoctors = useMemo(() => {
+    return doctors.filter((doctor) =>
+      doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [doctors, searchTerm]);
+
+  // Reset page when search term changes
+  React.useEffect(() => {
+    setPage(0);
+  }, [searchTerm]);
+
+  // Handle page change
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    console.log(event)
+    setPage(newPage);
+  };
+
+  // Handle rows per page change
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  // Get current page data
+  const paginatedDoctors = filteredDoctors.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
   return (
-    <Box sx={{ width: '100%', p: 2 }}>
+    <Box sx={{ width: "100%", p: 2 }}>
       {/* Search TextField */}
-      <TextField
+      <StyledTextField
+        autoFocus
         fullWidth
         variant="outlined"
         placeholder="ابحث عن طبيب..."
@@ -47,12 +87,12 @@ const DoctorsSection: React.FC<DoctorsSectionProps> = ({
             <InputAdornment position="start">
               <StyledSearchIcon />
             </InputAdornment>
-          )
+          ),
         }}
       />
 
       {/* Doctors Table */}
-      {doctors.length > 0 ? (
+      {filteredDoctors.length > 0 ? (
         <StyledTablePaper>
           <TableContainer>
             <Table>
@@ -64,32 +104,48 @@ const DoctorsSection: React.FC<DoctorsSectionProps> = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {doctors.map((doctor) => (
-                  <TableRow 
-                    key={doctor.id} 
-                    hover 
+                {paginatedDoctors.map((doctor) => (
+                  <TableRow
+                    key={doctor.id}
+                    hover
                     onClick={() => onDoctorSelect(doctor)}
-                    sx={{ 
-                      cursor: 'pointer',
-                      '&:hover': { 
-                        backgroundColor: 'rgba(0, 0, 0, 0.04)' 
-                      }
+                    sx={{
+                      cursor: "pointer",
+                      "&:hover": {
+                        backgroundColor: "rgba(0, 0, 0, 0.04)",
+                      },
                     }}
                   >
                     <StyledTableCell>{doctor.name}</StyledTableCell>
-                    <StyledTableCell>{doctor.fixed_salary} جنيه</StyledTableCell>
+                    <StyledTableCell>
+                      {doctor.fixed_salary} جنيه
+                    </StyledTableCell>
                     <StyledTableCell>{doctor.doctor_share}%</StyledTableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
+          <TablePagination
+            component="div"
+            count={filteredDoctors.length}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage="عدد الصفوف"
+            labelDisplayedRows={({ from, to, count }) =>
+              `${from}-${to} من ${count}`
+            }
+            rowsPerPageOptions={[5, 10, 25]}
+            dir="rtl"
+          />
         </StyledTablePaper>
       ) : (
         <Typography variant="h6" textAlign="center" sx={{ mt: 4 }}>
-          {searchTerm 
-            ? `لا توجد نتائج للبحث "${searchTerm}"` 
-            : 'لم يتم العثور على أطباء'}
+          {searchTerm
+            ? `لا توجد نتائج للبحث "${searchTerm}"`
+            : "لم يتم العثور على أطباء"}
         </Typography>
       )}
     </Box>

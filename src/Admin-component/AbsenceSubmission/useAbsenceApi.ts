@@ -145,7 +145,7 @@ export const useAbsenceApi = () => {
     selectedPerson: PersonOption,
     personType: string
   ) => {
-    console.log(data.day);
+    console.log(data);
     try {
       const response = await axiosInstance.post(
         `/api/switchday/${selectedPerson.value}`,
@@ -156,10 +156,11 @@ export const useAbsenceApi = () => {
             "Content-Type": "application/json",
           },
           params: {
-            data: `${data.day.value},${data.time}`,
+            day: data.day.value,
             type: personType,
-            created_at: dayjs(data.date).format("YYYY-MM-DD"),
-            sDayDate: data.absentDate.value
+            switchDayDate: dayjs(data.date).format("YYYY-MM-DD"),
+            switchedDayDate: data.absentDate.value,
+            date: data.time
           },
         }
       );

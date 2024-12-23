@@ -37,7 +37,7 @@ const DaysContainer = styled(Box)({
 const EmployeeIdCard: React.FC<EmployeeIdCardProps> = ({ employee }) => {
   const workDays: string[] = [];
   employee.weekdays?.forEach((weekDay) => {
-    console.log(weekDay)
+    console.log(weekDay);
     workDays.push(`${weekDay.day}`);
   });
   return (
@@ -58,7 +58,7 @@ const EmployeeIdCard: React.FC<EmployeeIdCardProps> = ({ employee }) => {
             </Typography>
           </Grid>
         </Grid>
-        <Box mt={2} ml={2} px={2} pb={2}>
+        <Box ml={2.5}>
           <Typography variant="body2" color="text.secondary">
             <strong>الرقم القومي:</strong> {employee.national_id}
           </Typography>

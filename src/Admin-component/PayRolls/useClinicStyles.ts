@@ -180,16 +180,36 @@ export const useClinicStyles = () => {
 
   const ServicesSection = styled("div")({
     marginBottom: "32px",
+    width: "100%",
+    position: "relative",
   });
-
-  const ServicesGrid = styled("div")({
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-    gap: "24px",
-    padding: "20px 0",
-  });
-
+  
+// Updated ServicesGrid with visible scrollbar
+const ServicesGrid = styled("div")({
+  display: "flex",
+  overflowX: "auto",
+  gap: "16px",
+  padding: "5px 10px 20px 14px", // Added horizontal padding for scroll buttons
+  scrollBehavior: "smooth", // Smooth scrolling
+  "&::-webkit-scrollbar": {
+    height: "15px", // Scrollbar height
+  },
+  "&::-webkit-scrollbar-track": {
+    background: "lightblue",
+    borderRadius: "4px",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    background: theme.palette.primary.light,
+    borderRadius: "4px",
+    "&:hover": {
+      background: theme.palette.primary.main,
+    },
+  },
+});
+  
   const ServiceCard = styled(Card)({
+    flex: "0 0 auto", // Prevent the card from growing or shrinking
+    width: "280px", // Fixed width for each card
     backgroundColor: theme.palette.background.default,
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: "12px",
@@ -200,7 +220,8 @@ export const useClinicStyles = () => {
       boxShadow: "0 6px 12px rgba(0, 0, 0, 0.15)",
     },
   });
-
+  
+  // Other styled components remain the same
   const ServiceCardContent = styled(CardContent)({
     padding: "24px",
     display: "flex",
@@ -208,7 +229,7 @@ export const useClinicStyles = () => {
     alignItems: "center",
     gap: "16px",
   });
-
+  
   const ServiceIcon = styled("div")({
     width: "64px",
     height: "64px",
@@ -220,18 +241,18 @@ export const useClinicStyles = () => {
     color: theme.palette.primary.main,
     marginBottom: "8px",
   });
-
+  
   const ServicePrice = styled(Typography)({
     color: theme.palette.success.main,
     fontWeight: "bold",
     fontSize: "1.25rem",
   });
-
+  
   const CreatedAtText = styled(Typography)({
     color: "rgba(255, 255, 255, 0.8)",
     fontSize: "0.875rem",
   });
-
+  
   return {
     StyledCard,
     StyledImageWrapper,

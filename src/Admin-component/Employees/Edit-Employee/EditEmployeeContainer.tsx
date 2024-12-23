@@ -7,6 +7,7 @@ import EditEmployeeForm from "./EditEmployeeForm";
 import sweetAlertInstance from "../../../helper/SweetAlert";
 import NotFound from "../../../helper/notFound-component/Not-Found";
 import { workingDaysOptions } from "../EmployeeUtils";
+import { EmployeeDayOption } from "./EditEmployeeForm";
 
 const EditEmployeeContainer: React.FC = () => {
   const location = useLocation();
@@ -25,33 +26,31 @@ const EditEmployeeContainer: React.FC = () => {
           label:
             workingDaysOptions.find((option) => option.value === weekDay.day)
               ?.label || weekDay.day,
+          isFixed: true,
+          id: weekDay.id,
         })),
       };
       setEmployee(formattedEmployee);
-    } else {
-      sweetAlertInstance.fire({
-        icon: "error",
-        title: "حدث خطأ ما",
-        text: "لا يوجد بيانات للتعديل",
-      });
-      navigate("/SystemAdmin/Employees");
     }
   }, [location.state, navigate]);
 
   const handleSubmit = async (updatedEmployee: EmployeeFormData) => {
     setFormLoading(true);
+  
+    // Type guard to ensure `working_days` entries have `isFixed` and `id`.
+    const hasExtendedProperties = (
+      day: { value: string; label: string } | EmployeeDayOption
+    ): day is EmployeeDayOption => 'isFixed' in day && 'id' in day;
+  
     try {
-      const formattedEmployee: Employee = {
-        ...updatedEmployee,
-        worked_days: updatedEmployee.working_days
-          .map((day) => day.value)
-          .join(","),
-      };
-      await updateEmployee(formattedEmployee, formattedEmployee.worked_days);
-      // await EditAllWeekDays(
-      //   formattedEmployee.id,
-      //   formattedEmployee.worked_days
-      // );
+      // Filter and map `working_days` safely using type guard
+      const data = updatedEmployee.working_days
+        .filter(hasExtendedProperties)
+        .map((day) => (day.isFixed ? `${day.id},${day.value}` : day.value))
+        .join(",");
+  
+      await updateEmployee(updatedEmployee, data);
+  
       sweetAlertInstance.fire({
         icon: "success",
         title: "تم",
@@ -62,13 +61,14 @@ const EditEmployeeContainer: React.FC = () => {
       console.error("Error updating employee:", error);
       sweetAlertInstance.fire({
         icon: "error",
-        title: "خطأ",
+        title: "خطأ",
         text: "حدث خطا اثناء تحديث بيانات الموظف",
       });
     } finally {
       setFormLoading(false);
     }
   };
+  
 
   const handleBack = () => {
     navigate("/SystemAdmin/Employees");

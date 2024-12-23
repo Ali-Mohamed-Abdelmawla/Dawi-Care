@@ -10,7 +10,7 @@ export const useClinicDetails = () => {
   const [doneServices, setDoneServices] = useState<DoneService[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { servicesDoneByClinic } = useClinicApi();
+  const { servicesDoneByClinic, editService, deleteService } = useClinicApi();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -94,6 +94,74 @@ export const useClinicDetails = () => {
     [doctors, filterDoctors]
   );
 
+  const handleServiceEdit = useCallback(async (
+    serviceId: number,
+    clinicId: number,
+    newService: { name: string; price: string }
+  ) => {
+    try {
+      await editService(serviceId, clinicId, newService);
+      
+      // Update local state
+      setClinic((prevClinic) => {
+        if (!prevClinic) return null;
+        const updatedClinic = {
+          ...prevClinic,
+          service: prevClinic.service?.map((service) =>
+            service.id === serviceId
+              ? { ...service, ...newService }
+              : service
+          ),
+        };
+        
+        // Update navigation state
+        navigate(location.pathname, {
+          state: {
+            ...location.state,
+            clinic: updatedClinic,
+          },
+          replace: true
+        });
+        
+        return updatedClinic;
+      });
+    } catch (error) {
+      console.error("Failed to update service:", error);
+      throw error;
+    }
+  }, [editService, navigate, location]);
+
+  const handleServiceDelete = useCallback(async (serviceId: number) => {
+    try {
+      await deleteService(serviceId);
+      
+      // Update local state
+      setClinic((prevClinic) => {
+        if (!prevClinic) return null;
+        const updatedClinic = {
+          ...prevClinic,
+          service: prevClinic.service?.filter(
+            (service) => service.id !== serviceId
+          ),
+        };
+        
+        // Update navigation state
+        navigate(location.pathname, {
+          state: {
+            ...location.state,
+            clinic: updatedClinic,
+          },
+          replace: true
+        });
+        
+        return updatedClinic;
+      });
+    } catch (error) {
+      console.error("Failed to delete service:", error);
+      throw error;
+    }
+  }, [deleteService, navigate, location]);
+
   return {
     clinic,
     doctors: filteredDoctors,
@@ -101,5 +169,7 @@ export const useClinicDetails = () => {
     searchTerm,
     handleDoctorSelect,
     handleSearch,
+    handleServiceEdit,
+    handleServiceDelete,
   };
 };

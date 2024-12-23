@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { DayListProps, WeekDay } from "./AbsenceInterfaces";
 import {
   Box,
@@ -14,10 +14,10 @@ import { SwapHoriz } from "@mui/icons-material";
 
 const DayList: React.FC<DayListProps> = ({ days, title, personType }) => {
   const theme = useTheme();
-  
+
   // Create a slightly darker version of the divider color for hover
   const darkerBorderColor = theme.palette.augmentColor({
-    color: { main: theme.palette.divider }
+    color: { main: theme.palette.divider },
   }).dark;
 
   return (
@@ -25,7 +25,7 @@ const DayList: React.FC<DayListProps> = ({ days, title, personType }) => {
       sx={{
         p: 2,
         height: "100%",
-        borderRadius: '8px',
+        borderRadius: "8px",
         border: `2px solid ${theme.palette.divider}`,
         transition: "all 0.2s ease-in-out",
         "&:hover": {
@@ -37,38 +37,44 @@ const DayList: React.FC<DayListProps> = ({ days, title, personType }) => {
         {title}
       </Typography>
       <Divider sx={{ mb: 2 }} />
-      
+
       {days.length === 0 ? (
         <Typography variant="body1" align="center">
           لا توجد أيام مبدلة لعرضها.
         </Typography>
       ) : (
-        <Box 
+        <Box
           sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
             gap: 2,
           }}
         >
           {days.map((day: WeekDay) => (
-            <Card 
+            <Card
               key={day.id}
               sx={{
                 transition: "all 0.2s ease-in-out",
                 border: `1px solid ${theme.palette.divider}`,
                 "&:hover": {
-                    
                   border: `1px solid #00000070`,
-                  transform: 'scale(1.02)',
-                }
+                  transform: "scale(1.02)",
+                },
               }}
             >
               <CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    mb: 1
+                  }}
+                >
                   <Typography variant="subtitle1">
                     {day.day || day.switch_day}
                   </Typography>
-                  
+
                   {day.day === null && (
                     <Box
                       sx={{
@@ -77,22 +83,29 @@ const DayList: React.FC<DayListProps> = ({ days, title, personType }) => {
                       }}
                     >
                       <SwapHoriz color="action" />
-                      <Tooltip title={`التاريخ الأصلي: ${day.switched_day_date}`}>
+                      <Tooltip
+                        title={`التاريخ الأصلي: ${day.switched_day_date}`}
+                      >
                         <InfoTwoToneIcon
                           fontSize="small"
-                          sx={{ mr: 1 }}
                           color="primary"
                         />
                       </Tooltip>
                     </Box>
                   )}
                 </Box>
-                
-                {personType === "doctor" && (
-                  <Typography variant="body2" color="text.secondary">
-                    الوقت: {day.date?.slice(0, 5)}
-                  </Typography>
-                )}
+                <Divider />
+                <Box sx={{ display: "flex", mt: 1, flexDirection: "column" }}>
+                  {day.switch_day_date !== null && (
+                  <Typography variant="body2" color="textSecondary">
+                    تاريخ الحضور: {day.switch_day_date}
+                  </Typography>)}
+                  {personType === "doctor" && (
+                    <Typography variant="body2" color="text.secondary">
+                      الوقت: {day.date?.slice(0, 5)}
+                    </Typography>
+                  )}
+                </Box>
               </CardContent>
             </Card>
           ))}

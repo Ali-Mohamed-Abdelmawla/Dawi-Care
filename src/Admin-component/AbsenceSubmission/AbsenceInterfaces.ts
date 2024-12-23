@@ -72,6 +72,7 @@ export interface WeekDay {
   employee_id?: number;
   switch_day: string | null;
   created_at: string;
+  switch_day_date: string;
   switched_day_date: string;
 }
 

@@ -116,7 +116,7 @@ export const useClinicApi = () => {
   const editService = async (
     id: number,
     clinicId: number,
-    data: { name: string; price: number }
+    data: { name: string; price: string }
   ) => {
     await axiosInstance
       .post(
@@ -135,9 +135,48 @@ export const useClinicApi = () => {
       )
       .then((response) => {
         console.log(response.data);
+        sweetAlertInstance.fire({
+          icon: "success",
+          title: "تمت تعديل الخدمه بنجاح",
+          text: `تم التعديل الخدمه ليكون الاسم ${data.name} و السعر ${data.price}`,
+        });
       })
       .catch((error) => {
         console.log(error);
+        sweetAlertInstance.fire({
+          icon: "error",
+          title: "فشلت عملية تعديل الخدمه",
+        });
+      });
+  };
+
+  const deleteService = async (
+    id: number,
+  ) => {
+    await axiosInstance
+      .post(
+        `/api/delete_service/${id}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        sweetAlertInstance.fire({
+          icon: "success",
+          title: "تمت ازاله الخدمه بنجاح",
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        sweetAlertInstance.fire({
+          icon: "error",
+          title: "فشلت عملية مسح الخدمه",
+        });
       });
   };
 
@@ -268,6 +307,7 @@ export const useClinicApi = () => {
     deleteClinic,
     editClinic,
     editService,
+    deleteService,
     servicesDoneByClinic,
     addDoctorSalary,
     addEmployeeDeduction,

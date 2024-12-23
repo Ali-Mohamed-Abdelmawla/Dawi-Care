@@ -6,7 +6,7 @@ export interface NewClinic {
   name: string;
   created_at: string;
   updated_at: string;
-  service: { name: string; price: string }[];
+  service: { id:number; name: string; price: string }[];
 }
 
 export interface Service {

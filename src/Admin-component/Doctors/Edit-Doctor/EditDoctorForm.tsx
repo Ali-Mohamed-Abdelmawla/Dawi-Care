@@ -12,7 +12,13 @@ import {
   Backdrop,
   Button,
 } from "@mui/material";
-import Select from "react-select";
+import Select, {
+  components,
+  StylesConfig,
+  ActionMeta,
+  MultiValue,
+  OptionProps,
+} from "react-select";
 import LoadingButton from "@mui/lab/LoadingButton";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -24,6 +30,51 @@ import { DoctorFormData, EditDoctorFormProps } from "../doctorInterfaces";
 import { workingDaysOptions } from "../doctorUtils";
 import { NewClinic } from "../../PayRolls/ClinicsInterfaces";
 import { useFormValidation } from "../useFormValidation";
+import dayjs from "../../../dateConfig";
+import { DayOption } from "../doctorInterfaces";
+
+
+const styles: StylesConfig<DayOption, true> = {
+  multiValue: (base, state) => {
+    return state.data.isFixed ? { ...base, backgroundColor: "#e0e0e0" } : base;
+  },
+  multiValueLabel: (base, state) => {
+    return state.data.isFixed
+      ? { ...base, fontWeight: "bold", color: "#333", paddingRight: 6 }
+      : base;
+  },
+  multiValueRemove: (base, state) => {
+    return state.data.isFixed ? { ...base, display: "none" } : base;
+  },
+};
+
+const Option = ({ children, ...props }: OptionProps<DayOption, true>) => {
+  const isSelected = props.isSelected;
+  const isFixed = props.data.isFixed;
+
+  return (
+    <components.Option {...props}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        {children}
+        {isSelected && isFixed && (
+          <span style={{ fontSize: "0.8em", color: "#666" }}>(يوم أصلي)</span>
+        )}
+      </div>
+    </components.Option>
+  );
+};
+
+const orderOptions = (values: readonly DayOption[]) => {
+  return values
+    .filter((v) => v.isFixed)
+    .concat(values.filter((v) => !v.isFixed));
+};
 
 //first-commit
 const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
@@ -40,9 +91,18 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
     handleSubmit,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm<DoctorFormData>({
     defaultValues: doctor,
   });
+
+  // Convert week_days to working_days format with IDs
+  const originalDays = doctor.week_days.map((weekDay) => ({
+    value: weekDay.day || weekDay.switch_day || "",
+    label: weekDay.day || weekDay.switch_day || "",
+    isFixed: true,
+    id: weekDay.id,
+  }));
 
   const selectedDays = useWatch({
     control,
@@ -58,41 +118,37 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
   } = useFormValidation();
 
   useEffect(() => {
-    setValue("profile_photo", doctor.profile_photo);
-    setValue("union_registration", doctor.union_registration);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setValue("working_days", originalDays);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    console.log(doctor);
     if (selectedDays) {
       const updatedWorkingHours = { ...doctor.working_hours };
 
-      // Remove hours for deselected days
-      Object.keys(updatedWorkingHours).forEach((day) => {
-        console.log(updatedWorkingHours);
-        if (!selectedDays.some((selectedDay) => selectedDay.value === day)) {
-          delete updatedWorkingHours[day];
+      // Handle working hours for both fixed and new days
+      selectedDays.forEach((day: DayOption) => {
+        if (day.isFixed) {
+          // For fixed days, maintain original time
+          const existingTime = doctor.week_days.find(
+            (wd) => wd.id === day.id
+          )?.date;
+          if (existingTime) {
+            const [hours, minutes] = existingTime.split(":");
+            updatedWorkingHours[day.value] = {
+              start: dayjs().hour(parseInt(hours)).minute(parseInt(minutes)),
+            };
+          }
+        } else if (!updatedWorkingHours[day.value]) {
+          // For new days, initialize with null time
+          updatedWorkingHours[day.value] = { start: null };
         }
       });
 
-      // Add default hours for newly selected days
-      selectedDays.forEach((day) => {
-        const hoursIndex = day.value;
-        if (hoursIndex === null) {
-          return;
-        }
-        if (!updatedWorkingHours[hoursIndex]) {
-          updatedWorkingHours[hoursIndex] = { start: null };
-        }
-      });
-
-      console.log(doctor);
       setValue("working_hours", updatedWorkingHours);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDays, setValue, doctor.working_hours]);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDays, setValue]);
 
   const [currentProfileImage, setCurrentProfileImage] =
     useState<string>(profileImageUrl);
@@ -100,6 +156,25 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
 
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
+
+  const handleWorkingDaysChange = (
+    newValue: MultiValue<DayOption>,
+    actionMeta: ActionMeta<DayOption>
+  ) => {
+    switch (actionMeta.action) {
+      case "remove-value":
+      case "pop-value":
+        if (actionMeta.removedValue.isFixed) {
+          return; // Prevent removal of fixed days
+        }
+        break;
+      case "clear":
+        newValue = selectedDays.filter((v: DayOption) => v.isFixed);
+        break;
+    }
+
+    setValue("working_days", orderOptions(newValue));
+  };
 
   const onFormSubmit = (data: DoctorFormData) => {
     onSubmit(data);
@@ -373,68 +448,112 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
             <Controller
               name="working_days"
               control={control}
+              defaultValue={originalDays}
               rules={{ required: "أيام العمل مطلوبة" }}
               render={({ field }) => (
                 <Select
                   {...field}
                   options={workingDaysOptions}
                   isMulti
+                  styles={styles}
                   placeholder="اختر أيام العمل"
+                  components={{ MultiValue: components.MultiValue, Option }}
                   value={field.value}
-                  onChange={(selectedOptions) =>
-                    field.onChange(selectedOptions)
-                  }
+                  onChange={handleWorkingDaysChange}
+                  isClearable={selectedDays?.some((v: DayOption) => !v.isFixed)}
                 />
               )}
             />
           </Grid>
 
           {selectedDays &&
-            selectedDays.map((day) => (
+            selectedDays.map((day: DayOption, Index: number) => (
               <Grid item xs={12} sm={12} md={6} key={day.value}>
+                <Box sx={{ mb: 2 }}>
+                  <Controller
+                    name={`working_days.${Index}`}
+                    control={control}
+                    defaultValue={day}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={workingDaysOptions.filter(
+                          (option) =>
+                            !selectedDays.some(
+                              (d) =>
+                                d.value === option.value &&
+                                d.value !== day.value
+                            )
+                        )}
+                        // isDisabled={day.isOriginal}
+                        value={workingDaysOptions.find(
+                          (option) => option.value === day.value
+                        )}
+                        onChange={(newDay) => {
+                          if (newDay) {
+                            // Update working_days array
+                            const updatedDays = selectedDays.map((d) =>
+                              d.value === day.value
+                                ? {
+                                    ...d,
+                                    value: newDay.value,
+                                    label: newDay.label,
+                                  }
+                                : d
+                            );
+                            setValue("working_days", updatedDays);
+
+                            // Move time to new day key in working_hours
+                            const currentTime = getValues(
+                              `working_hours.${day.value}.start`
+                            );
+                            const updatedHours = {
+                              ...getValues("working_hours"),
+                            };
+                            delete updatedHours[day.value];
+                            updatedHours[newDay.value] = { start: currentTime };
+                            setValue("working_hours", updatedHours);
+                          }
+                        }}
+                      />
+                    )}
+                  />
+                </Box>
                 <Controller
                   name={`working_hours.${day.value}.start`}
                   control={control}
-                  defaultValue={
-                    doctor.working_hours[day.value !== null ? day.value : ""]
-                      ?.start || null
-                  }
+                  defaultValue={doctor.working_hours[day.value]?.start || null}
                   rules={{ required: `وقت بدء العمل ليوم ${day.label} مطلوب` }}
                   render={({ field, fieldState: { error } }) => (
                     <LocalizationProvider
                       dateAdapter={AdapterDayjs}
                       adapterLocale="ar"
                     >
-                      <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                        <Box sx={{ width: "100%" }}>
-                          <Typography variant="subtitle1" gutterBottom>
-                            {`وقت بدء العمل ليوم ${day.label}`}
+                      <Box sx={{ width: "100%" }}>
+                        <Typography variant="subtitle1" gutterBottom>
+                          {`وقت بدء العمل ليوم ${day.label}`}
+                        </Typography>
+                        <StaticTimePicker
+                          value={field.value}
+                          onChange={(newValue) => field.onChange(newValue)}
+                          slotProps={{
+                            actionBar: { actions: [] },
+                          }}
+                          ampm={false}
+                          sx={{
+                            width: "100%",
+                            maxWidth: "400px",
+                            "@media (max-width: 600px)": {
+                              maxWidth: "300px",
+                            },
+                          }}
+                        />
+                        {error && (
+                          <Typography color="error" variant="caption">
+                            {error.message}
                           </Typography>
-                          <StaticTimePicker
-                            value={field.value}
-                            onChange={(newValue) => field.onChange(newValue)}
-                            slotProps={{
-                              actionBar: {
-                                actions: [],
-                              },
-                            }}
-                            ampm={false}
-                            // displayStaticWrapperAs="desktop"
-                            sx={{
-                              width: "100%",
-                              maxWidth: "400px",
-                              "@media (max-width: 600px)": {
-                                maxWidth: "300px",
-                              },
-                            }}
-                          />
-                          {error && (
-                            <Typography color="error" variant="caption">
-                              {error.message}
-                            </Typography>
-                          )}
-                        </Box>
-                      </Grid>
+                        )}
+                      </Box>
                     </LocalizationProvider>
                   )}
                 />

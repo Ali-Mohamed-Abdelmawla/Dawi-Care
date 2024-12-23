@@ -359,7 +359,7 @@ const AddDoctorForm: React.FC<AddDoctorFormProps> = ({
                 <Box>
                   <Select
                     {...field}
-                    options={clinics.map((clinic: NewClinic) => ({
+                    options={clinics?.map((clinic: NewClinic) => ({
                       label: clinic.name,
                       value: String(clinic.id),
                     }))}

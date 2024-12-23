@@ -8,13 +8,12 @@ export interface Employee {
   overtime_salary: string;
   fixed_salary: string;
   worked_days: string;
-  weekdays: { day: string; switch_day:string; }[];
+  weekdays: { id:number; day: string; switch_day:string; }[];
 }
 
 export interface EmployeeFormData
   extends Employee {
-    working_days: { value: string; label: string }[];
-
+    working_days: { value: string; label: string; }[];
 }
 
 export interface EmployeesTableProps {

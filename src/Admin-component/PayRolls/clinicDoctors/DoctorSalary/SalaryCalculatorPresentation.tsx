@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Paper,
@@ -8,6 +8,7 @@ import {
   Button,
   Avatar,
   Chip,
+  TextField,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -18,14 +19,12 @@ import {
   Add as AddIcon,
   Remove as RemoveIcon,
   RestartAlt as ResetIcon,
-  // CalendarMonth as CalendarIcon,
   AccessTime as AccessTimeIcon,
   DateRange as DateRangeIcon,
-  // School as SchoolIcon,
   Phone as PhoneIcon,
   Badge as BadgeIcon,
 } from "@mui/icons-material";
-import dayjs from '../../../../dateConfig';
+import dayjs from "../../../../dateConfig";
 
 import { styled } from "@mui/material/styles";
 import { Doctor } from "../../../Doctors/doctorInterfaces";
@@ -114,6 +113,23 @@ const ChipGroup = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(2),
 }));
 
+const ServicesGrid = styled(Box)(({ theme }) => ({
+  maxHeight: "400px",
+  overflowY: "auto",
+  marginTop: theme.spacing(2),
+  padding: theme.spacing(1),
+  "&::-webkit-scrollbar": {
+    width: "8px",
+  },
+  "&::-webkit-scrollbar-track": {
+    background: theme.palette.background.default,
+  },
+  "&::-webkit-scrollbar-thumb": {
+    background: theme.palette.primary.main,
+    borderRadius: "4px",
+  },
+}));
+
 const CustomPickersDay = (
   props: PickersDayProps<dayjs.Dayjs> & {
     isAbsent?: boolean;
@@ -121,7 +137,7 @@ const CustomPickersDay = (
   }
 ) => {
   const { day, isAbsent, isPresent, ...other } = props;
-  console.log("day: ",day, "isAbsent: ",isAbsent, "isPresent: ",isPresent);
+  console.log("day: ", day, "isAbsent: ", isAbsent, "isPresent: ", isPresent);
 
   return (
     <PickersDay
@@ -162,7 +178,7 @@ const DoctorSalaryCalculatorPresentation: React.FC<Props> = ({
   const getRegularWorkDays = (weekDays: WeekDay[]) => {
     return weekDays.filter((day) => !day.switch_day).length;
   };
-
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const isDateAvailable = (date: dayjs.Dayjs) => {
     return attendance.some(
       (record) => record.date === date.format("YYYY-MM-DD")
@@ -175,6 +191,10 @@ const DoctorSalaryCalculatorPresentation: React.FC<Props> = ({
     );
     return record?.attendance === 1;
   };
+
+  const filteredServices = services?.filter((service) =>
+    service.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <Box sx={{ p: 3 }} dir="rtl">
@@ -254,7 +274,9 @@ const DoctorSalaryCalculatorPresentation: React.FC<Props> = ({
                 onChange={onDateSelect}
                 shouldDisableDate={(date) => !isDateAvailable(date)}
                 slots={{
-                  day: CustomPickersDay as React.FC<PickersDayProps<dayjs.Dayjs>>,
+                  day: CustomPickersDay as React.FC<
+                    PickersDayProps<dayjs.Dayjs>
+                  >,
                 }}
                 slotProps={{
                   day: (props) => ({
@@ -274,44 +296,60 @@ const DoctorSalaryCalculatorPresentation: React.FC<Props> = ({
           <Typography variant="h6" gutterBottom>
             الخدمات المقدمة
           </Typography>
-          <Grid container spacing={2}>
-            {services.map((service) => (
-              <Grid item xs={12} key={service.id}>
-                <ServiceCard>
-                  <Grid container alignItems="center" spacing={2}>
-                    <Grid item xs>
-                      <Typography variant="h6">{service.name}</Typography>
-                      <Typography color="primary">
-                        {service.price} جنيه
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <ServiceQuantityControls>
-                        <IconButton
-                          onClick={() =>
-                            onServiceQuantityChange(service.id, -1)
-                          }
-                          disabled={!service.quantity}
-                          size="small"
-                        >
-                          <RemoveIcon />
-                        </IconButton>
-                        <Typography sx={{ minWidth: 40, textAlign: "center" }}>
-                          {service.quantity || 0}
+          <TextField
+            fullWidth
+            value={searchTerm}
+            variant="outlined"
+            placeholder="بحث عن الخدمات..."
+            sx={{ mb: 2 }}
+            onChange={(e) => {
+              setSearchTerm(e.target.value.toLowerCase());
+            }}
+          />
+          <ServicesGrid>
+            <Grid container spacing={2}>
+              {filteredServices.map((service) => (
+                <Grid item xs={12} key={service.id}>
+                  <ServiceCard>
+                    <Grid container alignItems="center" spacing={2}>
+                      <Grid item xs>
+                        <Typography variant="h6">{service.name}</Typography>
+                        <Typography color="primary">
+                          {service.price} جنيه
                         </Typography>
-                        <IconButton
-                          onClick={() => onServiceQuantityChange(service.id, 1)}
-                          size="small"
-                        >
-                          <AddIcon />
-                        </IconButton>
-                      </ServiceQuantityControls>
+                      </Grid>
+                      <Grid item>
+                        <ServiceQuantityControls>
+                          <IconButton
+                            onClick={() =>
+                              onServiceQuantityChange(service.id, -1)
+                            }
+                            disabled={!service.quantity}
+                            size="small"
+                          >
+                            <RemoveIcon />
+                          </IconButton>
+                          <Typography
+                            sx={{ minWidth: 40, textAlign: "center" }}
+                          >
+                            {service.quantity || 0}
+                          </Typography>
+                          <IconButton
+                            onClick={() =>
+                              onServiceQuantityChange(service.id, 1)
+                            }
+                            size="small"
+                          >
+                            <AddIcon />
+                          </IconButton>
+                        </ServiceQuantityControls>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </ServiceCard>
-              </Grid>
-            ))}
-          </Grid>
+                  </ServiceCard>
+                </Grid>
+              ))}
+            </Grid>
+          </ServicesGrid>
 
           <TotalAmountCard elevation={3}>
             <Grid container alignItems="center" justifyContent="space-between">

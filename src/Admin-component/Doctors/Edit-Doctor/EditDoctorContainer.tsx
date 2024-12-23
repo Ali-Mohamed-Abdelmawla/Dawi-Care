@@ -6,8 +6,9 @@ import EditDoctorForm from "./EditDoctorForm";
 import sweetAlertInstance from "../../../helper/SweetAlert";
 import NotFound from "../../../helper/notFound-component/Not-Found";
 import { NewClinic } from "../../PayRolls/ClinicsInterfaces";
-import dayjs from '../../../dateConfig';
+import dayjs from "../../../dateConfig";
 import Loader from "../../../helper/loading-component/loader";
+import { DayOption } from "../doctorInterfaces";
 
 const EditDoctorContainer: React.FC = () => {
   const [clinics, setClinics] = useState<NewClinic[]>([]);
@@ -34,28 +35,33 @@ const EditDoctorContainer: React.FC = () => {
     if (doctorData) {
       const formattedDoctor: DoctorFormData = {
         ...doctorData,
-        clinic: doctorData.clinic?.id, // Convert to number for DoctorFormData
+        clinic: doctorData.clinic?.id,
         clinic_id: doctorData.clinic?.id && {
           value: String(doctorData.clinic.id),
           label: String(doctorData.clinic.name),
         },
         working_days: doctorData.week_days
-          .filter((day) => day.switch_day === null) // Filter out items with null switch_day
+          .filter((day) => day.switch_day === null)
           .map((day) => ({
-            value: day.day || day.switch_day,
-            label: day.day || day.switch_day,
+            value: day.day || day.switch_day || "nothing" ,
+            label: day.day || day.switch_day || "nothing",
+            isFixed: true,
+            id: day.id || 0,
           })),
         working_hours: doctorData.week_days.reduce((acc, day) => {
+          if (!day.date) return acc;
+
           const [hours, minutes] = day.date.split(":").map(Number);
-          if (day.day !== null) {
-            acc[day.day] = { start: dayjs().hour(hours).minute(minutes) };
-          } else {
-            acc[day.switch_day as string] = {
+          const dayKey = day.day || day.switch_day;
+
+          if (dayKey) {
+            acc[dayKey] = {
               start: dayjs().hour(hours).minute(minutes),
+              id: day.id,
             };
           }
           return acc;
-        }, {} as Record<string, { start: dayjs.Dayjs }>),
+        }, {} as Record<string, { start: dayjs.Dayjs; id?: number }>),
       };
 
       setDoctor(formattedDoctor);
@@ -70,25 +76,37 @@ const EditDoctorContainer: React.FC = () => {
 
   const handleSubmit = async (updatedDoctor: DoctorFormData) => {
     setFormLoading(true);
-    console.log("sending space: ", updatedDoctor);
+    console.log(updatedDoctor);
     try {
-      const formattedDoctor: DoctorFormData = {
-        ...updatedDoctor,
-        clinic: updatedDoctor.clinic_id && parseInt(updatedDoctor.clinic_id.value, 10), // Will be undefined if no clinic_id
-      };
+      const formData = new FormData();
 
-      console.log("before senmding doctor: ", formattedDoctor);
-      console.log(formattedDoctor?.id);
-      console.log(formattedDoctor.working_hours);
+      // Basic fields
+      formData.append("name", updatedDoctor.name);
+      formData.append("national_id", updatedDoctor.national_id);
+      formData.append("phone_number", updatedDoctor.phone_number);
+      formData.append("scientific_degree", updatedDoctor.scientific_degree);
+      formData.append("fixed_salary", String(updatedDoctor.fixed_salary));
+      formData.append("clinic", String(updatedDoctor.clinic));
+      formData.append("doctor_share", String(updatedDoctor.doctor_share));
 
-      const transformed = transformWorkingHoursToObjectArray(
-        formattedDoctor.working_hours
+      // Files
+      if (updatedDoctor.profile_photo) {
+        formData.append("profile_photo", updatedDoctor.profile_photo);
+      }
+      if (updatedDoctor.union_registration) {
+        formData.append("union_registration", updatedDoctor.union_registration);
+      }
+
+      // Transform working days and hours
+      const transformedData = transformWorkingHoursToArray(
+        updatedDoctor.working_hours,
+        updatedDoctor.working_days
       );
 
-      console.log(transformed);
-      const string = transformed.map((day) => day).join(",");
-      console.log(string);
-      await updateDoctor(formattedDoctor, string);
+      formData.append("data", transformedData.join(","));
+      console.log(transformedData.join(","));
+
+      await updateDoctor(updatedDoctor, transformedData.join(","));
 
       sweetAlertInstance.fire({
         icon: "success",
@@ -133,29 +151,25 @@ const EditDoctorContainer: React.FC = () => {
 };
 
 // getting the type from doctor form data
-function transformWorkingHoursToObjectArray(
-  workingHoursObj: Record<string, { start: dayjs.Dayjs | null }>
-) {
-  const result = [];
+function transformWorkingHoursToArray(
+  workingHours: Record<string, { start: dayjs.Dayjs | null }>,
+  workingDays: DayOption[]
+): string[] {
+  const result: string[] = [];
 
-  for (const day in workingHoursObj) {
-    const startTime = workingHoursObj[day].start;
-
-    if (startTime) {
-      // Convert Dayjs to a format that Date constructor can accept
-      const dateString = startTime.format("YYYY-MM-DD HH:mm:ss");
-      const date = new Date(dateString);
-
-      // Extract only the time part (HH:mm:ss) from the Date object
-      const timePart = date.toTimeString().split(" ")[0];
-      console.log(timePart);
-
-      // Push day and extracted time part into the result array
-      result.push(day, timePart);
+  workingDays.forEach((day) => {
+    const time = workingHours[day.value]?.start;
+    if (time) {
+      if (day.id) {
+        // Existing day - include ID
+        result.push(String(day.id), day.value, time.format("HH:mm:ss"));
+      } else {
+        // New day - just day and time
+        result.push(day.value, time.format("HH:mm:ss"));
+      }
     }
-  }
+  });
 
-  console.log(result);
   return result;
 }
 
