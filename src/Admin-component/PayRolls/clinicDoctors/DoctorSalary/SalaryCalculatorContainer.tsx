@@ -11,11 +11,14 @@ import { AttendanceData } from "../../../AbsenceSubmission/AbsenceInterfaces";
 import dayjs from '../../../../dateConfig';
 
 interface AttendanceRecord {
-  attendanceId: number;
-  day: string | null;
-  switch_day: string | null;
+  id: number;
+  day: string;
   attendance: number;
-  date: string;
+  created_at: string;
+  day_id: number;
+  doctor_id: number | null;
+  employee_id: number | null;
+  revenue: number | null;
 }
 
 const DoctorSalaryCalculatorContainer: React.FC = () => {
@@ -32,14 +35,16 @@ const DoctorSalaryCalculatorContainer: React.FC = () => {
   const { addDoctorSalary } = useClinicApi();
   const { getAttendanceByPersonID } = useAbsenceApi();
 
-const transformAttendanceData = (data: AttendanceData): AttendanceRecord => (
-  {
-  attendanceId: data.attendanceId ?? -1, // Use actual ID from API if it exists
-  day: data.day,
-  switch_day: null,
-  attendance: data.attendance,
-  date: data.date
-});
+  const transformAttendanceData = (data: AttendanceData): AttendanceRecord => ({
+    id: data.id,
+    day: data.day,
+    attendance: data.attedance, // Note: fixing typo in the original interface
+    created_at: data.created_at,
+    day_id: data.day_id,
+    doctor_id: data.doctor_id,
+    employee_id: data.employee_id,
+    revenue: data.revenue
+  });
 
 // Update your useEffect:
 useEffect(() => {
@@ -57,48 +62,49 @@ useEffect(() => {
           locationState.doctor.id,
           "doctor"
         );
-        // Transform the attendance data
-        const transformedAttendance = attendanceData.map(transformAttendanceData);        
+        const transformedAttendance = attendanceData.map(transformAttendanceData);
         setAttendance(transformedAttendance);
       };
       fetchAttendance();
     }
   }
-  //eslint-disable-next-line react-hooks/exhaustive-deps
+    //eslint-disable-next-line react-hooks/exhaustive-deps
 }, [location.state]);
 
-  const handleServiceQuantityChange = (serviceId: number, change: number) => {
-    setServices(prevServices => {
-      const newServices = prevServices.map(service => {
-        if (service.id === serviceId) {
-          const newQuantity = Math.max(0, (service.quantity || 0) + change);
-          return { ...service, quantity: newQuantity };
-        }
-        return service;
-      });
-
-      // Recalculate total amount
-      const newTotal = newServices.reduce((sum, service) => 
-        sum + (service.quantity || 0) * parseFloat(service.price), 0
-      );
-      setTotalAmount(newTotal);
-
-      return newServices;
+const handleServiceQuantityChange = (serviceId: number, change: number) => {
+  setServices(prevServices => {
+    const newServices = prevServices.map(service => {
+      if (service.id === serviceId) {
+        const newQuantity = Math.max(0, (service.quantity || 0) + change);
+        return { ...service, quantity: newQuantity };
+      }
+      return service;
     });
-  };
 
-  const handleDateSelection = (date: dayjs.Dayjs | null) => {
-    if (!date) return;
-    
-    const attendanceRecord = attendance.find(
-      record => record.date === date.format("YYYY-MM-DD")
+    const newTotal = newServices.reduce((sum, service) => 
+      sum + (service.quantity || 0) * parseFloat(service.price), 0
     );
+    setTotalAmount(newTotal);
 
-    if (attendanceRecord) {
-      setSelectedDate(date);
-      setSelectedAttendanceId(attendanceRecord.attendanceId);
-    }
-  };
+    return newServices;
+  });
+};
+
+const handleDateSelection = (date: dayjs.Dayjs | null) => {
+  if (!date) return;
+
+  
+  const attendanceRecord = attendance.find(
+    record => record.created_at.substring(0, 10) === date.format("YYYY-MM-DD")
+  );
+  console.log(attendanceRecord)
+
+  if (attendanceRecord) {
+    console.log("date: ", date)
+    setSelectedDate(date);
+    setSelectedAttendanceId(attendanceRecord.id);
+  }
+};
 
   const handleSubmit = async () => {
     if (!selectedAttendanceId) {

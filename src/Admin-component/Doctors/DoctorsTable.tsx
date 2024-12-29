@@ -139,7 +139,7 @@ const ImageCell: React.FC<{ value: string; name:string; }> = ({ value, name }) =
       <Avatar
         src={value}
         alt={name}
-        sx={{ width: 40, height: 40, cursor: "pointer" }}
+        sx={{ width: 40, height: 40, cursor: "pointer", fontSize: "16px" }}
         onClick={handleOpen}
       />
       <Modal

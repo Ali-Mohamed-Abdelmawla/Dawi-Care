@@ -2,7 +2,6 @@
 
 import { NewClinic } from "../PayRolls/ClinicsInterfaces";
 
-
 export interface Employee {
   id: number;
   name: string;
@@ -10,12 +9,17 @@ export interface Employee {
   worked_days: string;
   num_working_days: number;
   weekdays: WeekDay[];
+  phoneNumber: string;
+  hire_date: string;
 }
 
 export interface Doctor {
   id: number;
   name: string;
   clinic: NewClinic;
+  phoneNumber: string;
+  hire_date: string;
+  profile_photo: string;
   week_days: WeekDay[];
 }
 
@@ -26,10 +30,15 @@ export interface PersonOption {
 }
 
 export interface AttendanceData {
-  attendanceId: number;
+  id: number;
   day: string;
-  attendance: number;
+  attedance: number;
   date: string;
+  created_at:string;
+  day_id:number;
+  doctor_id:number | null;
+  employee_id: number | null;
+  revenue: number | null;
 }
 
 export interface DayInfo {
@@ -43,17 +52,18 @@ export interface SelectOption {
 }
 
 export interface AbsencePresentationProps {
-  handleMarkAsAbsent: (date: Date, personInfo: PersonOption) => void;
+  handleMarkAsAbsent: (date: Date, personInfo: PersonOption,selectedPersonAttendance: AttendanceData[]) => void;
+  updateAbsenceStatus: (date: Date, personInfo: PersonOption,selectedPersonAttendance: AttendanceData[]) => void;
   getAttendanceByPersonID: (personID: number | undefined, personType: string) => Promise<AttendanceData[] | void>;
   selectedPersonAttendance: AttendanceData[];
-  updateAbsenceStatus: (date: Date, personInfo: PersonOption) => void;
   selectedPerson: PersonOption | null;
   personType: 'doctor' | 'employee';
   onPersonChange: (selectedOption: PersonOption | null) => void;
   onPersonTypeChange: (newPersonType: 'doctor' | 'employee') => void;
   handleSwapDaySubmit: (data: SwapDayFormData) => void;
-
-
+  people: Doctor[] | Employee[];
+  onClearSelection: () => void
+  loading: boolean
 }
 
 export interface SwapDayFormData {

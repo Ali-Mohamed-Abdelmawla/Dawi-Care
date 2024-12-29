@@ -175,6 +175,10 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
         );
     }
 
+    // Calculate if we need zoom controls (more than 6 items)
+    const needsZoom = xAxisData.length > 6;
+    const zoomEndPercent = needsZoom ? (6 / xAxisData.length) * 100 : 100;
+
     return {
       tooltip: {
         trigger: "axis",
@@ -188,44 +192,96 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
           color: theme.palette.text.primary,
         },
         formatter: (params: ECElementEvent[]) => {
-          const [revenue, servicesNumber] = params;
+          // Filter out hidden series
+          const visibleParams = params.filter(param => !param.componentSubType || param.data !== '-');
+          
+          const header = `<div style="margin-bottom: 4px">${params[0].name}</div><hr/>`;
+          
+          const rows = visibleParams.map(param => {
+            const valueDisplay = param.seriesName === "الإيرادات" 
+              ? `${Number(param.value).toLocaleString()} جنيه`
+              : `${param.value} ${Number(param.value) > 10 ? "خدمه" : "خدمات"}`;
 
-          const servicesValue =
-            typeof servicesNumber.value === "number" ? servicesNumber.value : 0;
+            return `<div style="color: ${param.color}">
+              ${param.seriesName}: ${valueDisplay}
+            </div>`;
+          }).join('');
 
-          return `
-            <div style="padding: 3px; font-family: 'Zain';">
-              <div>${revenue.name}</div>
-              <hr/>
-              <div style="color: ${theme.palette.primary.main}">
-              ${revenue.seriesName}: ${revenue.value} جنيه
-              </div>
-              <div>
-              ${servicesNumber.seriesName}: ${servicesNumber.value} ${
-            servicesValue > 10 ? "خدمه" : "خدمات"
-          }
-              </div>
-            </div>
-          `;
+          return `<div style="padding: 3px; font-family: 'Zain';">
+            ${header}
+            ${rows}
+          </div>`;
         },
       },
       legend: {
         data: ["الإيرادات", "عدد الخدمات"],
+        selectedMode: true,
+        selected: {
+          "الإيرادات": true,
+          "عدد الخدمات": true
+        },
+        bottom: 0
       },
       grid: {
         left: "3%",
         right: "4%",
-        bottom: "3%",
+        bottom: needsZoom ? "15%" : "10%",
         containLabel: true,
       },
+      dataZoom: [
+        {
+          type: 'slider',
+          show: needsZoom,
+          xAxisIndex: 0,
+          start: 0,
+          end: zoomEndPercent,
+          height: 20,
+          bottom: 5,
+          borderColor: theme.palette.divider,
+          textStyle: {
+            color: theme.palette.text.primary,
+          },
+          handleStyle: {
+            color: theme.palette.primary.main,
+            borderColor: theme.palette.primary.main,
+          },
+          moveHandleStyle: {
+            color: theme.palette.primary.main,
+          },
+          selectedDataBackground: {
+            lineStyle: {
+              color: theme.palette.primary.main,
+            },
+            areaStyle: {
+              color: theme.palette.primary.light,
+            },
+          },
+        },
+        {
+          type: 'inside',
+          xAxisIndex: 0,
+          start: 0,
+          end: zoomEndPercent,
+          zoomOnMouseWheel: 'shift',
+          moveOnMouseMove: true,
+        }
+      ],
       xAxis: [
         {
           type: "category",
           data: xAxisData,
           axisLabel: {
-            rotate: isMobile ? 45 : 0,
+            fontSize: 15,
             interval: 0,
+            overflow: 'truncate',
+            width: 120,
+            formatter: (value: string) => {
+              return value.length > 15 ? value.substr(0, 12) + '...' : value;
+            }
           },
+          axisTick: {
+            alignWithLabel: true
+          }
         },
       ],
       yAxis: [
@@ -233,7 +289,9 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
           type: "value",
           name: "الإيرادات",
           axisLabel: {
-            formatter: "{value} جنيه",
+            formatter: (value: number) => {
+              return value.toLocaleString() + ' جنيه';
+            }
           },
         },
         {
@@ -250,12 +308,28 @@ const ClinicStatsDashboard: React.FC<ClinicStatsDashboardProps> = ({
           type: "bar",
           yAxisIndex: 0,
           data: revenueData,
+          emphasis: {
+            focus: 'series'
+          },
+          itemStyle: {
+            color: theme.palette.primary.light
+          },
+          large: true,
+          largeThreshold: 100
         },
         {
           name: "عدد الخدمات",
           type: "line",
           yAxisIndex: 1,
           data: countData,
+          emphasis: {
+            focus: 'series'
+          },
+          itemStyle: {
+            color: theme.palette.secondary.dark
+          },
+          large: true,
+          largeThreshold: 100
         },
       ],
     };

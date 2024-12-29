@@ -44,13 +44,12 @@ import {
 import axiosInstance from "../helper/auth/axios";
 import Loader from "../helper/loading-component/loader";
 import BreadcrumbsComponent from "./Bread-Crumd/Bread-crumb-component";
+import { Users, Hospital } from "lucide-react";
 
 // Types
 interface UserDataProps {
-  
-    name?: string;
-    email?: string;
-  
+  name?: string;
+  email?: string;
 }
 
 interface AppBarProps extends MuiAppBarProps {
@@ -156,11 +155,12 @@ const MenuGroupComponent: React.FC<{
       <React.Fragment key={item.text}>
         <ListItem disablePadding sx={{ display: "block" }}>
           <ListItemButton
-            onClick={
-              item.children
-                ? () => handleToggle(item.text)
-                : () => handleNavigation(item.path)
-            }
+            onClick={() => {
+              // Only handle navigation if there are no children
+              if (!item.children) {
+                handleNavigation(item.path);
+              }
+            }}
             sx={{
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
@@ -187,7 +187,10 @@ const MenuGroupComponent: React.FC<{
             {item.children && (
               <IconButton
                 edge="end"
-                onClick={() => handleToggle(item.text)}
+                onClick={(e) => {
+                  e.stopPropagation(); // Stop event from bubbling up
+                  handleToggle(item.text);
+                }}
                 sx={{ ml: "auto" }}
               >
                 {expanded === item.text ? (
@@ -215,7 +218,9 @@ const MenuGroupComponent: React.FC<{
                     onClick={() => handleNavigation(child.path)}
                     selected={location.pathname === child.path}
                   >
-                    <ListItemIcon sx = {{minWidth: 35}}>{child.icon}</ListItemIcon>
+                    <ListItemIcon sx={{ minWidth: 35 }}>
+                      {child.icon}
+                    </ListItemIcon>
                     <ListItemText primary={child.text} />
                   </ListItemButton>
                 </ListItem>
@@ -252,7 +257,7 @@ const TheOne: React.FC = () => {
         },
         {
           text: "المستخدمون",
-          icon: <PeopleIcon />,
+          icon: <Users />,
           path: "/SystemAdmin/Users",
         },
         {
@@ -304,7 +309,7 @@ const TheOne: React.FC = () => {
         },
         {
           text: "اضافة عيادة",
-          icon: <AddClinic />,
+          icon: <Hospital />,
           path: "DoctorsPayroll/AddClinic",
         },
         {
@@ -333,39 +338,43 @@ const TheOne: React.FC = () => {
       });
       return new Date(cairoDate);
     };
-  
+
     const takeAttendance = async () => {
       try {
         // Add timestamp to request for debugging
         const cairoTime = getCurrentEgyptDate().toISOString();
         const response = await axiosInstance.post("/api/takeattedence", {
-          timestamp: cairoTime  // Send timestamp for verification
+          timestamp: cairoTime, // Send timestamp for verification
         });
-        console.log("Attendance taken at (Cairo time):", cairoTime);
+        console.log("Attendance taken at (Cairo time): ", cairoTime);
+        console.log("response is: ", response);
       } catch (error) {
         console.error("Error taking attendance:", error);
       }
     };
-  
+
     const checkAndTakeAttendance = () => {
       const currentDate = getCurrentEgyptDate();
       const lastAttendanceDate = localStorage.getItem("lastAttendanceDate");
-      
-      if (!lastAttendanceDate || !isSameDay(new Date(lastAttendanceDate), currentDate)) {
+
+      if (
+        !lastAttendanceDate ||
+        !isSameDay(new Date(lastAttendanceDate), currentDate)
+      ) {
         takeAttendance();
         localStorage.setItem("lastAttendanceDate", currentDate.toISOString());
       }
     };
-  
+
     // Check every minute
     const timer = setInterval(checkAndTakeAttendance, 60000);
-    
+
     // Initial check
     checkAndTakeAttendance();
-  
+
     return () => clearInterval(timer);
   }, []);
-  
+
   // Helper function to compare dates
   function isSameDay(date1: Date, date2: Date): boolean {
     return (
@@ -376,15 +385,10 @@ const TheOne: React.FC = () => {
   }
 
   useEffect(() => {
-    if (userData?.name) {
-      sessionStorage.setItem("userData", JSON.stringify(userData));
-    }
-  }, [userData]);
-
-  useEffect(() => {
     const storedUserData = sessionStorage.getItem("userData");
+    console.log(storedUserData);
     if (storedUserData) {
-      // setUserData(JSON.parse(storedUserData));
+      setUserData(JSON.parse(storedUserData));
     }
   }, []);
 
@@ -479,14 +483,10 @@ const TheOne: React.FC = () => {
               onClose={handleClose}
             >
               <MenuItem>
-                <Typography>
-                  اسم المستخدم: {userData?.name}
-                </Typography>
+                <Typography>اسم المستخدم: {userData?.name}</Typography>
               </MenuItem>
               <MenuItem>
-                <Typography>
-                  البريد الالكتروني: {userData?.email}
-                </Typography>
+                <Typography>البريد الالكتروني: {userData?.email}</Typography>
               </MenuItem>
               <Divider />
               <MenuItem onClick={handleLogout}>

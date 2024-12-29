@@ -6,7 +6,6 @@ import dayjs from '../../dateConfig';
 export interface DayOption {
   value: string;
   label: string;
-  isFixed?: boolean;
   id?: number;
 }
 export interface Doctor {

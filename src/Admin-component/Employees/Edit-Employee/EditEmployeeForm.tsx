@@ -14,7 +14,7 @@ import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { EmployeeFormData, EditEmployeeFormProps } from "../employeeInterfaces";
 import { useFormValidation } from "../useFormValidation";
-import Select, { StylesConfig, ActionMeta, MultiValue } from "react-select";
+import Select, { StylesConfig, MultiValue } from "react-select";
 import { workingDaysOptions } from "../EmployeeUtils";
 
 export interface EmployeeDayOption {
@@ -24,19 +24,7 @@ export interface EmployeeDayOption {
   id?: number;
 }
 
-const styles: StylesConfig<EmployeeDayOption, true> = {
-  multiValue: (base, state) => {
-    return state.data.isFixed ? { ...base, backgroundColor: "#e0e0e0" } : base;
-  },
-  multiValueLabel: (base, state) => {
-    return state.data.isFixed
-      ? { ...base, fontWeight: "bold", color: "#333", paddingRight: 6 }
-      : base;
-  },
-  multiValueRemove: (base, state) => {
-    return state.data.isFixed ? { ...base, display: "none" } : base;
-  },
-};
+const styles: StylesConfig<EmployeeDayOption, true> = {};
 
 const EditEmployeeForm: React.FC<EditEmployeeFormProps> = ({
   employee,
@@ -49,7 +37,6 @@ const EditEmployeeForm: React.FC<EditEmployeeFormProps> = ({
     handleSubmit,
     formState: { errors },
     setValue,
-    getValues,
   } = useForm<EmployeeFormData>({
     defaultValues: employee,
   });
@@ -72,32 +59,12 @@ const EditEmployeeForm: React.FC<EditEmployeeFormProps> = ({
   const { validateNationalId, validatePhoneNumber, validateSalary } =
     useFormValidation();
 
-  const handleWorkingDaysChange = (
-    newValue: MultiValue<EmployeeDayOption>,
-    actionMeta: ActionMeta<EmployeeDayOption>
-  ) => {
-    const currentValue = getValues("working_days");
+    const handleWorkingDaysChange = (
+      newValue: MultiValue<EmployeeDayOption>
+    ) => {
+      setValue("working_days", Array.from(newValue));
+    };
 
-    switch (actionMeta.action) {
-      case "remove-value":
-      case "pop-value":
-        if (actionMeta.removedValue.isFixed) {
-          return;
-        }
-        break;
-      case "clear":
-        newValue = currentValue.filter((v: EmployeeDayOption) => v.isFixed);
-        break;
-    }
-
-    setValue("working_days", orderOptions(newValue));
-  };
-
-  const orderOptions = (values: readonly EmployeeDayOption[]) => {
-    return values
-      .filter((v) => v.isFixed)
-      .concat(values.filter((v) => !v.isFixed));
-  };
 
   const onFormSubmit = (data: EmployeeFormData) => {
     onSubmit(data);
@@ -198,32 +165,30 @@ const EditEmployeeForm: React.FC<EditEmployeeFormProps> = ({
             </Grid>
 
             <Grid item xs={12}>
-              <Controller
-                name="working_days"
-                control={control}
-                rules={{ required: "أيام العمل مطلوبة" }}
-                render={({ field }) => (
-                  <Box>
-                    <Select
-                      {...field}
-                      options={workingDaysOptions}
-                      isMulti
-                      styles={styles}
-                      placeholder="اختر أيام العمل"
-                      onChange={handleWorkingDaysChange}
-                      isClearable={field.value?.some(
-                        (v: EmployeeDayOption) => !v.isFixed
-                      )}
-                      value={field.value}
-                    />
-                    {errors.working_days && (
-                      <Typography color="error">
-                        {errors.working_days.message}
-                      </Typography>
-                    )}
-                  </Box>
-                )}
-              />
+            <Controller
+  name="working_days"
+  control={control}
+  rules={{ required: "أيام العمل مطلوبة" }}
+  render={({ field }) => (
+    <Box>
+      <Select
+        {...field}
+        options={workingDaysOptions}
+        isMulti
+        styles={styles}
+        placeholder="اختر أيام العمل"
+        onChange={handleWorkingDaysChange}
+        isClearable={true}
+        value={field.value}
+      />
+      {errors.working_days && (
+        <Typography color="error">
+          {errors.working_days.message}
+        </Typography>
+      )}
+    </Box>
+  )}
+/>
             </Grid>
             {selectedDays &&
               selectedDays.map(

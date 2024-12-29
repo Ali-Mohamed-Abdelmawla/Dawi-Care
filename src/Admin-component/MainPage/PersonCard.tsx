@@ -90,9 +90,10 @@ export const PersonCard: React.FC<PersonCardProps> = ({
             sx={{
               width: 80,
               height: 80,
-              border: "4px solid white",
+              border: "3px solid white",
               bgcolor: bannerColor,
               color: "black",
+              boxShadow: 2,
             }}
           />
           <Typography variant="h6" sx={{ mt: 2 }}>

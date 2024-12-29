@@ -34,7 +34,8 @@ const useLogin = () => {
       }
 
       sessionStorage.setItem("accessToken", response.data.token);
-      // sessionStorage.setItem("userData", response.data.data);
+      console.log(response.data.data)
+      sessionStorage.setItem("userData", JSON.stringify(response.data.data));
 
       return response.data;
     } catch (error) {

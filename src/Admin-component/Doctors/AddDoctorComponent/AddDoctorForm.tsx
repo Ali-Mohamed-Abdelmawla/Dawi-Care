@@ -26,13 +26,11 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import { DoctorFormData } from "./types";
-import {
-  workingDaysOptions,
-} from "./constants";
+import { workingDaysOptions } from "./constants";
 import { validateFileSize, validateFileType } from "./utils";
 
 import { NewClinic } from "../../PayRolls/ClinicsInterfaces";
-// import { Option } from "./types";
+import AvatarUpload from "../../../helper/AvatarUpload/AvatarUpload";
 
 interface AddDoctorFormProps {
   clinics: NewClinic[];
@@ -54,7 +52,6 @@ const AddDoctorForm: React.FC<AddDoctorFormProps> = ({
   onSubmit,
   loading,
   profileImageUrl,
-  handleOpenModal,
   handleCloseModal,
   openModal,
   handleProfileImageChange,
@@ -100,26 +97,28 @@ const AddDoctorForm: React.FC<AddDoctorFormProps> = ({
       >
         إضافة طبيب
       </Typography>
-      {profileImageUrl && (
-        <Box
-          sx={{ position: "relative", cursor: "pointer" }}
-          onClick={handleOpenModal}
-        >
-          <Box
-            component="img"
-            sx={{
-              width: 100,
-              height: 100,
-              borderRadius: "50%",
-              objectFit: "cover",
-            }}
-            alt="صورة الطبيب"
-            src={profileImageUrl}
-          />
-        </Box>
-      )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
+          <Grid item xs={12} sm={6}>
+            <AvatarUpload<DoctorFormData>
+              name="profile_photo"
+              control={control}
+              currentImageUrl={profileImageUrl}
+              onFileChange={handleProfileImageChange}
+              rules={{
+                required: "الصورة الشخصية مطلوبة",
+                validate: {
+                  fileSize: validateFileSize,
+                  fileType: (file: File) =>
+                    validateFileType(file, [
+                      "image/jpeg",
+                      "image/png",
+                      "image/jpg",
+                    ]),
+                },
+              }}
+            />
+          </Grid>
           <Grid item xs={12} sm={6}>
             <Controller
               name="name"
@@ -205,44 +204,7 @@ const AddDoctorForm: React.FC<AddDoctorFormProps> = ({
               )}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Controller
-              name="profile_photo"
-              control={control}
-              defaultValue={null}
-              rules={{
-                required: "الصورة الشخصية مطلوبة",
-                validate: {
-                  fileSize: validateFileSize,
-                  fileType: (file) =>
-                    validateFileType(file, [
-                      "image/jpeg",
-                      "image/png",
-                      "image/jpg",
-                    ]),
-                },
-              }}
-              render={({ field: { onChange }, fieldState: { error } }) => (
-                <TextField
-                  type="file"
-                  onChange={(e) => {
-                    const files = (e.target as HTMLInputElement).files;
-                    if (files && files[0]) {
-                      onChange(files[0]);
-                      handleProfileImageChange(files[0]);
-                    }
-                  }}
-                  fullWidth
-                  margin="normal"
-                  error={!!error}
-                  helperText={error?.message}
-                  InputLabelProps={{ shrink: true }}
-                  label="الصورة الشخصية"
-                  variant="outlined"
-                />
-              )}
-            />
-          </Grid>
+
           <Grid item xs={12} sm={6}>
             <Controller
               name="union_registration"

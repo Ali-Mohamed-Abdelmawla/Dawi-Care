@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Paper,
@@ -30,13 +30,17 @@ import { styled } from "@mui/material/styles";
 import { Doctor } from "../../../Doctors/doctorInterfaces";
 import { WeekDay } from "../../../AbsenceSubmission/AbsenceInterfaces";
 import { Service } from "../../ClinicsInterfaces";
+// import { AttendanceData } from "../../../AbsenceSubmission/AbsenceInterfaces";
 
 interface AttendanceRecord {
-  attendanceId: number;
-  day: string | null;
-  switch_day: string | null;
+  id: number;
+  day: string;
   attendance: number;
-  date: string;
+  created_at: string;
+  day_id: number;
+  doctor_id: number | null;
+  employee_id: number | null;
+  revenue: number | null;
 }
 
 interface Props {
@@ -137,7 +141,6 @@ const CustomPickersDay = (
   }
 ) => {
   const { day, isAbsent, isPresent, ...other } = props;
-  console.log("day: ", day, "isAbsent: ", isAbsent, "isPresent: ", isPresent);
 
   return (
     <PickersDay
@@ -175,19 +178,22 @@ const DoctorSalaryCalculatorPresentation: React.FC<Props> = ({
   isSubmitting,
   totalAmount,
 }) => {
+
+  useEffect(()=>{console.log(attendance)},[attendance])
   const getRegularWorkDays = (weekDays: WeekDay[]) => {
     return weekDays.filter((day) => !day.switch_day).length;
   };
   const [searchTerm, setSearchTerm] = useState<string>("");
+
   const isDateAvailable = (date: dayjs.Dayjs) => {
     return attendance.some(
-      (record) => record.date === date.format("YYYY-MM-DD")
+      (record) => dayjs(record.created_at).format("YYYY-MM-DD") === date.format("YYYY-MM-DD")
     );
   };
 
   const getAttendanceStatus = (date: dayjs.Dayjs) => {
     const record = attendance.find(
-      (record) => record.date === date.format("YYYY-MM-DD")
+      (record) => dayjs(record.created_at).format("YYYY-MM-DD") === date.format("YYYY-MM-DD")
     );
     return record?.attendance === 1;
   };

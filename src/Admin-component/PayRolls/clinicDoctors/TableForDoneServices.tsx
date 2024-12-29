@@ -15,6 +15,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
@@ -54,13 +56,13 @@ const ServiceCell = styled(TableCell)(({ theme }) => ({
   border: "1px solid lightgray",
 }));
 
-const DateCell = styled(TableCell)(({theme}) => ({
+const DateCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: "lightblue",
   textAlign: "center",
   border: "1px solid lightgray",
 }));
 
-const MonthTotalCell = styled(TableCell)(({theme}) => ({
+const MonthTotalCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.light,
   textAlign: "center",
   border: "1px solid lightgray",
@@ -69,23 +71,38 @@ const MonthTotalCell = styled(TableCell)(({theme}) => ({
 // New styled component for the filters container
 const FiltersContainer = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(2),
-  display: 'flex',
+  display: "flex",
+  flexDirection: "column",
   gap: theme.spacing(2),
   padding: theme.spacing(2),
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
 }));
 
-const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) => {
+const ServiceTable: React.FC<ServiceTableProps> = ({
+  data,
+  services,
+  doctors,
+}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [expandedYears, setExpandedYears] = useState<{ [key: string]: boolean }>({});
-  const [expandedMonths, setExpandedMonths] = useState<{ [key: string]: { [key: string]: boolean } }>({});
-  
+  const [expandedYears, setExpandedYears] = useState<{
+    [key: string]: boolean;
+  }>({});
+  const [expandedMonths, setExpandedMonths] = useState<{
+    [key: string]: { [key: string]: boolean };
+  }>({});
+
   // Add filter states
   const [selectedDoctor, setSelectedDoctor] = useState<string>("");
   const [selectedService, setSelectedService] = useState<string>("");
-  const [dateFilter, setDateFilter] = useState<string>("");
+
+  const [dateFilterMode, setDateFilterMode] = useState<"single" | "range">(
+    "single"
+  );
+  const [singleDate, setSingleDate] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   // Create lookup maps for services and doctors
   const serviceMap = useMemo(() => {
@@ -108,15 +125,32 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) 
   const groupedData = useMemo(() => {
     // Apply filters
     let filteredData = data;
-    
+
     if (selectedDoctor) {
-      filteredData = filteredData.filter(item => item.doctor_id.toString() === selectedDoctor);
+      filteredData = filteredData.filter(
+        (item) => item.doctor_id.toString() === selectedDoctor
+      );
     }
     if (selectedService) {
-      filteredData = filteredData.filter(item => item.service_id.toString() === selectedService);
+      filteredData = filteredData.filter(
+        (item) => item.service_id.toString() === selectedService
+      );
     }
-    if (dateFilter) {
-      filteredData = filteredData.filter(item => item.created_at.includes(dateFilter));
+    // Date filtering based on mode
+    if (dateFilterMode === "single" && singleDate) {
+      filteredData = filteredData.filter(
+        (item) => item.created_at.split("T")[0] === singleDate
+      );
+    } else if (dateFilterMode === "range" && (startDate || endDate)) {
+      filteredData = filteredData.filter((item) => {
+        // Get just the date part of the item's created_at
+        const itemDate = item.created_at.split("T")[0];
+
+        return (
+          (!startDate || itemDate >= startDate) &&
+          (!endDate || itemDate <= endDate)
+        );
+      });
     }
 
     // Group the filtered data
@@ -142,7 +176,28 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) 
     });
 
     return grouped;
-  }, [data, selectedDoctor, selectedService, dateFilter]);
+  }, [
+    data,
+    selectedDoctor,
+    selectedService,
+    dateFilterMode,
+    singleDate,
+    startDate,
+    endDate,
+  ]);
+
+  const handleDateModeChange = (
+    _: React.MouseEvent<HTMLElement>,
+    newMode: "single" | "range" | null
+  ) => {
+    if (newMode !== null) {
+      setDateFilterMode(newMode);
+      // Clear all date filters when switching modes
+      setSingleDate("");
+      setStartDate("");
+      setEndDate("");
+    }
+  };
 
   const toggleYearExpansion = (year: string) => {
     setExpandedYears((prev) => ({ ...prev, [year]: !prev[year] }));
@@ -161,14 +216,22 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) 
   const renderDateRows = (services: DoneService[]) =>
     services.map((service) => (
       <TableRow key={service.id}>
-        <ServiceCell>{serviceMap[service.service_id] || "Unknown Service"}</ServiceCell>
-        <ServiceCell>{doctorMap[service.doctor_id] || "Unknown Doctor"}</ServiceCell>
+        <ServiceCell>
+          {serviceMap[service.service_id] || "Unknown Service"}
+        </ServiceCell>
+        <ServiceCell>
+          {doctorMap[service.doctor_id] || "Unknown Doctor"}
+        </ServiceCell>
         <ServiceCell>{service.total_cost}</ServiceCell>
         <ServiceCell>{service.count}</ServiceCell>
       </TableRow>
     ));
 
-  const renderMonthDetails = (year: string, month: string, monthData: { [date: string]: DoneService[] }) => {
+  const renderMonthDetails = (
+    year: string,
+    month: string,
+    monthData: { [date: string]: DoneService[] }
+  ) => {
     const isMonthExpanded = expandedMonths[year]?.[month];
 
     let totalCost = 0;
@@ -184,8 +247,15 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) 
       <React.Fragment key={`${year}-${month}`}>
         <TableRow>
           <StyledTableCell colSpan={4}>
-            <IconButton onClick={() => toggleMonthExpansion(year, month)} size="small">
-              {isMonthExpanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            <IconButton
+              onClick={() => toggleMonthExpansion(year, month)}
+              size="small"
+            >
+              {isMonthExpanded ? (
+                <KeyboardArrowUpIcon />
+              ) : (
+                <KeyboardArrowDownIcon />
+              )}
             </IconButton>
             الشهر {month}
           </StyledTableCell>
@@ -211,53 +281,95 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) 
   };
 
   const yearKeys = Object.keys(groupedData);
-  const displayedYears = yearKeys.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const displayedYears = yearKeys.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   return (
     <Box>
       {/* Filters */}
       <FiltersContainer>
-        <FormControl fullWidth size="small">
-          <InputLabel>الطبيب</InputLabel>
-          <Select
-            value={selectedDoctor}
-            onChange={(e) => setSelectedDoctor(e.target.value)}
-            label="الطبيب"
-          >
-            <MenuItem value="">الكل</MenuItem>
-            {doctors.map((doctor) => (
-              <MenuItem key={doctor.id} value={doctor.id.toString()}>
-                {doctor.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+          <FormControl fullWidth size="small">
+            <InputLabel>الطبيب</InputLabel>
+            <Select
+              value={selectedDoctor}
+              onChange={(e) => setSelectedDoctor(e.target.value)}
+              label="الطبيب"
+            >
+              <MenuItem value="">الكل</MenuItem>
+              {doctors.map((doctor) => (
+                <MenuItem key={doctor.id} value={doctor.id.toString()}>
+                  {doctor.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        <FormControl fullWidth size="small">
-          <InputLabel>الخدمة</InputLabel>
-          <Select
-            value={selectedService}
-            onChange={(e) => setSelectedService(e.target.value)}
-            label="الخدمة"
-          >
-            <MenuItem value="">الكل</MenuItem>
-            {services.map((service) => (
-              <MenuItem key={service.id} value={service.id.toString()}>
-                {service.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          <FormControl fullWidth size="small">
+            <InputLabel>الخدمة</InputLabel>
+            <Select
+              value={selectedService}
+              onChange={(e) => setSelectedService(e.target.value)}
+              label="الخدمة"
+            >
+              <MenuItem value="">الكل</MenuItem>
+              {services.map((service) => (
+                <MenuItem key={service.id} value={service.id.toString()}>
+                  {service.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
 
-        <TextField
-          fullWidth
-          size="small"
-          type="date"
-          label="التاريخ"
-          value={dateFilter}
-          onChange={(e) => setDateFilter(e.target.value)}
-          InputLabelProps={{ shrink: true }}
-        />
+        <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+          <ToggleButtonGroup
+            value={dateFilterMode}
+            exclusive
+            onChange={handleDateModeChange}
+            size="small"
+          >
+            <ToggleButton value="single">يوم واحد</ToggleButton>
+            <ToggleButton value="range">فترة زمنية</ToggleButton>
+          </ToggleButtonGroup>
+
+          {dateFilterMode === "single" ? (
+            <Box>
+            <TextField
+              fullWidth
+              size="small"
+              type="date"
+              label="التاريخ"
+              value={singleDate}
+              onChange={(e) => setSingleDate(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+            />
+            </Box>
+          ) : (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <TextField
+                fullWidth
+                size="small"
+                type="date"
+                label="من تاريخ"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+              />
+              <TextField
+                fullWidth
+                size="small"
+                type="date"
+                label="إلى تاريخ"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+              />
+            </Box>
+          )}
+        </Box>
       </FiltersContainer>
 
       {/* Original Table */}
@@ -276,8 +388,15 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) 
               <React.Fragment key={year}>
                 <TableRow>
                   <StyledTableCell colSpan={4}>
-                    <IconButton onClick={() => toggleYearExpansion(year)} size="small">
-                      {expandedYears[year] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    <IconButton
+                      onClick={() => toggleYearExpansion(year)}
+                      size="small"
+                    >
+                      {expandedYears[year] ? (
+                        <KeyboardArrowUpIcon />
+                      ) : (
+                        <KeyboardArrowDownIcon />
+                      )}
                     </IconButton>
                     السنة {year}
                   </StyledTableCell>
@@ -291,14 +410,14 @@ const ServiceTable: React.FC<ServiceTableProps> = ({ data, services, doctors }) 
           </TableBody>
         </Table>
       </TableContainer>
-      
+
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={yearKeys.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onPageChange={(e, newPage) => setPage(newPage)}
+        onPageChange={(_, newPage) => setPage(newPage)}
         onRowsPerPageChange={(e) => {
           setRowsPerPage(parseInt(e.target.value, 10));
           setPage(0);

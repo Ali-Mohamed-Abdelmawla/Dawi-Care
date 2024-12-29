@@ -17,6 +17,7 @@ const StatisticsContainer: React.FC = () => {
     handleViewTypeChange,
     handlePersonTypeChange,
     handlePersonChange,
+    allSalaries,
   } = useStatisticsApi();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -24,6 +25,7 @@ const StatisticsContainer: React.FC = () => {
   const { getAllEmployees } = useEmployeeApi();
 
   const [people, setPeople] = useState<PersonType[]>([]);
+  const [allSalaryData, setAllSalaryData] = useState<SalaryData[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   React.useEffect(() => {
@@ -32,10 +34,13 @@ const StatisticsContainer: React.FC = () => {
       try {
         setLoading(true);
         const data =
-          personType === "doctor"
+          viewType === "clinics" || personType === "doctor"
             ? await getAllDoctors()
             : await getAllEmployees();
+
+        const fetchedSalaries = await allSalaries();
         setPeople(data);
+        setAllSalaryData(fetchedSalaries);
       } catch (error) {
         console.error(`Error fetching ${personType}s:`, error);
       } finally {
@@ -81,6 +86,7 @@ const StatisticsContainer: React.FC = () => {
       handleSalaryUpdate={handleSalaryUpdate}
       people={filteredPeople}
       loading={loading}
+      allSalaryData={allSalaryData}
     />
   );
 };

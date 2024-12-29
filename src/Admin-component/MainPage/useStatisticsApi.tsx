@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { PersonOption } from "../AbsenceSubmission/AbsenceInterfaces";
-import { AttendanceData, SalaryData } from "./Statistics-Interfaces";
+import { SalaryData } from "./Statistics-Interfaces";
+import { AttendanceData } from "../AbsenceSubmission/AbsenceInterfaces";
 import axiosInstance from "../../helper/auth/axios";
 import sweetAlertInstance from "../../helper/SweetAlert";
 
@@ -11,18 +12,18 @@ const useStatisticsApi = () => {
     null
   );
   const [personType, setPersonType] = useState<"doctor" | "employee">("doctor");
-  const [attendanceData, setAttendanceData] = useState<AttendanceData | null>(
+  const [attendanceData, setAttendanceData] = useState<AttendanceData[] | null>(
     null
   );
   const [salaryData, setSalaryData] = useState<SalaryData[] | null>(null);
   const [noDataMessage, setNoDataMessage] = useState<string | null>(null);
-  const [viewType, setViewType] = useState<"statistics" | "salary">(
-    "statistics"
+  const [viewType, setViewType] = useState<"statistics" | "salary" | "clinics">(
+    "clinics"
   );
   const accessToken = sessionStorage.getItem("accessToken");
 
   const handleViewTypeChange = (
-    newValue: "statistics" | "salary"
+    newValue: "statistics" | "salary" | "clinics"
   ) => {
     setViewType(newValue);
     setSelectedPerson(null);
@@ -58,6 +59,7 @@ const useStatisticsApi = () => {
         },
       });
       setSalaryData(response.data);
+      return response.data
     } catch (error) {
       console.error(error);
       sweetAlertInstance.fire({
@@ -86,8 +88,8 @@ const useStatisticsApi = () => {
           })
           .then((response) => {
             if (
-              response.data?.attendance_data &&
-              response.data?.attendance_data.length > 0
+              response?.data &&
+              response?.data.length > 0
             ) {
               setAttendanceData(response.data);
               setNoDataMessage(null);
@@ -154,6 +156,21 @@ const useStatisticsApi = () => {
     }
   }
 
+  const allSalaries = async() => {
+    try{
+      const response = await axiosInstance.get(`/api/all_salary`,{
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch(error){
+      console.error('Error marking salary as paid:', error);
+      throw error;
+    }
+  }
+
   return {
     selectedPerson,
     personType,
@@ -167,7 +184,9 @@ const useStatisticsApi = () => {
     handlePersonChange,
     totalSalaryEquation,
     markAsPaid,
-    showDeductionBySalaryId
+    showDeductionBySalaryId,
+    allSalaries,
+    fetchSalaryData,
   };
 };
 

@@ -298,6 +298,8 @@ export const useClinicApi = () => {
         status: "failed",
         data: error,
       };
+    } finally {
+      navigate("/SystemAdmin/EmployeesDeduction")
     }
   };
 

@@ -1,17 +1,10 @@
 import { PersonOption } from "../AbsenceSubmission/AbsenceInterfaces";
 import { Doctor } from "../Doctors/doctorInterfaces";
 import { Employee } from "../Employees/employeeInterfaces";
+import { AttendanceData } from "../AbsenceSubmission/AbsenceInterfaces";
+
 
 export type PersonType = Doctor | Employee;
-
-export interface AttendanceData {
-  name: string;
-  attendance_data: {
-    day: string;
-    attendance: number;
-    date: string;
-  }[];
-}
 
 export interface SalaryData {
   id: number;
@@ -19,6 +12,7 @@ export interface SalaryData {
   employee_id: number | null;
   total_salary: string;
   num_worked_days: number;
+  custom_deduction: string
   month: number;
   year: number;
   created_at: string;
@@ -31,12 +25,13 @@ export interface SalaryData {
 export interface StatisticsPresentationProps {
   selectedPerson: PersonOption | null;
   personType: "doctor" | "employee";
-  viewType: "statistics" | "salary";
-  attendanceData: AttendanceData | null;
+  viewType: "statistics" | "salary" | "clinics";
+  attendanceData: AttendanceData[] | null;
   salaryData: SalaryData[] | null;
+  allSalaryData: SalaryData[];
   noDataMessage: string | null;
   handleViewTypeChange: (
-    newValue: "statistics" | "salary"
+    newValue: "statistics" | "salary" | "clinics"
   ) => void;
   handlePersonTypeChange: (
     event: React.SyntheticEvent,

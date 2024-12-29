@@ -16,13 +16,9 @@ import {
   KeyboardArrowUp as KeyboardArrowUpIcon,
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
+import { AttendanceData } from "../../Admin-component/AbsenceSubmission/AbsenceInterfaces";
+// Updated Interface
 
-// Interface definitions
-interface AttendanceData {
-  day: string;
-  attendance: number;
-  date: string;
-}
 
 interface AttendanceTableProps {
   attendanceData: AttendanceData[];
@@ -39,20 +35,20 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   zIndex: 10,
 }));
 
-const AttendanceCell = styled(TableCell)<{ attendance: number | null }>(
-  ({ theme, attendance }) => ({
+const AttendanceCell = styled(TableCell)<{ attedance: number | null }>(
+  ({ theme, attedance }) => ({
     backgroundColor:
-      attendance === 1
+      attedance === 1
         ? theme.palette.success.main
-        : attendance === 0
+        : attedance === 0
         ? theme.palette.error.main
         : theme.palette.common.white,
     color:
-      attendance === 1 || attendance === 0
+      attedance === 1 || attedance === 0
         ? theme.palette.common.black
         : theme.palette.text.primary,
     textAlign: "center",
-    border: attendance === 1 || attendance === 0 ? "1px solid black" : "",
+    border: attedance === 1 || attedance === 0 ? "1px solid black" : "",
   })
 );
 
@@ -98,10 +94,9 @@ const YearlyAttendanceTable: React.FC<AttendanceTableProps> = ({
     [key: string]: { [key: string]: boolean };
   }>({});
 
-  // Enhanced data grouping logic
   const yearlyData = useMemo(() => {
     const sortedData = [...attendanceData].sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     );
 
     const groupedData: {
@@ -118,13 +113,12 @@ const YearlyAttendanceTable: React.FC<AttendanceTableProps> = ({
     } = {};
 
     sortedData.forEach((item) => {
-      const date = new Date(item.date);
+      const date = new Date(item.created_at);
       const yearKey = date.getFullYear().toString();
       const monthKey = `${date.getMonth() + 1}`;
       const weekNumber = Math.ceil(date.getDate() / 7);
       const dayOfWeek = date.getDay();
 
-      // Initialize nested structures
       if (!groupedData[yearKey]) groupedData[yearKey] = {};
       if (!groupedData[yearKey][monthKey]) {
         groupedData[yearKey][monthKey] = {
@@ -134,13 +128,11 @@ const YearlyAttendanceTable: React.FC<AttendanceTableProps> = ({
         };
       }
 
-      // Track attendance statistics
       groupedData[yearKey][monthKey].totalDays++;
-      if (item.attendance === 1) {
+      if (item.attedance === 1) {
         groupedData[yearKey][monthKey].presentDays++;
       }
 
-      // Find or create week entry
       let weekEntry = groupedData[yearKey][monthKey].weeks.find(
         (w) => w.weekNumber === weekNumber
       );
@@ -153,7 +145,6 @@ const YearlyAttendanceTable: React.FC<AttendanceTableProps> = ({
         groupedData[yearKey][monthKey].weeks.push(weekEntry);
       }
 
-      // Place the item in its correct day position
       weekEntry.days[dayOfWeek] = item;
     });
 
@@ -200,13 +191,13 @@ const YearlyAttendanceTable: React.FC<AttendanceTableProps> = ({
             {week.days.map((item, dayIndex) => (
               <AttendanceCell
                 key={dayIndex}
-                attendance={item?.attendance ?? null}
+                attedance={item?.attedance ?? null}
               >
                 {item ? (
                   <>
-                    {formatDate(item.date)}
+                    {formatDate(item.created_at)}
                     <br />
-                    {item.attendance === 1 ? "حاضر" : "غائب"}
+                    {item.attedance === 1 ? "حاضر" : "غائب"}
                   </>
                 ) : (
                   "-"
@@ -253,7 +244,6 @@ const YearlyAttendanceTable: React.FC<AttendanceTableProps> = ({
         </TableRow>
         {isMonthExpanded && (
           <>
-            {/* Header Row for Weekdays */}
             <TableRow>
               {weekDays.map((day) => (
                 <DayHeaderCell key={day}>{day}</DayHeaderCell>
@@ -276,8 +266,7 @@ const YearlyAttendanceTable: React.FC<AttendanceTableProps> = ({
     <Box>
       <TableContainer component={Paper} sx={{ maxHeight: 600 }}>
         <Table stickyHeader>
-          <TableHead>
-          </TableHead>
+          <TableHead></TableHead>
           <TableBody>
             {displayedYears.map((year) => (
               <React.Fragment key={year}>
@@ -311,7 +300,7 @@ const YearlyAttendanceTable: React.FC<AttendanceTableProps> = ({
         count={yearKeys.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onPageChange={(e, newPage) => {console.log(e),setPage(newPage)}}
+        onPageChange={(_, newPage) => setPage(newPage)}
         onRowsPerPageChange={(e) => {
           setRowsPerPage(parseInt(e.target.value, 10));
           setPage(0);

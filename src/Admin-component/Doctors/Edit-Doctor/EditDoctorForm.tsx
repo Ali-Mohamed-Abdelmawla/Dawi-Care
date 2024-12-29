@@ -7,15 +7,11 @@ import {
   Box,
   Typography,
   Grid,
-  Modal,
-  Fade,
-  Backdrop,
   Button,
 } from "@mui/material";
 import Select, {
   components,
   StylesConfig,
-  ActionMeta,
   MultiValue,
   OptionProps,
 } from "react-select";
@@ -32,48 +28,12 @@ import { NewClinic } from "../../PayRolls/ClinicsInterfaces";
 import { useFormValidation } from "../useFormValidation";
 import dayjs from "../../../dateConfig";
 import { DayOption } from "../doctorInterfaces";
+import AvatarUpload from "./../../../helper/AvatarUpload/AvatarUpload";
 
-
-const styles: StylesConfig<DayOption, true> = {
-  multiValue: (base, state) => {
-    return state.data.isFixed ? { ...base, backgroundColor: "#e0e0e0" } : base;
-  },
-  multiValueLabel: (base, state) => {
-    return state.data.isFixed
-      ? { ...base, fontWeight: "bold", color: "#333", paddingRight: 6 }
-      : base;
-  },
-  multiValueRemove: (base, state) => {
-    return state.data.isFixed ? { ...base, display: "none" } : base;
-  },
-};
+const styles: StylesConfig<DayOption, true> = {};
 
 const Option = ({ children, ...props }: OptionProps<DayOption, true>) => {
-  const isSelected = props.isSelected;
-  const isFixed = props.data.isFixed;
-
-  return (
-    <components.Option {...props}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        {children}
-        {isSelected && isFixed && (
-          <span style={{ fontSize: "0.8em", color: "#666" }}>(يوم أصلي)</span>
-        )}
-      </div>
-    </components.Option>
-  );
-};
-
-const orderOptions = (values: readonly DayOption[]) => {
-  return values
-    .filter((v) => v.isFixed)
-    .concat(values.filter((v) => !v.isFixed));
+  return <components.Option {...props}>{children}</components.Option>;
 };
 
 //first-commit
@@ -100,7 +60,6 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
   const originalDays = doctor.week_days.map((weekDay) => ({
     value: weekDay.day || weekDay.switch_day || "",
     label: weekDay.day || weekDay.switch_day || "",
-    isFixed: true,
     id: weekDay.id,
   }));
 
@@ -128,18 +87,17 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
 
       // Handle working hours for both fixed and new days
       selectedDays.forEach((day: DayOption) => {
-        if (day.isFixed) {
-          // For fixed days, maintain original time
-          const existingTime = doctor.week_days.find(
-            (wd) => wd.id === day.id
-          )?.date;
-          if (existingTime) {
-            const [hours, minutes] = existingTime.split(":");
-            updatedWorkingHours[day.value] = {
-              start: dayjs().hour(parseInt(hours)).minute(parseInt(minutes)),
-            };
-          }
-        } else if (!updatedWorkingHours[day.value]) {
+        // For fixed days, maintain original time
+        const existingTime = doctor.week_days.find(
+          (wd) => wd.id === day.id
+        )?.date;
+        if (existingTime) {
+          const [hours, minutes] = existingTime.split(":");
+          updatedWorkingHours[day.value] = {
+            start: dayjs().hour(parseInt(hours)).minute(parseInt(minutes)),
+          };
+        }
+        if (!updatedWorkingHours[day.value]) {
           // For new days, initialize with null time
           updatedWorkingHours[day.value] = { start: null };
         }
@@ -152,28 +110,11 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
 
   const [currentProfileImage, setCurrentProfileImage] =
     useState<string>(profileImageUrl);
-  const [openModal, setOpenModal] = useState(false);
 
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
 
-  const handleWorkingDaysChange = (
-    newValue: MultiValue<DayOption>,
-    actionMeta: ActionMeta<DayOption>
-  ) => {
-    switch (actionMeta.action) {
-      case "remove-value":
-      case "pop-value":
-        if (actionMeta.removedValue.isFixed) {
-          return; // Prevent removal of fixed days
-        }
-        break;
-      case "clear":
-        newValue = selectedDays.filter((v: DayOption) => v.isFixed);
-        break;
-    }
-
-    setValue("working_days", orderOptions(newValue));
+  // Simplified handleWorkingDaysChange
+  const handleWorkingDaysChange = (newValue: MultiValue<DayOption>) => {
+    setValue("working_days", Array.from(newValue));
   };
 
   const onFormSubmit = (data: DoctorFormData) => {
@@ -202,29 +143,41 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
           تعديل بيانات الطبيب
         </Typography>
       </Box>
-
-      {currentProfileImage && (
-        <Box
-          sx={{ position: "relative", cursor: "pointer" }}
-          onClick={handleOpenModal}
-        >
-          <Box
-            component="img"
-            sx={{
-              width: 100,
-              height: 100,
-              borderRadius: "50%",
-              objectFit: "cover",
-              marginBottom: 2,
-            }}
-            alt="صورة الطبيب"
-            src={currentProfileImage}
-          />
-        </Box>
-      )}
-
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <Grid container spacing={3}>
+          <Grid item xs={12} sm={6}>
+              <AvatarUpload<DoctorFormData>
+                name="profile_photo"
+                control={control}
+                currentImageUrl={currentProfileImage}
+                onFileChange={(file) => {
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                      const result = e.target?.result as string;
+                      setCurrentProfileImage(result);
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+                // onOpenFullImage={handleOpenModal}
+                rules={{
+                  validate: (value: File | string | null) => {
+                    if (typeof value === "string") return true;
+                    if (!value) return true;
+
+                    const sizeValidation = validateFileSize(value);
+                    if (sizeValidation !== true) return sizeValidation;
+
+                    return validateFileType(value, [
+                      "image/jpeg",
+                      "image/png",
+                      "image/jpg",
+                    ]);
+                  },
+                }}
+              />
+          </Grid>
           <Grid item xs={12} sm={6}>
             <Controller
               name="name"
@@ -273,51 +226,7 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
               )}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Controller
-              name="profile_photo"
-              control={control}
-              rules={{
-                validate: (value) => {
-                  if (typeof value === "string") return true; // Existing file, no validation needed
-                  if (!value) return true; // No file selected, no validation needed
 
-                  // Check file size
-                  const sizeValidation = validateFileSize(value);
-                  if (sizeValidation !== true) return sizeValidation; // Return error message if size validation fails
-
-                  // Check file type
-                  return validateFileType(value, [
-                    "image/jpeg",
-                    "image/png",
-                    "image/jpg",
-                  ]);
-                },
-              }}
-              render={({ field: { onChange }, fieldState: { error } }) => (
-                <TextField
-                  type="file"
-                  onChange={(e) => {
-                    const files = (e.target as HTMLInputElement).files;
-                    if (files && files[0]) {
-                      onChange(files[0]);
-                      const reader = new FileReader();
-                      reader.onload = (e) => {
-                        const result = e.target?.result as string;
-                        setCurrentProfileImage(result);
-                      };
-                      reader.readAsDataURL(files[0]);
-                    }
-                  }}
-                  fullWidth
-                  error={!!error}
-                  helperText={error?.message}
-                  InputLabelProps={{ shrink: true }}
-                  label="الصورة الشخصية"
-                />
-              )}
-            />
-          </Grid>
           <Grid item xs={12} sm={6}>
             <Controller
               name="union_registration"
@@ -457,10 +366,10 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
                   isMulti
                   styles={styles}
                   placeholder="اختر أيام العمل"
-                  components={{ MultiValue: components.MultiValue, Option }}
+                  components={{ Option }}
                   value={field.value}
                   onChange={handleWorkingDaysChange}
-                  isClearable={selectedDays?.some((v: DayOption) => !v.isFixed)}
+                  isClearable={true}
                 />
               )}
             />
@@ -575,40 +484,6 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
           </LoadingButton>
         </Box>
       </form>
-
-      <Modal
-        open={openModal}
-        onClose={handleCloseModal}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in={openModal}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              bgcolor: "background.paper",
-              boxShadow: 15,
-              p: 4,
-            }}
-          >
-            {currentProfileImage && (
-              <img
-                src={currentProfileImage}
-                alt="صورة الطبيب"
-                style={{ maxWidth: "100%", maxHeight: "80vh" }}
-              />
-            )}
-          </Box>
-        </Fade>
-      </Modal>
     </Box>
   );
 };

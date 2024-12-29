@@ -9,6 +9,8 @@ export interface Employee {
   fixed_salary: string;
   worked_days: string;
   weekdays: { id:number; day: string; switch_day:string; }[];
+  hire_date:string;
+
 }
 
 export interface EmployeeFormData

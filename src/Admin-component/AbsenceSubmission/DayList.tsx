@@ -62,13 +62,19 @@ const DayList: React.FC<DayListProps> = ({ days, title, personType }) => {
                 },
               }}
             >
-              <CardContent>
+              <CardContent
+                sx={{
+                  "&:last-child": {
+                    paddingBottom: personType === "doctor" ? "24px" : "2px",
+                  },
+                }}
+              >
                 <Box
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    mb: 1
+                    mb: 1,
                   }}
                 >
                   <Typography variant="subtitle1">
@@ -86,20 +92,19 @@ const DayList: React.FC<DayListProps> = ({ days, title, personType }) => {
                       <Tooltip
                         title={`التاريخ الأصلي: ${day.switched_day_date}`}
                       >
-                        <InfoTwoToneIcon
-                          fontSize="small"
-                          color="primary"
-                        />
+                        <InfoTwoToneIcon fontSize="small" color="primary" />
                       </Tooltip>
                     </Box>
                   )}
                 </Box>
-                <Divider />
+                {personType === "doctor" ? <Divider /> : null}
+
                 <Box sx={{ display: "flex", mt: 1, flexDirection: "column" }}>
-                  {day.switch_day_date !== null && (
-                  <Typography variant="body2" color="textSecondary">
-                    تاريخ الحضور: {day.switch_day_date}
-                  </Typography>)}
+                  {day.switch_day_date && (
+                    <Typography variant="body2" color="textSecondary">
+                      تاريخ الحضور: {day.switch_day_date}
+                    </Typography>
+                  )}
                   {personType === "doctor" && (
                     <Typography variant="body2" color="text.secondary">
                       الوقت: {day.date?.slice(0, 5)}

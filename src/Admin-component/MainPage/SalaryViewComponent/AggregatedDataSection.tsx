@@ -14,6 +14,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ar } from "date-fns/locale";
 import { SalaryData } from "../Statistics-Interfaces";
+import { startOfMonth, endOfMonth } from 'date-fns';
 
 interface PeriodStatisticsProps {
   data: SalaryData[] | null;
@@ -31,9 +32,12 @@ export const PeriodStatistics: React.FC<PeriodStatisticsProps> = ({
   const statistics = useMemo(() => {
     if (!data || !startDate || !endDate) return null;
 
+    const periodStart = startOfMonth(startDate);
+    const periodEnd = endOfMonth(endDate);
+
     const filteredData = data.filter((salary) => {
       const salaryDate = new Date(salary.year, salary.month - 1);
-      return salaryDate >= startDate && salaryDate <= endDate;
+      return salaryDate >= periodStart && salaryDate <= periodEnd;
     });
 
     if (filteredData.length === 0) return null;

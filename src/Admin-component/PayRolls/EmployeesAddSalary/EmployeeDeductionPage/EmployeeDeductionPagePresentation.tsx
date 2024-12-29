@@ -18,7 +18,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Employee } from "../../../Employees/employeeInterfaces";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { styled } from "@mui/material/styles";
-
+import { SalaryData } from "../../../MainPage/Statistics-Interfaces";
 export interface DeductionFormData {
   deduction: number;
   customDeduction: number;
@@ -33,6 +33,7 @@ interface EmployeeDeductionPagePresentationProps {
   setSelectedDate: (date: dayjs.Dayjs | null) => void;
   onSubmit: (data: DeductionFormData) => Promise<void>;
   isSubmitting: boolean;
+  employeeSalaryData: SalaryData | null;
 }
 
 // Styled Components
@@ -76,9 +77,9 @@ export const EmployeeDeductionPagePresentation: React.FC<
   setIsCustomDeduction,
   selectedDate,
   setSelectedDate,
-
   onSubmit,
   isSubmitting,
+  employeeSalaryData,
 }) => {
   const [isDeductionFocused, setIsDeductionFocused] = useState<boolean>(false);
   const { control, handleSubmit } = useForm<DeductionFormData>({
@@ -183,7 +184,7 @@ export const EmployeeDeductionPagePresentation: React.FC<
                     error={!!error}
                     helperText={error?.message}
                     disabled={!isCustomDeduction} // Disable this field when normal deduction is active
-                    sx={{mb:2}}
+                    sx={{ mb: 2 }}
                   />
                 )}
               />
@@ -285,8 +286,13 @@ export const EmployeeDeductionPagePresentation: React.FC<
               loading={isSubmitting}
               loadingPosition="end"
               endIcon={<Check />}
+              disabled={employeeSalaryData?.is_payed == 1} // Use loose equality if `is_payed` might be a string
             >
-              <span>سيتم دفع الراتب</span>
+              <span>
+                {employeeSalaryData?.is_payed == 1
+                  ? "تم دفع الراتب"
+                  : "سيتم دفع الراتب"}
+              </span>
             </LoadingButton>
             <Button
               variant="outlined"

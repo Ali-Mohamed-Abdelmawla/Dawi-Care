@@ -1,15 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
   Paper,
   Tabs,
   Tab,
-  List,
-  ListItem,
-  Divider,
   Tooltip,
-  Popover,
   Grid,
   Button,
 } from "@mui/material";
@@ -17,9 +13,14 @@ import { PickersDay, PickersDayProps } from "@mui/x-date-pickers/PickersDay";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from '../../dateConfig';
-import { AbsencePresentationProps, SwapDayFormData } from "./AbsenceInterfaces";
-import PersonSelect from "../../helper/personSelect/personSelect";
+import dayjs from "../../dateConfig";
+import {
+  AbsencePresentationProps,
+  SwapDayFormData,
+  Doctor,
+  Employee,
+} from "./AbsenceInterfaces";
+import { PeopleGrid } from "./absencePersonCard";
 import TwoColumnDaysUI from "./TwoColumnDaysUI";
 import SwapDayModal from "./SwapDayModal";
 
@@ -32,10 +33,12 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
   onPersonChange,
   onPersonTypeChange,
   handleSwapDaySubmit,
+  people,
+  onClearSelection,
+  loading,
 }) => {
   const [showSwitchedDays, setShowSwitchedDays] = useState(false);
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [isSwapDayModalOpen, setIsSwapDayModalOpen] = useState(false);
 
   const isDateDisabled = (date: dayjs.Dayjs) => {
@@ -64,18 +67,31 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
     return !allowedDays.includes(dayOfWeek);
   };
 
+  useEffect(() => {
+    console.log("Attendance Data:", selectedPersonAttendance)
+}, [selectedPersonAttendance])
+
   const isDateAbsent = (date: dayjs.Dayjs) => {
     return selectedPersonAttendance?.some(
       (attendance) =>
-        attendance.date === date.format("YYYY-MM-DD") &&
-        attendance.attendance === 0
+        dayjs(attendance.created_at).format("YYYY-MM-DD") === date.format("YYYY-MM-DD") &&
+        attendance.attedance === 0
+    );
+  };
+
+  const isDatePresent = (date: dayjs.Dayjs) => {
+    return selectedPersonAttendance?.some(
+      (attendance) =>
+        dayjs(attendance.created_at).format("YYYY-MM-DD") === date.format("YYYY-MM-DD") &&
+        attendance.attedance === 1
     );
   };
 
   const CustomPickersDay = (props: PickersDayProps<dayjs.Dayjs>) => {
     const { day, ...other } = props;
     const isAbsent = isDateAbsent(day);
-
+    const isPresent = isDatePresent(day);
+  
     return (
       <PickersDay
         {...other}
@@ -88,32 +104,16 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
               backgroundColor: "darkred",
             },
           }),
+          ...(isPresent && {
+            backgroundColor: "success.light",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "darkgreen",
+            },
+          }),
         }}
       />
     );
-  };
-
-  // const handleAttendanceListClick = (
-  //   event: React.MouseEvent<HTMLButtonElement>
-  // ) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-
-  const handleAttendanceListClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "attendance-popover" : undefined;
-
-  const ArabicDaysMapping = {
-    Sunday: "الأحد",
-    Monday: "الاثنين",
-    Tuesday: "الثلاثاء",
-    Wednesday: "الأربعاء",
-    Thursday: "الخميس",
-    Friday: "الجمعة",
-    Saturday: "السبت",
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -157,24 +157,55 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
             <Tab label="موظف" value="employee" />
           </Tabs>
         </Grid>
+
         <Grid item xs={12}>
-          <Typography variant="h5" gutterBottom>
-            {personType === "doctor" ? "اختر طبيبًا" : "اختر موظفًا"}
-          </Typography>
-          <PersonSelect
-            personType={personType}
-            onChange={onPersonChange}
-            value={selectedPerson}
-          />
+          {!selectedPerson && (
+            <PeopleGrid
+              people={people}
+              personType={personType}
+              onPersonSelect={(selectedPerson) =>
+                onPersonChange({
+                  value: selectedPerson.id,
+                  label: selectedPerson.name,
+                  weekDays:
+                    personType === "doctor"
+                      ? (selectedPerson as Doctor).week_days
+                      : (selectedPerson as Employee).weekdays,
+                })
+              }
+              selectedPerson={selectedPerson}
+              loading={loading}
+            />
+          )}
         </Grid>
       </Grid>
 
       {selectedPerson && (
         <Paper elevation={3} sx={{ p: 2, mt: 2 }}>
-          <Typography variant="h6" gutterBottom>
-            ايام عمل {personType === "doctor" ? "الدكتور" : "الموظف"}{" "}
-            {selectedPerson.label}
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Typography variant="h6" gutterBottom>
+              ايام عمل {personType === "doctor" ? "الدكتور" : "الموظف"}{" "}
+              {selectedPerson.label}
+            </Typography>
+            {selectedPerson && (
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={onClearSelection}
+                sx={{ ml: 2 }}
+              >
+                {personType === "doctor"
+                  ? "إعادة اختيار طبيب"
+                  : "إعادة اختيار موظف"}
+              </Button>
+            )}
+          </Box>
           <Grid
             container
             justifyContent="space-between"
@@ -229,15 +260,6 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
                   عرض الأيام المبدله
                 </Button>
               </Tooltip>
-              {/* <Tooltip title="عرض قائمة الغياب">
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={handleAttendanceListClick}
-                >
-                  قائمة الغياب
-                </Button>
-              </Tooltip> */}
             </Grid>
           </Grid>
 
@@ -258,7 +280,9 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
                   selected: selectedDate?.isSame(props.day, "day") ?? false,
                 }),
               }}
-              sx={{ width: "100%", mt: 2 }}
+              sx={{ width: "100%", mt: 2,    '& .MuiPickersDay-root': {  // This targets all PickersDays
+                borderRadius: '8px',  // or any value you want
+              } }}
             />
           </LocalizationProvider>
 
@@ -269,7 +293,7 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
                   variant="contained"
                   color="primary"
                   onClick={() =>
-                    updateAbsenceStatus(selectedDate.toDate(), selectedPerson)
+                    updateAbsenceStatus(selectedDate.toDate(), selectedPerson,selectedPersonAttendance)
                   }
                 >
                   تعديل حالة الغياب
@@ -279,7 +303,7 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
                   variant="contained"
                   color="secondary"
                   onClick={() =>
-                    handleMarkAsAbsent(selectedDate.toDate(), selectedPerson)
+                    handleMarkAsAbsent(selectedDate.toDate(), selectedPerson,selectedPersonAttendance)
                   }
                 >
                   وضع علامة كغائب
@@ -288,69 +312,6 @@ const AbsencePresentation: React.FC<AbsencePresentationProps> = ({
             </Box>
           )}
 
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleAttendanceListClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-          >
-            <Paper
-              sx={{ p: 2, maxWidth: 350, maxHeight: 300, overflow: "auto" }}
-            >
-              <Typography variant="h6" gutterBottom>
-                قائمة الغياب
-              </Typography>
-              {selectedPersonAttendance &&
-              selectedPersonAttendance.length > 0 ? (
-                <List>
-                  {selectedPersonAttendance.map((attendance, index) => {
-                    const attendanceDate = dayjs(attendance.date);
-                    const dayName = attendanceDate.locale("ar").format("dddd");
-                    return (
-                      <React.Fragment key={index}>
-                        <ListItem>
-                          <Box>
-                            <Typography variant="subtitle1">
-                              {`${
-                                ArabicDaysMapping[
-                                  dayName as keyof typeof ArabicDaysMapping
-                                ]
-                              } ${attendanceDate.format("YYYY/MM/DD")}`}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color={
-                                attendance.attendance === 0
-                                  ? "error"
-                                  : "success"
-                              }
-                            >
-                              {attendance.attendance === 0 ? "غائب" : "حاضر"}
-                            </Typography>
-                          </Box>
-                        </ListItem>
-                        {index < selectedPersonAttendance.length - 1 && (
-                          <Divider />
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
-                </List>
-              ) : (
-                <Typography variant="body2" color="textSecondary">
-                  لا يوجد بيانات غياب لعرضها.
-                </Typography>
-              )}
-            </Paper>
-          </Popover>
         </Paper>
       )}
     </Box>

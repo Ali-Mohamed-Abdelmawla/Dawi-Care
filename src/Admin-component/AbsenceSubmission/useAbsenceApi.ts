@@ -33,7 +33,7 @@ export const useAbsenceApi = () => {
         },
       });
       
-      return response.data.attendance_data;
+      return response.data;
     } catch (error) {
       console.log(error);
       return [];
@@ -43,9 +43,11 @@ export const useAbsenceApi = () => {
   const submitAbsence = async (
     date: Date, 
     personInfo: PersonOption,
-    personType: string
+    personType: string,
+    attendanceId:number | undefined
   ) => {
     try {
+      console.log("attendance Id: ",attendanceId);
       const dayInfo = formatDateWithArabicDay(date);
       const dayID = getChosenDayID(dayInfo, personInfo);
 
@@ -63,7 +65,7 @@ export const useAbsenceApi = () => {
       if (!result.isConfirmed) return;
 
       const response = await axiosInstance.post(
-        `/api/attendencezero/${dayID}`,
+        `/api/attendencezero/${attendanceId}`,
         {},
         {
           headers: {
@@ -93,11 +95,13 @@ export const useAbsenceApi = () => {
   const updateAbsenceStatus = async (
     date: Date, 
     personInfo: PersonOption,
-    personType: string
+    personType: string,
+    attendanceId:number | undefined
   ) => {
     try {
       const dayInfo = formatDateWithArabicDay(date);
       const dayID = getChosenDayID(dayInfo, personInfo);
+      console.log("attendance Id: ",attendanceId);
 
       const result = await sweetAlertInstance.fire({
         title: "هل انت متاكد ؟",
@@ -115,7 +119,7 @@ export const useAbsenceApi = () => {
       if (!result.isConfirmed) return;
 
       const response = await axiosInstance.post(
-        `/api/deleteattendence/${dayID}`,
+        `/api/deleteattendence/${attendanceId}`,
         {},
         {
           headers: {
