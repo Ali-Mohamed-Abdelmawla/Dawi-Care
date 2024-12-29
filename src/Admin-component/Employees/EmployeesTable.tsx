@@ -37,6 +37,7 @@ const EmployeesTable: React.FC<EmployeesTableProps> = ({
       type: "string",
       align: "left",
       flex: 1,
+      resizable: false,
     },
     {
       field: "description",
@@ -44,6 +45,7 @@ const EmployeesTable: React.FC<EmployeesTableProps> = ({
       type: "string",
       align: "left",
       flex: 1,
+      resizable: false,
     },
     {
       field: "fixed_salary",
@@ -51,6 +53,7 @@ const EmployeesTable: React.FC<EmployeesTableProps> = ({
       type: "string",
       align: "left",
       flex: 0.7,
+      resizable: false,
     },
     {
       field: "phone_number",
@@ -58,12 +61,15 @@ const EmployeesTable: React.FC<EmployeesTableProps> = ({
       type: "string",
       align: "left",
       flex: 1,
+      resizable: false,
     },
     {
       field: "actions",
       headerName: "الاعدادات",
-      type: "actions",
       align: "left",
+      resizable: false,
+      sortable: false,
+      filterable: false,
       flex: 2,
       renderCell: (params: GridRenderCellParams<Employee>) => (
         <>

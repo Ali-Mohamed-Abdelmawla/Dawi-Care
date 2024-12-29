@@ -34,6 +34,9 @@ const DoctorsTable: React.FC<DoctorsTableProps> = ({
       field: "profile_photo",
       headerName: "الصوره الشخصيه",
       flex: 0.5,
+      resizable: false,
+      sortable:false,
+      filterable:false,
       renderCell: (params: GridRenderCellParams) => (
         <div
           style={{
@@ -44,19 +47,43 @@ const DoctorsTable: React.FC<DoctorsTableProps> = ({
             marginRight: "5px",
           }}
         >
-          <ImageCell value={`${deploy_url}${params.value}`} name={params.row.name} />
+          <ImageCell
+            value={`${deploy_url}${params.value}`}
+            name={params.row.name}
+          />
         </div>
       ),
     },
-    { field: "name", headerName: "الاسم", align: "left", flex: 1 },
-    { field: "fixed_salary", headerName: "االراتب", align: "left", flex: 0.7 },
-    { field: "phone_number", headerName: "رقم الهاتف", align: "left", flex: 1 },
+    {
+      field: "name",
+      headerName: "الاسم",
+      resizable: false,
+      align: "left",
+      flex: 1,
+    },
+    {
+      field: "fixed_salary",
+      headerName: "االراتب",
+      resizable: false,
+      align: "left",
+      flex: 0.7,
+    },
+    {
+      field: "phone_number",
+      headerName: "رقم الهاتف",
+      resizable: false,
+      align: "left",
+      flex: 1,
+      sortable:false,
+    },
     {
       field: "actions",
       headerName: "الاعدادات",
       align: "left",
       flex: 1,
-
+      resizable: false,
+      sortable:false,
+      filterable:false,
       renderCell: (params: GridRenderCellParams) => (
         <>
           <Button
@@ -129,7 +156,10 @@ const DoctorsTable: React.FC<DoctorsTableProps> = ({
   );
 };
 
-const ImageCell: React.FC<{ value: string; name:string; }> = ({ value, name }) => {
+const ImageCell: React.FC<{ value: string; name: string }> = ({
+  value,
+  name,
+}) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
