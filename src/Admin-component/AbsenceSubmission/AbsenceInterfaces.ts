@@ -99,8 +99,3 @@ export interface DayListProps {
   personType:'doctor' | 'employee'
 
 }
-
-export interface getChosenDayIDProps {
-  dayInfo: DayInfo;
-  personInfo: PersonOption;
-}

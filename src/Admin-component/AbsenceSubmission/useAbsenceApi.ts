@@ -8,14 +8,12 @@ import {
 } from "./AbsenceInterfaces";
 import { 
   formatDateWithArabicDay, 
-  getChosenDayID 
 } from "./absenceHelperFunctions";
 import dayjs from '../../dateConfig';
 
 
 export const useAbsenceApi = () => {
   const accessToken = sessionStorage.getItem("accessToken");
-//   const navigate = useNavigate();
 
   const getAttendanceByPersonID = async (
     id: number | undefined,
@@ -49,7 +47,6 @@ export const useAbsenceApi = () => {
     try {
       console.log("attendance Id: ",attendanceId);
       const dayInfo = formatDateWithArabicDay(date);
-      const dayID = getChosenDayID(dayInfo, personInfo);
 
       const result = await sweetAlertInstance.fire({
         title: "هل انت متاكد ؟",
@@ -100,7 +97,6 @@ export const useAbsenceApi = () => {
   ) => {
     try {
       const dayInfo = formatDateWithArabicDay(date);
-      const dayID = getChosenDayID(dayInfo, personInfo);
       console.log("attendance Id: ",attendanceId);
 
       const result = await sweetAlertInstance.fire({

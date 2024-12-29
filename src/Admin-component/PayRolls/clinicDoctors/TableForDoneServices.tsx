@@ -51,16 +51,17 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   border: "1px solid lightblue",
 }));
 
-const ServiceCell = styled(TableCell)(({ theme }) => ({
+const ServiceCell = styled(TableCell)({
   textAlign: "center",
   border: "1px solid lightgray",
-}));
+});
 
-const DateCell = styled(TableCell)(({ theme }) => ({
+const DateCell = styled(TableCell)({
   backgroundColor: "lightblue",
   textAlign: "center",
   border: "1px solid lightgray",
-}));
+});
+
 
 const MonthTotalCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.light,

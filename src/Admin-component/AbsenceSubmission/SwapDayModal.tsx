@@ -71,7 +71,7 @@ const SwapDayModal: React.FC<SwapDayModalProps> = ({
   const absentDates = useMemo(() => { 
     console.log(personAttendance)
     return Array.isArray(personAttendance)
-      ? personAttendance.filter((date) => date?.attendance === 0)
+      ? personAttendance.filter((date) => date?.attedance === 0)
       : [];
   }, [personAttendance]);
 

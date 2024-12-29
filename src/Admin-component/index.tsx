@@ -37,7 +37,6 @@ import {
   ExitToApp as LogoutIcon,
   EventBusy as AddAbsence,
   HomeRounded as HomeIcon,
-  MedicalServices as AddClinic,
   Badge as AddEmployee,
   Masks as AddDoctor,
 } from "@mui/icons-material";
