@@ -13,6 +13,7 @@ const AddClinicContainer: React.FC = () => {
       clinicName: "",
       service: [{ name: "", cost: "" }],
     },
+    mode: "onChange",
   });
 
   const onSubmit: SubmitHandler<AddClinicFormData> = async (data) => {

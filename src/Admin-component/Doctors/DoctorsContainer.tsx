@@ -49,20 +49,34 @@ const DoctorsContainer: React.FC = () => {
 
   const handleDeleteClick = async (doctorId: number) => {
     try {
+      const result = await sweetAlertInstance.fire({
+        title: "هل انت متأكد؟",
+        text: "سيتم حذف بيانات الطبيب ولن تتمكن من استرجاعها.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "نعم، احذف",
+        cancelButtonText: "إلغاء",
+      });
+  
+      if (!result.isConfirmed) {
+        return; // Exit if the user cancels the action
+      }
+  
       await deleteDoctor(doctorId);
-      setDoctors(doctors.filter(doctor => doctor.id !== doctorId));
+      setDoctors(doctors.filter((doctor) => doctor.id !== doctorId));
       sweetAlertInstance.fire({
-        icon: 'success',
-        title: 'تمت ازاله بيانات الطبيب بنجاح.',
+        icon: "success",
+        title: "تمت إزالة بيانات الطبيب بنجاح.",
       });
     } catch (error) {
-      console.error('Error deleting doctor:', error);
+      console.error("Error deleting doctor:", error);
       sweetAlertInstance.fire({
-        icon: 'error',
-        title: 'فشلت ازاله بيانات الطبيب',
+        icon: "error",
+        title: "فشلت إزالة بيانات الطبيب.",
       });
     }
   };
+  
 
   if (loading) {
     return <Loader />;

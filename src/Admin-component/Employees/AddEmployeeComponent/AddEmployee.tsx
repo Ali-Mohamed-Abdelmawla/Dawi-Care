@@ -11,7 +11,9 @@ import { EmployeeFormData } from "./AddEmployeeInterfaces";
 
 const AddEmployee: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const { control, handleSubmit } = useForm<EmployeeFormData>();
+  const { control, handleSubmit } = useForm<EmployeeFormData>({
+    mode: "onChange",
+  });
   const navigate = useNavigate();
 
   const onSubmit = (data: EmployeeFormData) => {

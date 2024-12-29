@@ -39,6 +39,7 @@ const EditEmployeeForm: React.FC<EditEmployeeFormProps> = ({
     setValue,
   } = useForm<EmployeeFormData>({
     defaultValues: employee,
+    mode: "onChange",
   });
 
   const selectedDays = useWatch({

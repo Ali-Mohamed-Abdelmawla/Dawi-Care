@@ -16,7 +16,10 @@ const AddDoctor: React.FC = () => {
   const [clinics, setClinics] = useState<NewClinic[]>([]);
   const [loading, setLoading] = useState(false);
   const { getClinicList } = useClinicApi();
-  const { control, handleSubmit } = useForm<DoctorFormData>();
+  const { control, handleSubmit } = useForm<DoctorFormData>({
+    mode: "onChange",
+
+  });
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();

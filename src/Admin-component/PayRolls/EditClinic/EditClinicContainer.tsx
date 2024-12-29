@@ -20,6 +20,7 @@ const EditClinicContainer: React.FC = () => {
       clinicName: "",
       service: [{ name: "", price: "", isNew: true }]
     },
+    mode: "onChange",
   });
 
   useEffect(() => {

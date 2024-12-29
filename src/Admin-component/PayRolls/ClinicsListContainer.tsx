@@ -62,6 +62,18 @@ const ClinicsListContainer: React.FC = () => {
 
   const handleDeleteCLick = async (clinicId: number) => {
     try {
+      const result = await sweetAlertInstance.fire({
+        title: "هل انت متأكد؟",
+        text: "سيتم حذف بيانات العياده نهائيًا ولن تتمكن من استعادتها.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "نعم، احذف",
+        cancelButtonText: "إلغاء",
+      });
+  
+      if (!result.isConfirmed) {
+        return; // Exit if the user cancels the action
+      }
       console.log(`تم حذف العيادة:`, clinicId);
       await deleteClinic(clinicId);
       setClinics(clinics.filter((clinic) => clinic.id !== clinicId));

@@ -38,6 +38,19 @@ const UsersContainer: React.FC = () => {
 
   const handleDeleteClick = async (userId: number) => {
     try {
+      const result = await sweetAlertInstance.fire({
+        title: "هل انت متأكد؟",
+        text: "سيتم حذف بيانات المستخدم نهائيًا ولن تتمكن من استعادتها.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "نعم، احذف",
+        cancelButtonText: "إلغاء",
+      });
+  
+      if (!result.isConfirmed) {
+        return; // Exit if the user cancels the action
+      }
+      
       await deleteUser(userId);
       setUsers(User.filter((User) => User.id !== userId));
       sweetAlertInstance.fire({

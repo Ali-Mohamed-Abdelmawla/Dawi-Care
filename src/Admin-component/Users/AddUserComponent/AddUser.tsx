@@ -10,7 +10,9 @@ import { UserFormData } from "./AddUserInterfaces";
 
 const AddUser: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const { control, getValues, handleSubmit } = useForm<UserFormData>();
+  const { control, getValues, handleSubmit } = useForm<UserFormData>({
+    mode: "onChange",
+  });
   const navigate = useNavigate();
 
   const onSubmit = (data: UserFormData) => {
@@ -76,15 +78,13 @@ const AddUser: React.FC = () => {
   };
 
   return (
-
-        <AddUserForm
-          control={control}
-          getValues={getValues}
-          handleSubmit={handleSubmit}
-          onSubmit={onSubmit}
-          loading={loading}
-        />
-
+    <AddUserForm
+      control={control}
+      getValues={getValues}
+      handleSubmit={handleSubmit}
+      onSubmit={onSubmit}
+      loading={loading}
+    />
   );
 };
 

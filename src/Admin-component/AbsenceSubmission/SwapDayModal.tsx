@@ -64,7 +64,9 @@ const SwapDayModal: React.FC<SwapDayModalProps> = ({
   onSubmit,
   personAttendance,
 }) => {
-  const { control, handleSubmit, watch } = useForm<SwapDayFormData>();
+  const { control, handleSubmit, watch } = useForm<SwapDayFormData>({
+    mode: "onChange",
+  });
   const selectedDay = watch("day");
 
   // Pre-filter `absentDates` based on `personAttendance` and reuse throughout the component

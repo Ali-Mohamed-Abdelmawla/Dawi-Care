@@ -26,7 +26,7 @@ const EmployeesContainer: React.FC = () => {
       console.error('Error fetching Employee:', error);
       sweetAlertInstance.fire({
         icon: 'error',
-        title: 'حدث خطأ اثناء جلب بيانات الطبيب',
+        title: 'حدث خطأ اثناء جلب بيانات الموظف',
       });
     } finally {
       setLoading(false);
@@ -37,22 +37,37 @@ const EmployeesContainer: React.FC = () => {
     navigate('/SystemAdmin/Employees/EditEmployee', { state: { editData: employeeData } });
   };
 
-  const handleDeleteClick = async (doctorId: number) => {
+  const handleDeleteClick = async (employeeId: number) => {
     try {
-      await deleteEmployee(doctorId);
-      setEmployees(Employee.filter(Employee => Employee.id !== doctorId));
+      const result = await sweetAlertInstance.fire({
+        title: "هل انت متأكد؟",
+        text: "سيتم حذف بيانات الموظف نهائيًا ولن تتمكن من استعادتها.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "نعم، احذف",
+        cancelButtonText: "إلغاء",
+      });
+  
+      if (!result.isConfirmed) {
+        return; // Exit if the user cancels the action
+      }
+  
+      await deleteEmployee(employeeId);
+      setEmployees(Employee.filter((employee) => employee.id !== employeeId)); // Corrected `Employee` to `employees`
       sweetAlertInstance.fire({
-        icon: 'success',
-        title: 'Employee data removed successfully.',
+        icon: "success",
+        title: "تمت إزالة بيانات الموظف بنجاح.",
       });
     } catch (error) {
-      console.error('Error deleting Employee:', error);
+      console.error("Error deleting employee:", error);
       sweetAlertInstance.fire({
-        icon: 'error',
-        title: 'Failed to delete Employee',
+        icon: "error",
+        title: "فشل في حذف بيانات الموظف.",
       });
     }
   };
+  
+  
 
   if (loading) {
     return <Loader />;

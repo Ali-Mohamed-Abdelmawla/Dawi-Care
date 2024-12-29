@@ -48,6 +48,10 @@ export const useAbsenceApi = () => {
       console.log("attendance Id: ",attendanceId);
       const dayInfo = formatDateWithArabicDay(date);
 
+      if (!attendanceId) {
+        return;
+      }
+
       const result = await sweetAlertInstance.fire({
         title: "هل انت متاكد ؟",
         text: `سيتم تسجيل غياب ${personType === "doctor" ? "الطبيب" : "الموظف"} "${
@@ -60,6 +64,7 @@ export const useAbsenceApi = () => {
       });
 
       if (!result.isConfirmed) return;
+      
 
       const response = await axiosInstance.post(
         `/api/attendencezero/${attendanceId}`,

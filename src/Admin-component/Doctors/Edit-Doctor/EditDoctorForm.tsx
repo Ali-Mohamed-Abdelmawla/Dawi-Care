@@ -54,6 +54,7 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
     getValues,
   } = useForm<DoctorFormData>({
     defaultValues: doctor,
+    mode: "onChange",
   });
 
   // Convert week_days to working_days format with IDs

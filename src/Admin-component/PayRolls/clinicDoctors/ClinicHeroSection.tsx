@@ -76,7 +76,8 @@ const ClinicHeroSection: React.FC<ClinicHeroSectionProps> = ({
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<ServiceFormData>();
+  } = useForm<ServiceFormData>({    mode: "onChange",
+  });
   
 
   const handleEditClick = (service: {
