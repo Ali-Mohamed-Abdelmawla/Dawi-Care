@@ -13,6 +13,7 @@ import { generatePastelColor } from "../../helper/PastelColorGenerator/colors";
 import { Doctor } from "../Doctors/doctorInterfaces";
 import { Employee } from "../Employees/employeeInterfaces";
 import theme from "../../Apptheme";
+import { deploy_url } from "../../helper/DeployUrl";
 
 interface PersonCardProps {
   person: Doctor | Employee;
@@ -59,7 +60,7 @@ export const PersonCard: React.FC<PersonCardProps> = ({
     if (personType === "doctor") {
       const doctor = person as Doctor;
       console.log(doctor.profile_photo);
-      return `http://127.0.0.1:8000${doctor.profile_photo}`;
+      return `${deploy_url}${doctor.profile_photo}`;
     }
     return `${person.name.charAt(0).toUpperCase()}`;
   };

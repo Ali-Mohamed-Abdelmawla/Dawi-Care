@@ -6,6 +6,7 @@ import { Doctor } from "./doctorInterfaces";
 import DoctorIdCard from "./DoctorIdCard";
 import NotFound from "../../helper/notFound-component/Not-Found";
 import { GridRenderCellParams, GridColDef } from "@mui/x-data-grid";
+import { deploy_url } from "../../helper/DeployUrl";
 
 interface DoctorsTableProps {
   doctors: Doctor[];
@@ -43,7 +44,7 @@ const DoctorsTable: React.FC<DoctorsTableProps> = ({
             marginRight: "5px",
           }}
         >
-          <ImageCell value={`http://127.0.0.1:8000${params.value}`} name={params.row.name} />
+          <ImageCell value={`${deploy_url}${params.value}`} name={params.row.name} />
         </div>
       ),
     },

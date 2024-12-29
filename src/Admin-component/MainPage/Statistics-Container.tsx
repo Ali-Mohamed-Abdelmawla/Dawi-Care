@@ -38,9 +38,11 @@ const StatisticsContainer: React.FC = () => {
             ? await getAllDoctors()
             : await getAllEmployees();
 
-        const fetchedSalaries = await allSalaries();
+        if (viewType === "clinics") {
+          const fetchedSalaries = await allSalaries();
+          setAllSalaryData(fetchedSalaries);
+        }
         setPeople(data);
-        setAllSalaryData(fetchedSalaries);
       } catch (error) {
         console.error(`Error fetching ${personType}s:`, error);
       } finally {

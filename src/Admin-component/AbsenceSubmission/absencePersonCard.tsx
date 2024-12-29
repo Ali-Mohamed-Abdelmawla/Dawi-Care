@@ -17,6 +17,7 @@ import { BriefcaseBusiness, BadgeDollarSign, Search } from "lucide-react";
 import { generatePastelColor } from "../../helper/PastelColorGenerator/colors";
 import { Doctor, Employee } from "./AbsenceInterfaces";
 import { format } from "date-fns";
+import { deploy_url } from "../../helper/DeployUrl";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -80,12 +81,13 @@ const PersonCard: React.FC<AbsencePersonCardProps> = ({
 
   const getProfilePhotoUrl = () => {
     if (personType === "doctor") {
-      const doctor = person as Doctor;
-      return `http://127.0.0.1:8000${doctor?.profile_photo}`;
+        const doctor = person as Doctor;
+        return doctor?.profile_photo
+            ? `${deploy_url}${doctor.profile_photo}`
+            : "";
     }
     return `${person.name.charAt(0).toUpperCase()}`;
-  };
-
+};
   return (
     <Card
       onClick={() => onSelect(person)}

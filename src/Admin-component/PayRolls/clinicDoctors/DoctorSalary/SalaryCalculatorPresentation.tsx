@@ -30,6 +30,7 @@ import { styled } from "@mui/material/styles";
 import { Doctor } from "../../../Doctors/doctorInterfaces";
 import { WeekDay } from "../../../AbsenceSubmission/AbsenceInterfaces";
 import { Service } from "../../ClinicsInterfaces";
+import { deploy_url } from "../../../../helper/DeployUrl";
 // import { AttendanceData } from "../../../AbsenceSubmission/AbsenceInterfaces";
 
 interface AttendanceRecord {
@@ -209,7 +210,7 @@ const DoctorSalaryCalculatorPresentation: React.FC<Props> = ({
           <Grid container spacing={3} alignItems="center">
             <Grid item>
               <StyledAvatar
-                src={`http://127.0.0.1:8000${doctor.profile_photo}`}
+                src={`${deploy_url}${doctor.profile_photo}`}
                 alt={doctor.name}
               >
                 {!doctor.profile_photo && doctor.name.charAt(0)}

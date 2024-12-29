@@ -9,6 +9,7 @@ import { NewClinic } from "../../PayRolls/ClinicsInterfaces";
 import dayjs from "../../../dateConfig";
 import Loader from "../../../helper/loading-component/loader";
 import { DayOption } from "../doctorInterfaces";
+import { deploy_url } from "../../../helper/DeployUrl";
 
 const EditDoctorContainer: React.FC = () => {
   const [clinics, setClinics] = useState<NewClinic[]>([]);
@@ -143,8 +144,8 @@ const EditDoctorContainer: React.FC = () => {
       doctor={doctor}
       onSubmit={handleSubmit}
       onBack={handleBack}
-      profileImageUrl={`http://127.0.0.1:8000${doctor.profile_photo}`}
-      unionRegistrationUrl={`http://127.0.0.1:8000${doctor.union_registration}`}
+      profileImageUrl={`${deploy_url}${doctor.profile_photo}`}
+      unionRegistrationUrl={`${deploy_url}${doctor.union_registration}`}
       formLoading={formLoading}
     />
   );

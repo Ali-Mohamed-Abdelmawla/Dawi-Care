@@ -13,6 +13,7 @@ import {
 import { styled } from "@mui/system";
 import { Doctor } from "./doctorInterfaces";
 import { useState } from "react";
+import { deploy_url } from "../../helper/DeployUrl";
 interface DoctorIdCardProps {
   doctor: Doctor;
 }
@@ -65,7 +66,7 @@ const DoctorIdCard: React.FC<DoctorIdCardProps> = ({ doctor }) => {
         <Grid container spacing={0} alignItems="center">
           <Grid item xs={4} m={1}>
             <Avatar
-              src={`http://127.0.0.1:8000${doctor.profile_photo}`}
+              src={`${deploy_url}${doctor.profile_photo}`}
               sx={{ width: 80, height: 80, margin: "auto", cursor: "pointer" }}
               onClick={handleOpenImage}
             />
@@ -128,7 +129,7 @@ const DoctorIdCard: React.FC<DoctorIdCardProps> = ({ doctor }) => {
           }}
         >
           <img
-            src={`http://127.0.0.1:8000${doctor.profile_photo}`}
+            src={`${deploy_url}${doctor.profile_photo}`}
             alt="Doctor Profile"
             style={{ maxWidth: "100%", maxHeight: "80vh" }}
           />
