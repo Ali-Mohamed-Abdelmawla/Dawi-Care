@@ -6,6 +6,7 @@ import {
   Avatar,
   Box,
   Chip,
+  useTheme,
 } from "@mui/material";
 import { BadgeDollarSign, BriefcaseBusiness } from "lucide-react";
 import { Employee } from "../../Employees/employeeInterfaces";
@@ -20,6 +21,7 @@ export const EmployeeCard: React.FC<EmployeeCardProps> = ({
   employee,
   onEmployeeClick,
 }) => {
+  const theme = useTheme();
   // Memoize the banner color based on the employee's unique identifier
   const bannerColor = useMemo(() => {
     return generatePastelColor();
@@ -35,15 +37,21 @@ export const EmployeeCard: React.FC<EmployeeCardProps> = ({
       onClick={() => onEmployeeClick(employee)}
       sx={{
         cursor: "pointer",
-        transition: "transform 0.2s",
-        "&:hover": { transform: "scale(1.02)" },
+        transition: "all 0.2s",
+        "&:hover": { transform: "translateY(-4px)", boxShadow: 4 },
         position: "relative",
         overflow: "visible",
-        mx: "auto",
-        my: 2,
+        border: `1px solid ${theme.palette.dividerColor.main}`,
       }}
     >
-      <Box sx={{ background: bannerColor, height: "60px" }} />
+      <Box
+        sx={{
+          background: bannerColor,
+          height: "60px",
+          borderRadius: "11px 11px 0 0",
+          border: `1px solid ${theme.palette.dividerColor.main}`,
+        }}
+      />
       <CardContent>
         <Box
           sx={{
@@ -73,16 +81,16 @@ export const EmployeeCard: React.FC<EmployeeCardProps> = ({
           </Typography>
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
             <Chip
-              icon={<BriefcaseBusiness size={16} />}
-              label={employee.description || "لا يوجد وصف وظيفي لهذا الموظف"}
-              size="small"
-              sx={{ marginRight: 1 }}
-            />
-            <Chip
               icon={<BadgeDollarSign />}
               label={`الراتب الثابت: ${employee.fixed_salary} ج.م`}
               size="small"
-              sx={{ mb: 1 }}
+              sx={{ mb: 1,mr:1 }}
+
+            />
+            <Chip
+              icon={<BriefcaseBusiness size={16} />}
+              label={employee.description || "لا يوجد وصف وظيفي لهذا الموظف"}
+              size="small"
             />
           </Box>
 

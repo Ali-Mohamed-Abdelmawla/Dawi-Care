@@ -12,6 +12,7 @@ import { format } from "date-fns";
 import { generatePastelColor } from "../../helper/PastelColorGenerator/colors";
 import { Doctor } from "../Doctors/doctorInterfaces";
 import { Employee } from "../Employees/employeeInterfaces";
+import theme from "../../Apptheme";
 
 interface PersonCardProps {
   person: Doctor | Employee;
@@ -68,13 +69,21 @@ export const PersonCard: React.FC<PersonCardProps> = ({
       onClick={() => onSelect(person)}
       sx={{
         cursor: "pointer",
-        transition: "transform 0.2s",
-        "&:hover": { transform: "scale(1.02)" },
+        transition: "all 0.2s",
+        "&:hover": { transform: "translateY(-4px)", boxShadow: 4 },
         position: "relative",
         overflow: "visible",
+        border: `1px solid ${theme.palette.dividerColor.main}`,
       }}
     >
-      <Box sx={{ backgroundColor: bannerColor, height: "60px" }} />
+      <Box
+        sx={{
+          backgroundColor: bannerColor,
+          height: "60px",
+          borderRadius: "11px 11px 0 0",
+          border: `1px solid ${theme.palette.dividerColor.main}`,
+        }}
+      />
       <CardContent>
         <Box
           sx={{

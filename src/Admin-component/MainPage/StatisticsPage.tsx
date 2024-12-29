@@ -17,8 +17,8 @@ import {
   Coins,
   ChartNoAxesCombined,
   ChartNoAxesColumn,
-  SquareUserRound,
-  Handshake,
+  BriefcaseMedical,
+  User,
 } from "lucide-react";
 import { StatisticsPresentationProps } from "./Statistics-Interfaces";
 import { PersonCard } from "./PersonCard";
@@ -274,13 +274,13 @@ const StatisticsPresentation: React.FC<StatisticsPresentationProps> = ({
           sx={{ mb: 4, borderBottom: 1, borderColor: "divider", ml: 10 }}
         >
           <Tab
-            icon={<SquareUserRound size={20} />}
+            icon={<BriefcaseMedical size={20} />}
             iconPosition="start"
             label="الأطباء"
             value="doctor"
           />
           <Tab
-            icon={<Handshake size={20} />}
+            icon={<User size={20} />}
             iconPosition="start"
             label="الموظفين"
             value="employee"

@@ -11,6 +11,7 @@ import {
   TextField,
   InputAdornment,
   CircularProgress,
+  useTheme,
 } from "@mui/material";
 import { BriefcaseBusiness, BadgeDollarSign, Search } from "lucide-react";
 import { generatePastelColor } from "../../helper/PastelColorGenerator/colors";
@@ -23,19 +24,18 @@ interface AbsencePersonCardProps {
   person: Doctor | Employee;
   personType: "doctor" | "employee";
   onSelect: (person: Doctor | Employee) => void;
-  isSelected?: boolean;
 }
 
 const PersonCard: React.FC<AbsencePersonCardProps> = ({
   person,
   personType,
   onSelect,
-  isSelected,
 }) => {
   useEffect(() => {
     console.log(person);
   }, [person]);
   const bannerColor = useMemo(() => generatePastelColor(), []);
+  const theme = useTheme();
 
   const renderSpecificInfo = () => {
     if (personType === "doctor") {
@@ -97,7 +97,7 @@ const PersonCard: React.FC<AbsencePersonCardProps> = ({
           boxShadow: 4,
         },
         position: "relative",
-        border: isSelected ? "2px solid primary.main" : "none",
+        border: `1px solid ${theme.palette.dividerColor.main}`,
         height: "100%",
       }}
     >
@@ -105,7 +105,8 @@ const PersonCard: React.FC<AbsencePersonCardProps> = ({
         sx={{
           background: bannerColor,
           height: "70px",
-          borderRadius: "4px 4px 0 0",
+          borderRadius: "11px 11px 0 0",
+          border: `1px solid ${theme.palette.dividerColor.main}`,
         }}
       />
       <CardContent sx={{ pt: 0 }}>
@@ -169,7 +170,6 @@ export const PeopleGrid: React.FC<PeopleGridProps> = ({
   people,
   personType,
   onPersonSelect,
-  selectedPerson,
   loading = false,
 }) => {
   const [page, setPage] = useState(1);
@@ -239,7 +239,6 @@ export const PeopleGrid: React.FC<PeopleGridProps> = ({
                   person={person}
                   personType={personType}
                   onSelect={onPersonSelect}
-                  isSelected={selectedPerson?.value === person.id}
                 />
               </Grid>
             ))}

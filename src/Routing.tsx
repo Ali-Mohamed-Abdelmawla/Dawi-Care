@@ -246,7 +246,7 @@ function App() {
       },
     ],
     {
-      basename: "/react-app/",
+      basename: "/Dawi-app/",
     }
   );
   return (
