@@ -136,8 +136,8 @@ const AddUserForm: React.FC<CustomAddUserFormProps> = ({
                     /\d/.test(value) ||
                     "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
                   hasSpecialChar: (value) =>
-                    /[@$!%*?&]/.test(value) ||
-                    "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل (@$!%*?&)",
+                    /[@$!%*?&/#]/.test(value) ||
+                    "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل (@$!%*?&/#)",
                 },
               }}
               render={({ field, fieldState: { error } }) => (
