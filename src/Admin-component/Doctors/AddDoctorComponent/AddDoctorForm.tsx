@@ -21,8 +21,8 @@ import {
 import Select from "react-select";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AddBoxTwoToneIcon from "@mui/icons-material/AddBoxTwoTone";
-
-import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
+import { TimePicker } from "@mui/x-date-pickers";
+// import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
@@ -311,7 +311,7 @@ const AddDoctorForm: React.FC<AddDoctorFormProps> = ({
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <div> % </div>
+                        <b> % </b>
                       </InputAdornment>
                     ),
                   }}
@@ -381,7 +381,7 @@ const AddDoctorForm: React.FC<AddDoctorFormProps> = ({
                           <Typography variant="subtitle1" gutterBottom>
                             {`وقت بدء العمل ليوم ${day.label}`}
                           </Typography>
-                          <StaticTimePicker
+                          <TimePicker
                             value={field.value}
                             onChange={(newValue) => field.onChange(newValue)}
                             slotProps={{

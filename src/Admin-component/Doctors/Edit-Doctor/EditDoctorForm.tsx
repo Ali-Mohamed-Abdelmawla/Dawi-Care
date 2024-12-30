@@ -21,7 +21,9 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import DownloadIcon from "@mui/icons-material/Download";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
+// import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
+import { TimePicker } from "@mui/x-date-pickers";
+
 import { DoctorFormData, EditDoctorFormProps } from "../doctorInterfaces";
 import { workingDaysOptions } from "../doctorUtils";
 import { NewClinic } from "../../PayRolls/ClinicsInterfaces";
@@ -443,7 +445,7 @@ const EditDoctorForm: React.FC<EditDoctorFormProps> = ({
                         <Typography variant="subtitle1" gutterBottom>
                           {`وقت بدء العمل ليوم ${day.label}`}
                         </Typography>
-                        <StaticTimePicker
+                        <TimePicker
                           value={field.value}
                           onChange={(newValue) => field.onChange(newValue)}
                           slotProps={{
