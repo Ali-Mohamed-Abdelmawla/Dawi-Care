@@ -44,7 +44,7 @@ const AddUser: React.FC = () => {
           sweetAlertInstance
             .fire({
               icon: "success",
-              title: "تم إضافة الموظف بنجاح",
+              title: "تم إضافة المستخدم بنجاح",
             })
             .then(() => {
               navigate("/SystemAdmin/Users");
