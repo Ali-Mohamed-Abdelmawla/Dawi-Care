@@ -16,6 +16,7 @@ import {
   Fade,
   Backdrop,
   useTheme,
+  InputAdornment,
 } from "@mui/material";
 import Select from "react-select";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -307,6 +308,13 @@ const AddDoctorForm: React.FC<AddDoctorFormProps> = ({
                   error={!!error}
                   helperText={error?.message}
                   variant="outlined"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <div> % </div>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               )}
             />
